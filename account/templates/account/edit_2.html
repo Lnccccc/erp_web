@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Edit your account {% endblock %}
+{% block content %}
+<h1>Edit your profile</h1>
+{% if request.user.profile.dept == '总经理' %}
+<p>选择一个账户赋给予它职位和权限</p>
+<form action="." method="post">
+    {% csrf_token %}
+<input type="text" name="search_name">
+<input type="submit" name="" id="" value="查询">
+</form>
+{% for i in user_info %}
+<form action="{% url 'account:update_per' i.user.username %}" method="POST">
+    {% csrf_token %}
+    <div>
+    <span><h4>用户名：</h4></span>
+    <span>{{ i.user.username }}</span>
+    </div>
+    <span><h4>部门：</h4></span>
+    <div>
+    <select name="dept">
+        {% if i.dept == '总经理' %}
+        <option value="总经理" selected>总经理</option>
+        <option value="厂长">厂长</option>
+        <option value="生产主管">生产主管</option>
+        <option value="仓管">仓管</option>
+        <option value="空">空</option>
+        {% elif i.dept == '厂长' %}
+        <option value="总经理">总经理</option>
+        <option value="厂长" selected>厂长</option>
+        <option value="生产主管">生产主管</option>
+        <option value="仓管">仓管</option>
+        <option value="空">空</option>
+        {% elif i.dept == '生产主管' %}
+        <option value="总经理">总经理</option>
+        <option value="厂长">厂长</option>
+        <option value="生产主管" selected>生产主管</option>
+        <option value="仓管">仓管</option>
+        <option value="空">空</option>
+        {% elif i.dept == '仓管' %}
+        <option value="总经理">总经理</option>
+        <option value="厂长">厂长</option>
+        <option value="生产主管">生产主管</option>
+        <option value="仓管" selected>仓管</option>
+        <option value="空">空</option>
+        {% else %}
+        <option value="总经理">总经理</option>
+        <option value="厂长">厂长</option>
+        <option value="生产主管">生产主管</option>
+        <option value="仓管">仓管</option>
+        <option value="空" selected>空</option>
+        {% endif %}
+    </select>
+    </div>
+
+    <span><h4>公司：</h4></span>
+    <input type="text" value="{{ i.company }}" name="com">
+    <input type="submit" name="" id="sub" value="确认修改">
+</form>
+
+{% endfor %}
+{% endif %}
+{% endblock %}
