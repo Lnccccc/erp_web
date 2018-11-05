@@ -1,0 +1,178 @@
+from django.shortcuts import render,redirect
+from .models import orders_list,order_stat
+from account.models import Profile
+from uuid import uuid4
+from django.db.models import Count
+from django.views import generic
+from .forms import WorkFlowForm
+from django.contrib.auth.decorators import login_required,permission_required
+from django.contrib import messages
+from account.models import WeixinUser
+# Create your views here.
+
+
+
+
+def islogin(request):
+    return request.session.get('islogin',False)
+
+class IndexView(generic.ListView):
+    template_name = 'order_list.html'
+    context_object_name = 'results'
+
+    def get_queryset(self):
+        openid = self.request.session.get('openid','null')
+        results = orders_list.objects.raw("select a.*,b.stat_nam from work_flow_orders_list a left join work_flow_order_stat b on a.order_status = b.stat_cd where a.openid = '%s' " % openid)
+        return results
+    def get_context_data(self,  **kwargs):
+        openid = self.request.session.get('openid','null')
+        tmp_list = []
+        memb_list = []
+        stat_1 = orders_list.objects.filter(order_status='1',openid=openid).aggregate(count_1=Count('order_status')).get('count_1')
+        tmp_list.append(stat_1)
+        stat_2 = orders_list.objects.filter(order_status='2',openid=openid).aggregate(count_1=Count('order_status')).get('count_1')
+        tmp_list.append(stat_2)
+        stat_3 = orders_list.objects.filter(order_status='3',openid=openid).aggregate(count_1=Count('order_status')).get('count_1')
+        tmp_list.append(stat_3)
+        stat_4 = orders_list.objects.filter(order_status='4',openid=openid).aggregate(count_1=Count('order_status')).get('count_1')
+        tmp_list.append(stat_4)
+        stat_5 = orders_list.objects.filter(order_status='5',openid=openid).aggregate(count_1=Count('order_status')).get('count_1')
+        stat_6 = orders_list.objects.filter(order_status='6',openid=openid).aggregate(count_1=Count('order_status')).get('count_1')
+        stat_7 = orders_list.objects.filter(order_status='7',openid=openid).aggregate(count_1=Count('order_status')).get('count_1')
+        tmp_list.append(stat_5)
+        tmp_list.append(stat_6)
+        tmp_list.append(stat_7)
+        wxu = WeixinUser.objects.filter(openid=openid)[0]
+        company = wxu.profile.company
+        membs = Profile.objects.filter(company=company)
+        for i in membs:
+            memb_list.append(i.user.nickname)
+        kwargs['count'] = tmp_list
+        kwargs['form'] = WorkFlowForm()
+        kwargs['memb'] = memb_list
+        #kwargs['islogin'] = self._islogin
+        #kwargs['user'] = user
+        return super(IndexView,self).get_context_data(**kwargs)
+
+def add_order(request):
+    _islogin = islogin(request)
+    user = WeixinUser.objects.get(openid=request.session.get('openid','null'))
+    real_name = user.profile.real_name
+    openid = user.openid
+    if request.method == 'POST' and _islogin:
+        form = WorkFlowForm(request.POST)
+        if  form.is_valid() and request.user.profile.dept == '总经理':
+            _client = form.cleaned_data['client']
+            _order_time = form.cleaned_data['order_time']
+            _sub_time = form.cleaned_data['sub_time']
+            _order_num = form.cleaned_data['order_num']
+            _order_detail = form.cleaned_data['order_detail']
+            _ps = form.cleaned_data['ps']
+            _person_incharge = form.cleaned_data['person_incharge']
+            ol = orders_list(user_name=real_name,openid=openid,uuid=uuid4(),client=_client,order_time=_order_time,sub_time=_sub_time,
+                             order_num=_order_num,order_detail=_order_detail,
+                             ps=_ps,order_status=1,person_incharge=_person_incharge)
+            ol.save()
+            messages.success(request,"添加成功")
+            return redirect("/flow/")
+        else:
+            erros = form.errors
+            messages.warning(request,str(request.user.profile.dept)+"操作失败：添加失败,请联系总经理")
+            return redirect("/flow/")
+    else:
+        redirect('/flow/')
+
+def delete_order(request,uuidd):
+    _islogin = islogin(request)
+    if _islogin:
+        status_cd = orders_list.objects.filter(uuid=uuidd)[0].order_status
+        per = request.user.profile.dept
+        if per == '总经理' and status_cd <7:
+            orders_list.objects.filter(uuid=uuidd).delete()
+            messages.success(request,"操作成功")
+            return redirect("/flow/")
+        elif per == '厂长' and status_cd == 2 or status_cd == 3:
+            orders_list.objects.filter(uuid=uuidd).delete()
+            messages.success(request,"操作成功")
+            return redirect("/flow/")
+        elif per == '生产主管' and status_cd == 4 or status_cd == 5:
+            orders_list.objects.filter(uuid=uuidd).delete()
+            messages.success(request,"操作成功")
+            return redirect("/flow/")
+        elif per == '仓管' and status_cd == 6 or status_cd == 7:
+            orders_list.objects.filter(uuid=uuidd).delete()
+            messages.success(request,"操作成功")
+            return redirect("/flow/")
+        else:
+            messages.error(request,per+str(status_cd)+'操作失败：你没有这个权限')
+            return redirect("/flow/")
+    else:
+        redirect('account/login/')
+
+def update_order(request,uuidd):
+    status_cd = orders_list.objects.filter(uuid=uuidd)[0].order_status
+    per = request.user.profile.dept
+    if request.method == 'POST':
+        next_node = request.POST.get('next_node')
+        if status_cd < 7:
+            if per == '总经理' and status_cd <7:
+                orders_list.objects.filter(uuid=uuidd).update(order_status=status_cd+1,person_incharge=next_node)
+                messages.success(request,"操作成功")
+                return redirect("/flow/")
+            elif per == '厂长' and status_cd == 2 or status_cd ==3:
+                orders_list.objects.filter(uuid=uuidd).update(order_status=status_cd+1,person_incharge=next_node)
+                messages.success(request,"操作成功")
+                return redirect("/flow/")
+            elif per == '生产主管' and status_cd == 4 or status_cd == 5:
+                orders_list.objects.filter(uuid=uuidd).update(order_status=status_cd+1,person_incharge=next_node)
+                messages.success(request,"操作成功")
+                return redirect("/flow/")
+            elif per == '仓管' and status_cd == 6 or status_cd == 7:
+                orders_list.objects.filter(uuid=uuidd).update(order_status=status_cd+1,person_incharge=next_node)
+                messages.success(request,"操作成功")
+                return redirect("/flow/")
+            else:
+                messages.error(request,per+str(status_cd)+'操作失败：你没有相应的权限，请联系总经理')
+                return redirect("/flow/")
+        else:
+            messages.warning(request,"该订单已完成")
+            return redirect("/flow/")
+    else:
+        pass
+
+def roll_back(request,uuidd):
+    status_cd = orders_list.objects.filter(uuid=uuidd)[0].order_status
+    if status_cd >1:
+        orders_list.objects.filter(uuid=uuidd).update(order_status=status_cd-1)
+        messages.success(request,"操作成功")
+        return redirect("/flow/")
+    else:
+        return redirect("/flow/")
+
+def status(request,status_cd):
+    user_name = request.user.username
+    forms = WorkFlowForm()
+    tmp_list = []
+    stat_1 = orders_list.objects.filter(order_status='1',user_name=user_name).aggregate(count_1=Count('order_status')).get('count_1')
+    tmp_list.append(stat_1)
+    stat_2 = orders_list.objects.filter(order_status='2',user_name=user_name).aggregate(count_1=Count('order_status')).get('count_1')
+    tmp_list.append(stat_2)
+    stat_3 = orders_list.objects.filter(order_status='3',user_name=user_name).aggregate(count_1=Count('order_status')).get('count_1')
+    tmp_list.append(stat_3)
+    stat_4 = orders_list.objects.filter(order_status='4',).aggregate(count_1=Count('order_status')).get('count_1')
+    tmp_list.append(stat_4)
+    stat_5 = orders_list.objects.filter(order_status='5',user_name=user_name).aggregate(count_1=Count('order_status')).get('count_1')
+    stat_6 = orders_list.objects.filter(order_status='6',user_name=user_name).aggregate(count_1=Count('order_status')).get('count_1')
+    stat_7 = orders_list.objects.filter(order_status='7',user_name=user_name).aggregate(count_1=Count('order_status')).get('count_1')
+    tmp_list.append(stat_5)
+    tmp_list.append(stat_6)
+    tmp_list.append(stat_7)
+    if status_cd:
+        results = orders_list.objects.raw("select a.*,b.stat_nam from work_flow_orders_list a left join work_flow_order_stat b on a.order_status = b.stat_cd where a.order_status=%d and a.user_name='%s'" % (status_cd,user_name))
+    elif status_cd == 0:
+        results = orders_list.objects.raw("select a.*,b.stat_nam from work_flow_orders_list a left join work_flow_order_stat b on a.order_status = b.stat_cd where a.user_name='%s'" % user_name)
+    return render(request,'order_list.html',context={"results":results,"count":tmp_list,"form":forms})
+
+def permission_denied(request):
+    messages.error(request,'操作失败')
+    return render(request,'order_list.html')

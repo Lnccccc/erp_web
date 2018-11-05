@@ -1,0 +1,48 @@
+待完成：
+1、订单状态筛选 (filter)
+2、订单状态操作（order_status ++）
+3、负责人维表映射
+
+
+20180918:
+0.进入下一阶段前填写负责人 暂时搁置
+1.登陆用户的权限操作
+2.交货期预警
+    2.1 日期组件 20180919 down
+3.单位
+
+
+20180919
+今天完成：
+1、日期组件（日历效果）
+计划完成：
+0.先完成核心功能，再考虑用户登陆及权限等问题
+1.交货期预警，颜色提示等
+
+20181010
+1、权限设置
+2、回退
+
+
+20181027
+计划新增内容：
+1、非本公司员工查找时无法看到公司名 已完成(10.28)
+2、重写前端页面
+3、重写首页
+4、重写未登陆时的页面
+5、新增订单详细表单，展示时用简略表单
+6、企业人员管理，总经理可见本公司全部员工信息
+7、选择下一阶段负责人时只能选择本公司员工 已完成(10.29)
+
+http://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf6d9517d8a850ecd&redirect_uri=https%3A%2F%2F47.107.119.21%2Faccount%2F&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect
+
+http://open.weixin.qq.com/connect/qrconnect?appid=wxf6d9517d8a850ecd&redirect_uri=https%3A%2F%2F47.107.119.21%2Fflow%2F&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect
+
+
+
+https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxec4567a41338530d&secret=f81a45edfb0ebb4607c8441fac0876d9
+
+{"access_token":"15_cnJzPrm5QaLMORlm41aLkxP2e9dPMC8QZvxscy7_dOWvuTUJ8j3Le0cLBcC1ouq_CnprcD8fC9VuQ_HnzDDiYiPjQ45JvUX8rB1KxEiqKiKg8Np4OArvMH-CkbZX6nkzkDdtqE4nuuSmbm9yUFQhACABMX","expires_in":7200}
+
+xincheng
+zYd3H3wgOqfR3cFwuvbAfNPZcFIpdCKN9ek1g4s1WVr
