@@ -8,7 +8,7 @@ class orders_list(models.Model):
     user_name = models.CharField(max_length=200,null=True)
     uuid = models.CharField(max_length=200,null=True)
     client = models.CharField(max_length=200,null=True)
-    order_time = models.DateField(default=datetime.datetime.now())
+    order_time = models.DateField()
     sub_time = models.DateField()
     order_num = models.CharField(max_length=200,null=True)
     order_detail = models.CharField(max_length=200,null=True)
