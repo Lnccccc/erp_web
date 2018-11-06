@@ -2,7 +2,7 @@
 {% block title %}Edit your account {% endblock %}
 {% block content %}
 <h1>Edit your profile</h1>
-{% if request.user.profile.dept == '总经理' %}
+{% if request.session.dept == '总经理' %}
 <p>选择一个账户赋给予它职位和权限</p>
 <form action="." method="post">
     {% csrf_token %}
@@ -57,7 +57,7 @@
     {% if i.company == request.user.profile.company %}
     <input type="text" value="{{ i.company }}" name="com">
     {% else %}
-    <input type="text" value="*****" name="com">
+    <input type="text" class='form-control' id="disabledInput" placeholder="非本公司员工" name="com" disabled>
     {% endif %}
     <input type="submit" name="" id="sub" value="确认修改">
 </form>

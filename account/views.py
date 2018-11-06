@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth import authenticate,login
 from .form import LoginForm,UserRegistrationForm,ProfileEditForm,SearchForm,WxUserEditForm
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from .models import WeixinUser
 from .models import Profile
 from django.contrib import messages
 import hashlib
@@ -61,6 +61,8 @@ def edit(request):
             messages.success(request,'Profile update successfully')
         else:
             messages.error(request,'Error updating your profile')
+        request.session['dept'] = profile.dept
+        request.session['company'] = profile.company
         return redirect('/flow/')
     else:
         profile_form = ProfileEditForm()
@@ -73,13 +75,12 @@ def permission_denied(request):
 
 def edit_2(request):
     search_form = SearchForm()
-    if request.user.profile.dept == '总经理':
+    if request.session.dept == '总经理':
         if request.method == 'POST':
             ## 需要判断输入账户是否存在
             search_name = request.POST.get('search_name')
-            if User.objects.filter(username=search_name):
-                user_id = User.objects.filter(username=search_name)[0].id
-                user_info = Profile.objects.filter(user_id=user_id)
+            if Profile.objects.get(real_name=search_name):
+                user_info = Profile.objects.get(real_name=search_name)
                 return render(request,'account/edit_2.html',context={'user_info':user_info,'search_form':search_form})
             else:
                 messages.warning(request,'没有这个用户')
