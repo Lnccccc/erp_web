@@ -15,7 +15,7 @@ re = requests
 def is_login(self,request):
     return request.session.get('islogin',False)
 
-@login_required
+
 def dashboard(request):
     return render(request,'account/dashboard.html',{'section':'dashboard'})
 def user_login(request):
@@ -75,7 +75,7 @@ def permission_denied(request):
 
 def edit_2(request):
     search_form = SearchForm()
-    if request.session.dept == '总经理':
+    if request.session.get('dept') == '总经理':
         if request.method == 'POST':
             ## 需要判断输入账户是否存在
             search_name = request.POST.get('search_name')
@@ -94,21 +94,16 @@ def edit_2(request):
 
 def update_per(request,usr_name):
     search_form = SearchForm()
-    if request.user.profile.dept == '总经理':
+    if request.session.get('dept') == '总经理':
         if request.method == 'POST':
             dept = request.POST.get('dept')
             com = request.POST.get('com')
-            user_id = User.objects.filter(username=usr_name)[0].id
-            user_info = Profile.objects.filter(user_id=user_id)
-            if user_info[0].company != request.user.profile.company and user_info[0].company !='空': ##无法编辑非本公司员工
+            user_info = Profile.objects.get(real_name=usr_name)
+            if user_info.company != request.user.profile.company and user_info.company !='空': ##无法编辑非本公司员工
                 messages.error(request,'操作失败：这不是你公司的员工')
                 return render(request,'account/edit_2.html',context={'search_form':search_form})
-            elif user_info[0].company == '空':
-                Profile.objects.filter(user_id=user_id).update(dept=dept,company=com)
-                messages.success(request,'修改成功')
-                return render(request,'account/edit_2.html',context={'user_info':user_info})
-            else:
-                Profile.objects.filter(user_id=user_id).update(dept=dept,company=com)
+            elif user_info.company == '空' or user_info.company == request.session.get('company'):
+                Profile.objects.filter(real_name=usr_name).update(dept=dept,company=com)
                 messages.success(request,'修改成功')
                 return render(request,'account/edit_2.html',context={'user_info':user_info})
         else:
