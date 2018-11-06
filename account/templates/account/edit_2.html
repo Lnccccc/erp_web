@@ -14,7 +14,7 @@
     {% csrf_token %}
     <div>
     <span><h4>用户名：</h4></span>
-    <span>{{ i.user.username }}</span>
+    <span>{{ i.real_name }}</span>
     </div>
     <span><h4>部门：</h4></span>
     <div>
@@ -54,7 +54,7 @@
     </div>
 
     <span><h4>公司：</h4></span>
-    {% if i.company == request.user.profile.company %}
+    {% if i.company == request.session.company %}
     <input type="text" value="{{ i.company }}" name="com">
     {% else %}
     <input type="text" class='form-control' id="disabledInput" placeholder="非本公司员工" name="com" disabled>
