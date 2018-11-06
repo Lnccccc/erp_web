@@ -1,9 +1,8 @@
 {% extends "base.html" %}
 {% block title %}Edit your account {% endblock %}
 {% block content %}
-<h1>Edit your profile</h1>
+<h1>选择一个账户赋给予它职位和权限</h1>
 {% if request.session.dept == '总经理' %}
-<p>选择一个账户赋给予它职位和权限</p>
 <form action="." method="post">
     {% csrf_token %}
 <input type="text" name="search_name">
