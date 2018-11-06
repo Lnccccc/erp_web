@@ -10,21 +10,23 @@
 </head>
 
 <body>
-<div id="header">
-    <a href="{% url 'work_flow:index' %}"><span class="logo">{{ request.session.company }} 订单流程管理系统</span></a>
-    {% if request.session.islogin %}
-        <ul class="menu">
-            <li>
-            <a href="{% url 'work_flow:index' %}">生产情况</a>
-            </li>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="{% url 'work_flow:index' %}">订单管理系统</a>
+    </div>
+    <div>
+	{% if request.session.islogin %}
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="{% url 'work_flow:index' %}">生产情况</a></li>
             {% if request.user.profile.dept == '总经理' %}
             <li >
             <a href="{% url 'account:edit_2' %}">企业人员管理</a>
             </li>
-            {% endif %}
+			{% endif %}
         </ul>
-        {% endif %}
-    <span class="user">
+		{% endif %}
+		<span>
         {% if request.session.islogin %}
         你好 ,<a href="{% url 'account:edit' %}">{{ request.session.nickname }}</a>
         <a href="{% url 'account:logout' %}">注销</a>
@@ -32,7 +34,9 @@
         <a href="{% url 'account:login' %}">登陆</a>
         {% endif %}
     </span>
-</div>
+    </div>
+    </div>
+</nav>
 {% if messages %}
 <ul class="messages">
     {% for message in messages %}
