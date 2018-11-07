@@ -68,8 +68,11 @@ class IndexView(generic.ListView):
         wxu = WeixinUser.objects.get(openid=openid)
         company = wxu.profile.company
         membs = Profile.objects.filter(company=company)
-        for i in membs:
-            memb_list.append(i.user.nickname)
+        try:
+            for i in membs:
+                memb_list.append(i.user.nickname)
+        except:
+            memb_list.append('无')
         kwargs['count'] = tmp_list
         kwargs['form'] = WorkFlowForm()
         kwargs['memb'] = memb_list

@@ -9,11 +9,12 @@
         <select name="staff">
             {% for i in staff_list %}
             <option value="{{ i }}">{{ i }}</option>
-            {% endif %}
+            {% endfor %}
         </select>
     </div>
 <input type="submit" name="" id="" value="查询">
 </form>
+{% if user_info %}
 <form action="{% url 'account:update_per' user_info.real_name %}" method="POST">
     {% csrf_token %}
     <div>
@@ -65,5 +66,6 @@
     {% endif %}
     <input type="submit" name="" id="sub" value="确认修改">
 </form>
+{% endif %}
 {% endif %}
 {% endblock %}
