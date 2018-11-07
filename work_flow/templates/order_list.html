@@ -5,7 +5,7 @@
 {% else %}
 <h1>Please login</h1>
 {% endif %}
-<div class="container">
+<div>
 <table border="1">
     <tr>
     <th>等待下单</th>
@@ -41,6 +41,7 @@
     </tr>
     {% endif %}
 </table>
+    <button type="button" class="btn btn-primary btn-lg btn-block" href="{% url 'work_flow:add_order' %}">我要下单</button>
 <table border="1">
         <tr>
             <th>客户</th>
@@ -85,21 +86,6 @@
         </tr>
         {% endfor %}
         {% endif %}
-    <form action="{% url 'work_flow:add_order' %}" method="post">
-        {% csrf_token %}
-        <tr>
-            <td>{{form.client}}</td>
-            <td>{{form.order_time}}</td>
-            <td>{{form.sub_time}}</td>
-            <td>{{form.order_num}}</td>
-            <td>{{form.order_detail}}</td>
-            <td>{{form.ps}}</td>
-            <td></td>
-            <td></td>
-            <td>{{form.person_incharge}}</td>
-            <td><input type="submit"></td>
-        </tr>
-    </form>
 </table>
 </div>
 {% endblock %}

@@ -106,7 +106,8 @@ def add_order(request):
             messages.warning(request, str(request.user.profile.dept) + "操作失败：添加失败,请联系总经理")
             return redirect("/flow/")
     else:
-        redirect('/flow/')
+        order_form = WorkFlowForm()
+        return render(request,'add_order.html',context={'order_form':order_form})
 
 
 def delete_order(request, uuidd):
