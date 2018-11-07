@@ -41,16 +41,19 @@
     </tr>
     {% endif %}
 </table>
+    <div>
     <button type="button" class="btn btn-primary btn-lg btn-block" href="{% url 'work_flow:add_order' %}">我要下单</button>
+    </div>
 <table border="1">
         <tr>
             <th>客户</th>
-            <th>下单时间</th>
+            <!--<th>下单时间</th>-->
             <th>交货时间</th>
-            <th>订单号</th>
+            <!--<th>订单号</th>-->
             <th>产品规格</th>
             <th>数量</th>
-            <th>订单状态</th>
+            <th>单位</th>
+            <th>状态</th>
             <th>当前负责人</th>
             <th>下一阶段负责人</th>
             <th>操作</th>
@@ -60,11 +63,11 @@
         {% for i in results %}
         <tr>
             <td>{{i.client}}</td>
-            <td>{{i.order_time}}</td>
+            <!--<td>{{i.order_time}}</td>-->
             <td>{{i.sub_time}}</td>
-            <td>{{i.order_num}}</td>
-            <td>{{i.order_detail}}</td>
-            <td>{{i.ps}}</td>
+            <td>{{i.spec}}</td>
+            <td>{{i.order_quantity}}</td>
+            <td>{{i.unit}}</td>
             <td>{{i.stat_nam}}</td>
             <td>{{i.person_incharge}}</td>
             <form action="{% url 'work_flow:update' i.uuid %}" method="POST">

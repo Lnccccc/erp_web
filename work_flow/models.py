@@ -16,6 +16,7 @@ class orders_list(models.Model):
     order_status = models.IntegerField()
     person_incharge = models.CharField(max_length=100)
 
+
 class order_stat(models.Model):
     stat_cd = models.IntegerField(primary_key=True)
     stat_nam = models.CharField(max_length=100)
