@@ -5,7 +5,13 @@
 {% if request.session.dept == '总经理' %}
 <form action="." method="post">
     {% csrf_token %}
-<input type="text" name="search_name">
+    <div>
+        <select name="staff">
+            {% for i in staff_list %}
+            <option value="{{ i }}">{{ i }}</option>
+            {% endif %}
+        </select>
+    </div>
 <input type="submit" name="" id="" value="查询">
 </form>
 <form action="{% url 'account:update_per' user_info.real_name %}" method="POST">
