@@ -97,18 +97,21 @@ def edit_2(request):
 
 def update_per(request,usr_name):
     search_form = SearchForm()
+    staff_list = []
     if request.session.get('dept') == '总经理':
         if request.method == 'POST':
             dept = request.POST.get('dept')
             com = request.POST.get('com')
             user_info = Profile.objects.get(real_name=usr_name)
-            if user_info.company != request.user.profile.company and user_info.company !='空': ##无法编辑非本公司员工
+            if user_info.company != request.session.get('company') and user_info.company !='空': ##无法编辑非本公司员工
                 messages.error(request,'操作失败：这不是你公司的员工')
                 return render(request,'account/edit_2.html',context={'search_form':search_form})
             elif user_info.company == '空' or user_info.company == request.session.get('company'):
+                for i in Profile.objects.filter(company=request.session.get('company')):
+                    staff_list.append(i.real_name)
                 Profile.objects.filter(real_name=usr_name).update(dept=dept,company=com)
                 messages.success(request,'修改成功')
-                return render(request,'account/edit_2.html',context={'user_info':user_info})
+                return render(request,'account/edit_2.html',context={'user_info':user_info,'staff_list':staff_list})
         else:
             return render(request,'account/edit_2.html',context={'search_form':search_form})
     else:

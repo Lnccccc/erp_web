@@ -60,9 +60,7 @@
 
     <span><h4>公司：</h4></span>
     {% if user_info.company == request.session.company %}
-    <input type="text" value="{{ user_info.company }}" name="com">
-    {% else %}
-    <input type="text" class='form-control' id="disabledInput" placeholder="非本公司员工" name="com" disabled>
+    <input type="text" class='form-control' id="disabledInput" placeholder="{{ user_info.company }}" name="com" disabled>
     {% endif %}
     <input type="submit" name="" id="sub" value="确认修改">
 </form>
