@@ -17,5 +17,8 @@ class WorkFlowForm(forms.ModelForm):
     unit.widget.attrs.update({'class':'form-control','id':'focusedInput'})
     person_incharge.widget.attrs.update({'class':'form-control','id':'focusedInput'})
 
+    class Meta:
+        model=orders_list
+
 
 
