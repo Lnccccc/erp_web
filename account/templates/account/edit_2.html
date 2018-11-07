@@ -8,35 +8,34 @@
 <input type="text" name="search_name">
 <input type="submit" name="" id="" value="查询">
 </form>
-{% for i in user_info %}
-<form action="{% url 'account:update_per' i.user.username %}" method="POST">
+<form action="{% url 'account:update_per' user_info.real %}" method="POST">
     {% csrf_token %}
     <div>
     <span><h4>用户名：</h4></span>
-    <span>{{ i.real_name }}</span>
+    <span>{{ user_info.real_name }}</span>
     </div>
     <span><h4>部门：</h4></span>
     <div>
     <select name="dept">
-        {% if i.dept == '总经理' %}
+        {% if user_info.dept == '总经理' %}
         <option value="总经理" selected>总经理</option>
         <option value="厂长">厂长</option>
         <option value="生产主管">生产主管</option>
         <option value="仓管">仓管</option>
         <option value="空">空</option>
-        {% elif i.dept == '厂长' %}
+        {% elif user_info.dept == '厂长' %}
         <option value="总经理">总经理</option>
         <option value="厂长" selected>厂长</option>
         <option value="生产主管">生产主管</option>
         <option value="仓管">仓管</option>
         <option value="空">空</option>
-        {% elif i.dept == '生产主管' %}
+        {% elif user_info.dept == '生产主管' %}
         <option value="总经理">总经理</option>
         <option value="厂长">厂长</option>
         <option value="生产主管" selected>生产主管</option>
         <option value="仓管">仓管</option>
         <option value="空">空</option>
-        {% elif i.dept == '仓管' %}
+        {% elif user_info.dept == '仓管' %}
         <option value="总经理">总经理</option>
         <option value="厂长">厂长</option>
         <option value="生产主管">生产主管</option>
@@ -53,14 +52,12 @@
     </div>
 
     <span><h4>公司：</h4></span>
-    {% if i.company == request.session.company %}
-    <input type="text" value="{{ i.company }}" name="com">
+    {% if user_info.company == request.session.company %}
+    <input type="text" value="{{ user_info.company }}" name="com">
     {% else %}
     <input type="text" class='form-control' id="disabledInput" placeholder="非本公司员工" name="com" disabled>
     {% endif %}
     <input type="submit" name="" id="sub" value="确认修改">
 </form>
-
-{% endfor %}
 {% endif %}
 {% endblock %}
