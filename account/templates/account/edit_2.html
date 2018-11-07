@@ -8,7 +8,7 @@
 <input type="text" name="search_name">
 <input type="submit" name="" id="" value="查询">
 </form>
-<form action="{% url 'account:update_per' user_info.real %}" method="POST">
+<form action="{% url 'account:update_per' user_info.real_name %}" method="POST">
     {% csrf_token %}
     <div>
     <span><h4>用户名：</h4></span>
