@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 {% if request.session.islogin %}
-<h1>您好 ,{{ request.session.nickname }}</h1>
+<h3>您好 ,{{ request.session.nickname }}</h3>
 {% else %}
 <h1>Please login</h1>
 {% endif %}
@@ -42,7 +42,8 @@
     {% endif %}
 </table>
     <br>
-    <a href="{% url 'work_flow:add_order' %}" class="btn btn-default btn-lg" role="button">下单</a>
+    <a href="{% url 'work_flow:add_order' %}"><button type="button" class="btn btn-primary btn-lg btn-block">下单</button></a>
+    <br>
 <table border="1">
         <tr>
             <th>客户</th>

@@ -90,14 +90,14 @@ def add_order(request):
             _client = form.cleaned_data['client']
             _order_time = form.cleaned_data['order_time']
             _sub_time = form.cleaned_data['sub_time']
-            _order_num = form.cleaned_data['order_num']
-            _order_detail = form.cleaned_data['order_detail']
-            _ps = form.cleaned_data['ps']
+            _order_quantity = form.cleaned_data['order_quantity']
+            _order_detail = form.cleaned_data['spec']
+            _unit = form.cleaned_data['unit']
             _person_incharge = form.cleaned_data['person_incharge']
             ol = orders_list(user_name=real_name, openid=openid, uuid=uuid4(), client=_client, order_time=_order_time,
                              sub_time=_sub_time,
-                             order_num=_order_num, order_detail=_order_detail,
-                             ps=_ps, order_status=1, person_incharge=_person_incharge)
+                             order_quantity=_order_quantity, spec=_spec,
+                             unit=_unit, order_status=1, person_incharge=_person_incharge)
             ol.save()
             messages.success(request, "添加成功")
             return redirect("/flow/")

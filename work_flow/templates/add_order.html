@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+{% if request.session.dept == '总经理' %}
 <form action="{% url 'work_flow:add_order' %}" method="post" class="form-horizontal" role="form">
     {% csrf_token %}
     <div class="form-group">
@@ -9,44 +10,46 @@
         </div></div>
 
     <div class="form-group">
-        <label class="col-sm-2 control-label">客户：</label>
+        <label class="col-sm-2 control-label">下单时间：</label>
         <div class="col-sm-10">
             {{ form.order_time }}
         </div></div>
 
     <div class="form-group">
-        <label class="col-sm-2 control-label">客户：</label>
+        <label class="col-sm-2 control-label">交货时间：</label>
         <div class="col-sm-10">
             {{ form.sub_time }}
         </div></div>
 
     <div class="form-group">
-        <label class="col-sm-2 control-label">客户：</label>
+        <label class="col-sm-2 control-label">规格：</label>
         <div class="col-sm-10">
             {{ form.spec}}
         </div></div>
 
     <div class="form-group">
-        <label class="col-sm-2 control-label">客户：</label>
+        <label class="col-sm-2 control-label">数量：</label>
         <div class="col-sm-10">
             {{ form.order_quantity }}
         </div></div>
 
     <div class="form-group">
-        <label class="col-sm-2 control-label">客户：</label>
+        <label class="col-sm-2 control-label">单位：</label>
         <div class="col-sm-10">
             {{ form.unit }}
         </div></div>
 
     <div class="form-group">
-        <label class="col-sm-2 control-label">客户：</label>
+        <label class="col-sm-2 control-label">负责人：</label>
         <div class="col-sm-10">
             {{ form.person_incharge }}
         </div></div>
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-default">登录</button>
+            <button type="submit" class="btn btn-default">提交</button>
         </div>
     </div>
 </form>
+{% else %}
+<h1>您没有权限下单，请联系总经理</h1>
 {% endblock %}
