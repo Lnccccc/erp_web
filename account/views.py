@@ -55,9 +55,8 @@ def edit(request):
     except:
         pass
     if request.method == 'POST':
-        user_form = WxUserEditForm(instance=wxu,data=request.POST)
         profile_form = ProfileEditForm(instance=profile,data=request.POST)
-        if user_form.is_valid() and profile_form.is_valid():
+        if  profile_form.is_valid():
             profile_form.save()
             messages.success(request,'Profile update successfully')
             return redirect('/flow/')
@@ -65,7 +64,7 @@ def edit(request):
             messages.error(request,'Error updating your profile')
         request.session['dept'] = profile.dept
         request.session['company'] = profile.company
-        return HttpResponse('保存失败')
+        return redirect('account/edit/')
     else:
         profile_form = ProfileEditForm()
         return render(request,'account/edit.html',context={'profile_form':profile_form})
