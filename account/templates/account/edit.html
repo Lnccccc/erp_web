@@ -3,7 +3,7 @@
 {% block content %}
 <h4>请填写你的信息</h4>
 <p>请您务必如实填写您的姓名和所属公司</p>
-<form action="." method="POST" enctype="multipart/form-data" role='form'>
+<form action="{% url 'account:edit' %}" method="POST" enctype="multipart/form-data" role='form'>
     {{ profile_form.as_table }}
     {% csrf_token %}
     <p><input class="btn btn-default" type="submit" value="Svae changes" ></p>
