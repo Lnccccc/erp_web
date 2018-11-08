@@ -3,7 +3,6 @@ from django.http import HttpResponse
 from django.contrib.auth import authenticate,login
 from .form import ProfileEditForm,SearchForm,WxUserEditForm
 from django.contrib.auth.decorators import login_required
-from .models import WeixinUser
 from .models import Profile
 from django.contrib import messages
 import hashlib
@@ -50,8 +49,11 @@ def is_login(self,request):
 #     return render(request,'account/register.html',context={'user_form':user_form})
 
 def edit(request):
-    wxu = WeixinUser.objects.get(openid=request.session.get('openid','null'))
-    profile = wxu.profile
+    try:
+        wxu = WeixinUser.objects.get(openid=request.session.get('openid','null'))
+        profile = wxu.profile
+    except:
+        pass
     if request.method == 'POST':
         user_form = WxUserEditForm(instance=wxu,data=request.POST)
         profile_form = ProfileEditForm(instance=profile,data=request.POST)
@@ -178,4 +180,3 @@ class WeiXin():
             request.session['nickname'] = self.nickname
             
             return redirect('/account/edit/') ##初次登陆时没有设置session因此在edit页面无法获取session的openid等内容
-

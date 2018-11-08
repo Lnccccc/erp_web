@@ -55,8 +55,7 @@ class IndexView(generic.ListView):
         tmp_list.append(stat_5)
         tmp_list.append(stat_6)
         tmp_list.append(stat_7)
-        wxu = WeixinUser.objects.get(openid=openid)
-        company = wxu.profile.company
+        company = self.request.session.get('company')
         membs = Profile.objects.filter(company=company)
         try:
             for i in membs:
@@ -206,3 +205,6 @@ def status(request, status_cd):
 def permission_denied(request):
     messages.error(request, '操作失败')
     return render(request, 'order_list.html')
+
+def send_message(request):
+    pass
