@@ -172,33 +172,34 @@ def status(request, status_cd):
     openid,real_name,user = get_info(request)
     forms = WorkFlowForm()
     tmp_list = []
-    stat_1 = orders_list.objects.filter(order_status='1', user_name=real_name).aggregate(
+    stat_1 = orders_list.objects.filter(order_status='1', openid=openid).aggregate(
         count_1=Count('order_status')).get('count_1')
     tmp_list.append(stat_1)
-    stat_2 = orders_list.objects.filter(order_status='2', user_name=real_name).aggregate(
+    stat_2 = orders_list.objects.filter(order_status='2', openid=openid).aggregate(
         count_1=Count('order_status')).get('count_1')
     tmp_list.append(stat_2)
-    stat_3 = orders_list.objects.filter(order_status='3', user_name=real_name).aggregate(
+    stat_3 = orders_list.objects.filter(order_status='3', openid=openid).aggregate(
         count_1=Count('order_status')).get('count_1')
     tmp_list.append(stat_3)
-    stat_4 = orders_list.objects.filter(order_status='4', user_name=real_name).aggregate(count_1=Count('order_status')).get('count_1')
+    stat_4 = orders_list.objects.filter(order_status='4', openid=openid).aggregate(
+        count_1=Count('order_status')).get('count_1')
     tmp_list.append(stat_4)
-    stat_5 = orders_list.objects.filter(order_status='5', user_name=real_name).aggregate(
+    stat_5 = orders_list.objects.filter(order_status='5', openid=openid).aggregate(
         count_1=Count('order_status')).get('count_1')
-    stat_6 = orders_list.objects.filter(order_status='6', user_name=real_name).aggregate(
+    stat_6 = orders_list.objects.filter(order_status='6', openid=openid).aggregate(
         count_1=Count('order_status')).get('count_1')
-    stat_7 = orders_list.objects.filter(order_status='7', user_name=real_name).aggregate(
+    stat_7 = orders_list.objects.filter(order_status='7', openid=openid).aggregate(
         count_1=Count('order_status')).get('count_1')
     tmp_list.append(stat_5)
     tmp_list.append(stat_6)
     tmp_list.append(stat_7)
     if status_cd:
         results = orders_list.objects.raw(
-            "select a.*,b.stat_nam from work_flow_orders_list a left join work_flow_order_stat b on a.order_status = b.stat_cd where a.order_status=%d and a.user_name='%s'" % (
-            status_cd, real_name))
+            "select a.*,b.stat_nam from work_flow_orders_list a left join work_flow_order_stat b on a.order_status = b.stat_cd where a.order_status=%d and a.openid='%s'" % (
+            status_cd, openid))
     elif status_cd == 0:
         results = orders_list.objects.raw(
-            "select a.*,b.stat_nam from work_flow_orders_list a left join work_flow_order_stat b on a.order_status = b.stat_cd where a.user_name='%s'" % real_name)
+            "select a.*,b.stat_nam from work_flow_orders_list a left join work_flow_order_stat b on a.order_status = b.stat_cd where a.openid='%s'" % openid)
     return render(request, 'order_list.html', context={"results": results, "count": tmp_list, "form": forms})
 
 
