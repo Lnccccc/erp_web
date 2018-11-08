@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 {% if request.session.islogin %}
-<h3>您好 ,{{ request.session.nickname }}</h3>
+<h4>您好 ,{{ request.session.nickname }}</h4>
 {% else %}
 <h1>Please login</h1>
 {% endif %}
