@@ -58,11 +58,12 @@ def edit(request):
         if user_form.is_valid() and profile_form.is_valid():
             profile_form.save()
             messages.success(request,'Profile update successfully')
+            return redirect('/flow/')
         else:
             messages.error(request,'Error updating your profile')
         request.session['dept'] = profile.dept
         request.session['company'] = profile.company
-        return redirect('/flow/')
+        return HttpResponse('保存失败')
     else:
         profile_form = ProfileEditForm()
         return render(request,'account/edit.html',context={'profile_form':profile_form})
