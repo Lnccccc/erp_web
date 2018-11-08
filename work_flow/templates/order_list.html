@@ -5,8 +5,8 @@
 {% else %}
 <h1>Please login</h1>
 {% endif %}
-<div>
-<table border="1">
+<div class="table-responsive">
+<table class='table table-bordered'>
     <tr>
     <th>等待下单</th>
     <th>等待安排</th>
@@ -41,9 +41,11 @@
     </tr>
     {% endif %}
 </table>
+</div>
     <br>
     <a href="{% url 'work_flow:add_order' %}"><button type="button" class="btn btn-primary btn-lg btn-block">下单</button></a>
-<table border="1">
+<div class="table-responsive">able
+<table class='table table-striped'>
         <tr>
             <th>客户</th>
             <!--<th>下单时间</th>-->
