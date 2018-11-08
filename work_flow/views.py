@@ -86,12 +86,12 @@ def add_order(request):
     openid,real_name,user = get_info(request)
     if request.method == 'POST' and _islogin:
         form = WorkFlowForm(request.POST)
-        if form.is_valid() and request.user.profile.dept == '总经理':
+        if form.is_valid() and request.session.get('dept','null') == '总经理':
             _client = form.cleaned_data['client']
             _order_time = form.cleaned_data['order_time']
             _sub_time = form.cleaned_data['sub_time']
             _order_quantity = form.cleaned_data['order_quantity']
-            _order_detail = form.cleaned_data['spec']
+            _spec = form.cleaned_data['spec']
             _unit = form.cleaned_data['unit']
             _person_incharge = form.cleaned_data['person_incharge']
             ol = orders_list(user_name=real_name, openid=openid, uuid=uuid4(), client=_client, order_time=_order_time,
