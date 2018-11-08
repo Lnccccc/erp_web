@@ -53,10 +53,9 @@ def edit(request):
     wxu = WeixinUser.objects.get(openid=request.session.get('openid','null'))
     profile = wxu.profile
     if request.method == 'POST':
-        user_form = WxUserEditForm(instance=wxu,data=request.POST)
+        #user_form = WxUserEditForm(instance=wxu,data=request.POST)
         profile_form = ProfileEditForm(instance=profile,data=request.POST)
         if user_form.is_valid() and profile_form.is_valid():
-            user_form.save()
             profile_form.save()
             messages.success(request,'Profile update successfully')
         else:
