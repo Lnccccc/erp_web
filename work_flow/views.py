@@ -86,7 +86,7 @@ def add_order(request):
     openid,real_name,user = get_info(request)
     if request.method == 'POST' and _islogin:
         form = WorkFlowForm(request.POST)
-        if form.is_valid() and request.user.profile.dept == '总经理':
+        if form.is_valid() and request.session.get('dept','null') == '总经理':
             _client = form.cleaned_data['client']
             _order_time = form.cleaned_data['order_time']
             _sub_time = form.cleaned_data['sub_time']
