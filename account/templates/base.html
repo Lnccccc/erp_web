@@ -26,11 +26,11 @@
 			{% endif %}
         </ul>
 		{% endif %}
-		<span>
+		<p class="navbar-text navbar-right">
         {% if request.session.islogin %}
         你好 ,<a href="{% url 'account:edit' %}">{{ request.session.nickname }}</a>
         {% endif %}
-    </span>
+        </p>
     </div>
     </div>
 </nav>
