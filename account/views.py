@@ -165,12 +165,19 @@ class WeiXin():
         self.all_user = self.get_all_user()
         if open_id in self.all_user:
             request.session['islogin'] = True
-            request.session['openid'] = open_id
-            request.session['nickname'] = self.nickname
             self.wx_user = WeixinUser.objects.filter(openid=open_id)[0]
-            request.session['dept'] = self.wx_user.profile.dept
-            request.session['company'] = self.wx_user.profile.company
-            return redirect('/flow/')
+            if self.wx_user.profile.company != '空':
+                request.session['openid'] = open_id
+                request.session['nickname'] = self.nickname
+                request.session['dept'] = self.wx_user.profile.dept
+                request.session['company'] = self.wx_user.profile.company
+                return redirect('/flow/')
+            else:
+                request.session['openid'] = open_id
+                request.session['nickname'] = self.nickname
+                request.session['dept'] = self.wx_user.profile.dept
+                request.session['company'] = self.wx_user.profile.company
+                return redirect('/account/edit/') ##若公司一直为空则需要先填好公司
         else:
             wxu = WeixinUser(openid=open_id,nickname=self.nickname,sex=self.sex,city=self.city)
             wxu.save()
@@ -178,5 +185,4 @@ class WeiXin():
             request.session['islogin'] = True
             request.session['openid'] = open_id
             request.session['nickname'] = self.nickname
-            
             return redirect('/account/edit/') ##初次登陆时没有设置session因此在edit页面无法获取session的openid等内容
