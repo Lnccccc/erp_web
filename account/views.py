@@ -79,8 +79,8 @@ def edit_2(request):
         if request.method == 'POST':
             ## 需要判断输入账户是否存在
             search_name = request.POST.get('staff')
-            if Profile.objects.get(real_name=search_name):
-                user_info = Profile.objects.get(real_name=search_name)
+            if Profile.objects.get(realname=search_name):
+                user_info = Profile.objects.get(realname=search_name)
                 return render(request,'account/edit_2.html',context={'user_info':user_info,'search_form':search_form})
             else:
                 messages.warning(request,'没有这个用户')
@@ -88,7 +88,7 @@ def edit_2(request):
                 return render(request,'account/edit_2.html',context={'search_form':search_form})
         else:
             for i in Profile.objects.filter(company=request.session.get('company')):
-                staff_list.append(i.real_name)
+                staff_list.append(i.realname)
             return render(request,'account/edit_2.html',context={'search_form':search_form,'staff_list':staff_list})
     else:
         messages.warning(request,"你没有权限")
@@ -100,14 +100,14 @@ def update_per(request,usr_name):
     if request.session.get('dept') == '总经理':
         if request.method == 'POST':
             dept = request.POST.get('dept')
-            user_info = Profile.objects.get(real_name=usr_name)
+            user_info = Profile.objects.get(realname=usr_name)
             if user_info.company != request.session.get('company') and user_info.company !='空': ##无法编辑非本公司员工
                 messages.error(request,'操作失败：这不是你公司的员工')
                 return render(request,'account/edit_2.html',context={'search_form':search_form})
             elif user_info.company == '空' or user_info.company == request.session.get('company'):
                 for i in Profile.objects.filter(company=request.session.get('company')):
-                    staff_list.append(i.real_name)
-                Profile.objects.filter(real_name=usr_name).update(dept=dept)
+                    staff_list.append(i.realname)
+                Profile.objects.filter(realname=usr_name).update(dept=dept)
                 messages.success(request,'修改成功')
                 return render(request,'account/edit_2.html',context={'user_info':user_info,'staff_list':staff_list})
         else:
