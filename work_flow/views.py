@@ -18,7 +18,8 @@ def get_info(request):
     openid = request.session.get('openid','null')
     user = WeixinUser.objects.get(openid=openid)
     real_name = user.profile.real_name
-    return openid,real_name,user
+    company = user.profile.company
+    return openid,real_name,user,company
 
 class IndexView(generic.ListView):
     template_name = 'order_list.html'
@@ -59,7 +60,7 @@ class IndexView(generic.ListView):
         membs = Profile.objects.filter(company=company)
         try:
             for i in membs:
-                memb_list.append(i.user.nickname)
+                memb_list.append(i.user.profile.real_name)
         except:
             memb_list.append('无')
         kwargs['count'] = tmp_list
@@ -170,9 +171,10 @@ def roll_back(request, uuidd):
         return redirect("/flow/")
 
 def status(request, status_cd):
-    openid,real_name,user = get_info(request)
+    openid,real_name,user,company = get_info(request)
     forms = WorkFlowForm()
     tmp_list = []
+    memb = []
     stat_1 = orders_list.objects.filter(order_status='1', openid=openid).aggregate(
         count_1=Count('order_status')).get('count_1')
     tmp_list.append(stat_1)
@@ -194,6 +196,12 @@ def status(request, status_cd):
     tmp_list.append(stat_5)
     tmp_list.append(stat_6)
     tmp_list.append(stat_7)
+    membs = Profile.objects.filter(company=company)
+        try:
+            for i in membs:
+                memb_list.append(i.user.profile.real_name)
+        except:
+            memb_list.append('无')
     if status_cd:
         results = orders_list.objects.raw(
             "select a.*,b.stat_nam from work_flow_orders_list a left join work_flow_order_stat b on a.order_status = b.stat_cd where a.order_status=%d and a.openid='%s'" % (
@@ -201,7 +209,7 @@ def status(request, status_cd):
     elif status_cd == 0:
         results = orders_list.objects.raw(
             "select a.*,b.stat_nam from work_flow_orders_list a left join work_flow_order_stat b on a.order_status = b.stat_cd where a.openid='%s'" % openid)
-    return render(request, 'order_list.html', context={"results": results, "count": tmp_list, "form": forms})
+    return render(request, 'order_list.html', context={"results": results, "count": tmp_list, "form": forms,"memb":memb_list})
 
 
 def permission_denied(request):
