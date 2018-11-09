@@ -174,7 +174,7 @@ def status(request, status_cd):
     openid,real_name,user,company = get_info(request)
     forms = WorkFlowForm()
     tmp_list = []
-    memb = []
+    memb_list = []
     stat_1 = orders_list.objects.filter(order_status='1', openid=openid).aggregate(
         count_1=Count('order_status')).get('count_1')
     tmp_list.append(stat_1)
