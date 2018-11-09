@@ -11,37 +11,29 @@
 
 <body>
 <nav class="navbar navbar-default" role="navigation">
-    <div class="container-fluid">
+    <div class="container-fluid"> 
     <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse"
+                data-target="#example-navbar-collapse">
+            <span class="sr-only">切换导航</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
         <a class="navbar-brand" href="{% url 'work_flow:index' %}">订单管理系统</a>
     </div>
-    <div>
-        <ul class="nav navbar-nav">
+    <div class="collapse navbar-collapse" id="example-navbar-collapse">
 	{% if request.session.islogin %}
-<!--             <li class="active"><a href="{% url 'work_flow:index' %}">生产情况</a></li>
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="{% url 'work_flow:index' %}">生产情况</a></li>
             {% if request.session.dept == '总经理' %}
             <li >
             <a href="{% url 'account:edit_2' %}">企业人员管理</a>
             </li>
 	    {% endif %}
-         -->
-	    <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    菜单
-                    <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu">
-                    <li class="active"><a href="{% url 'work_flow:index' %}">生产情况</a></li>
-                    {% if request.session.dept == '总经理' %}
-            <li >
-            <a href="{% url 'account:edit_2' %}">企业人员管理</a>
-            </li>
-	    {% endif %}
-                </ul>
-            </li>
-	    </ul>
 	{% endif %}
-		<p class="navbar-text navbar-right">
+        </ul>
+	    <p class="navbar-text navbar-right">
         {% if request.session.islogin %}
         你好 ,<a href="{% url 'account:edit' %}">{{ request.session.nickname }}</a>
         {% endif %}
@@ -49,6 +41,7 @@
     </div>
     </div>
 </nav>
+	
 {% if messages %}
 <ul class="messages">
     {% for message in messages %}
