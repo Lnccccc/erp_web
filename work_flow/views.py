@@ -107,7 +107,7 @@ def add_order(request):
                 ol.save()
                 return redirect("/flow/")
             else:
-                return HttpResponse('消息推送失败')
+                return HttpResponse(send_ind)
         else:
             erros = form.errors
             messages.warning(request, str(request.user.profile.dept) + "操作失败：添加失败,请联系总经理")
@@ -265,4 +265,4 @@ def send_message(openid,access_token,client,spec,quantity): ##推送模板消息
     if r['errmsg']=='ok':
         return True
     else:
-        return False
+        return r['errmsg']
