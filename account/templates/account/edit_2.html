@@ -15,11 +15,11 @@
 <input type="submit" name="" id="" value="查询">
 </form>
 {% if user_info %}
-<form action="{% url 'account:update_per' user_info.real_name %}" method="POST">
+<form action="{% url 'account:update_per' user_info.realname %}" method="POST">
     {% csrf_token %}
     <div>
     <span><h4>用户名：</h4></span>
-    <span>{{ user_info.real_name }}</span>
+    <span>{{ user_info.realname }}</span>
     </div>
     <span><h4>部门：</h4></span>
     <div>
