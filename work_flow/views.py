@@ -19,7 +19,7 @@ def get_info(request):
     user = WeixinUser.objects.get(openid=openid)
     real_name = user.profile.realname
     company = user.profile.company
-    return openid,realname,user,company
+    return openid,real_name,user,company
 
 class IndexView(generic.ListView):
     template_name = 'order_list.html'
