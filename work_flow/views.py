@@ -78,7 +78,7 @@ def add_order(request):
     _company = request.session.get('company','null')
     memb_list=[]
     membs = Profile.objects.filter(company=_company)
-    ass_tok = requests.session.get('ass_tok','null')
+    ass_tok = request.session.get('ass_tok','null')
     try:
         for i in membs:
             memb_list.append(i.realname)
