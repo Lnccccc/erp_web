@@ -60,7 +60,7 @@ class IndexView(generic.ListView):
         membs = Profile.objects.filter(company=company)
         try:
             for i in membs:
-                memb_list.append(i.real_name)
+                memb_list.append(i.realname)
         except:
             memb_list.append('无')
         kwargs['count'] = tmp_list
@@ -75,6 +75,13 @@ def add_order(request):
     _islogin = islogin(request)
     openid,real_name,user,company = get_info(request)
     _company = request.session.get('company','null')
+    memb_list=[]
+    membs = Profile.objects.filter(company=_company)
+    try:
+        for i in membs:
+            memb_list.append(i.realname)
+    except:
+        memb_list.append('无')
     if request.method == 'POST' and _islogin:
         form = WorkFlowForm(request.POST)
         if form.is_valid() and request.session.get('dept','null') == '总经理':
@@ -98,7 +105,7 @@ def add_order(request):
             return redirect("/flow/")
     else:
         order_form = WorkFlowForm()
-        return render(request,'add_order.html',context={'order_form':order_form})
+        return render(request,'add_order.html',context={'order_form':order_form,'memb':memb_list})
 
 
 def delete_order(request, uuidd):
