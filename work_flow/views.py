@@ -28,31 +28,33 @@ class IndexView(generic.ListView):
 
     def get_queryset(self):
         openid = self.request.session.get('openid', 'null')
+        company = self.request.session.get('company','null')
         results = orders_list.objects.raw(
-            "select a.*,b.stat_nam from work_flow_orders_list a left join work_flow_order_stat b on a.order_status = b.stat_cd where a.openid = '%s' " % openid)
+            "select a.*,b.stat_nam from work_flow_orders_list a left join work_flow_order_stat b on a.order_status = b.stat_cd where a.company = '%s' " % company)
         return results
 
     def get_context_data(self, **kwargs):
         openid = self.request.session.get('openid', 'null')
+        company = self.request.session.get('company','null')
         tmp_list = []
         memb_list = []
-        stat_1 = orders_list.objects.filter(order_status='1', openid=openid).aggregate(
+        stat_1 = orders_list.objects.filter(order_status='1', company=company).aggregate(
             count_1=Count('order_status')).get('count_1')
         tmp_list.append(stat_1)
-        stat_2 = orders_list.objects.filter(order_status='2', openid=openid).aggregate(
+        stat_2 = orders_list.objects.filter(order_status='2', company=company).aggregate(
             count_1=Count('order_status')).get('count_1')
         tmp_list.append(stat_2)
-        stat_3 = orders_list.objects.filter(order_status='3', openid=openid).aggregate(
+        stat_3 = orders_list.objects.filter(order_status='3', company=company).aggregate(
             count_1=Count('order_status')).get('count_1')
         tmp_list.append(stat_3)
-        stat_4 = orders_list.objects.filter(order_status='4', openid=openid).aggregate(
+        stat_4 = orders_list.objects.filter(order_status='4', company=company).aggregate(
             count_1=Count('order_status')).get('count_1')
         tmp_list.append(stat_4)
-        stat_5 = orders_list.objects.filter(order_status='5', openid=openid).aggregate(
+        stat_5 = orders_list.objects.filter(order_status='5', company=company).aggregate(
             count_1=Count('order_status')).get('count_1')
-        stat_6 = orders_list.objects.filter(order_status='6', openid=openid).aggregate(
+        stat_6 = orders_list.objects.filter(order_status='6', company=company).aggregate(
             count_1=Count('order_status')).get('count_1')
-        stat_7 = orders_list.objects.filter(order_status='7', openid=openid).aggregate(
+        stat_7 = orders_list.objects.filter(order_status='7', company=company).aggregate(
             count_1=Count('order_status')).get('count_1')
         tmp_list.append(stat_5)
         tmp_list.append(stat_6)
@@ -191,23 +193,23 @@ def status(request, status_cd):
     forms = WorkFlowForm()
     tmp_list = []
     memb_list = []
-    stat_1 = orders_list.objects.filter(order_status='1', openid=openid).aggregate(
+    stat_1 = orders_list.objects.filter(order_status='1', company=company).aggregate(
         count_1=Count('order_status')).get('count_1')
     tmp_list.append(stat_1)
-    stat_2 = orders_list.objects.filter(order_status='2', openid=openid).aggregate(
+    stat_2 = orders_list.objects.filter(order_status='2', company=company).aggregate(
         count_1=Count('order_status')).get('count_1')
     tmp_list.append(stat_2)
-    stat_3 = orders_list.objects.filter(order_status='3', openid=openid).aggregate(
+    stat_3 = orders_list.objects.filter(order_status='3', company=company).aggregate(
         count_1=Count('order_status')).get('count_1')
     tmp_list.append(stat_3)
-    stat_4 = orders_list.objects.filter(order_status='4', openid=openid).aggregate(
+    stat_4 = orders_list.objects.filter(order_status='4', company=company).aggregate(
         count_1=Count('order_status')).get('count_1')
     tmp_list.append(stat_4)
-    stat_5 = orders_list.objects.filter(order_status='5', openid=openid).aggregate(
+    stat_5 = orders_list.objects.filter(order_status='5', company=company).aggregate(
         count_1=Count('order_status')).get('count_1')
-    stat_6 = orders_list.objects.filter(order_status='6', openid=openid).aggregate(
+    stat_6 = orders_list.objects.filter(order_status='6', company=company).aggregate(
         count_1=Count('order_status')).get('count_1')
-    stat_7 = orders_list.objects.filter(order_status='7', openid=openid).aggregate(
+    stat_7 = orders_list.objects.filter(order_status='7', company=company).aggregate(
         count_1=Count('order_status')).get('count_1')
     tmp_list.append(stat_5)
     tmp_list.append(stat_6)
@@ -220,11 +222,11 @@ def status(request, status_cd):
         memb_list.append('无')
     if status_cd:
         results = orders_list.objects.raw(
-            "select a.*,b.stat_nam from work_flow_orders_list a left join work_flow_order_stat b on a.order_status = b.stat_cd where a.order_status=%d and a.openid='%s'" % (
-            status_cd, openid))
+            "select a.*,b.stat_nam from work_flow_orders_list a left join work_flow_order_stat b on a.order_status = b.stat_cd where a.order_status=%d and a.company='%s'" % (
+            status_cd, company))
     elif status_cd == 0:
         results = orders_list.objects.raw(
-            "select a.*,b.stat_nam from work_flow_orders_list a left join work_flow_order_stat b on a.order_status = b.stat_cd where a.openid='%s'" % openid)
+            "select a.*,b.stat_nam from work_flow_orders_list a left join work_flow_order_stat b on a.order_status = b.stat_cd where a.company='%s'" % company)
     return render(request, 'order_list.html', context={"results": results, "count": tmp_list, "form": forms,"memb":memb_list})
 
 
