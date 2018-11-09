@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,HttpResponse
 from .models import orders_list, order_stat
 from account.models import Profile
 from uuid import uuid4
@@ -8,7 +8,8 @@ from .forms import WorkFlowForm
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
 from account.models import WeixinUser
-
+import json
+import requests
 
 # Create your views here.
 def islogin(request):
@@ -77,6 +78,7 @@ def add_order(request):
     _company = request.session.get('company','null')
     memb_list=[]
     membs = Profile.objects.filter(company=_company)
+    ass_tok = requests.session.get('ass_tok','null')
     try:
         for i in membs:
             memb_list.append(i.realname)
@@ -96,9 +98,16 @@ def add_order(request):
                              sub_time=_sub_time,company=_company,
                              order_quantity=_order_quantity, spec=_spec,
                              unit=_unit, order_status=1, person_incharge=_person_incharge)
-            ol.save()
-            messages.success(request, "添加成功")
-            return redirect("/flow/")
+            try:
+                user_openid = Profile.objects.get(real_name=_person_incharge).user.openid
+            except:
+                user_openid = ''
+            send_ind = send_message(user_openid,ass_tok,_client,_spec,_order_quantity)
+            if send_ind: ##推送模板消息
+                ol.save()
+                return redirect("/flow/")
+            else:
+                return HttpResponse('消息推送失败')
         else:
             erros = form.errors
             messages.warning(request, str(request.user.profile.dept) + "操作失败：添加失败,请联系总经理")
@@ -223,5 +232,36 @@ def permission_denied(request):
     messages.error(request, '操作失败')
     return render(request, 'order_list.html')
 
-def send_message(request):
-    pass
+def send_message(openid,access_token,client,spec,quantity): ##推送模板消息
+    url = 'https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=%s' % access_token
+    message = {
+        "touser":openid,
+        "template_id":"ES2r90989DqX0QCmoGbrKYUcUOG3VG3rVnI6h-QOh4k",
+        "url":"http://47.107.119.21/flow/",
+
+        "data":{
+            "first": {
+                "value":"有新的订单，请及时处理！",
+                "color":"#173177"
+            },
+            "keyword1":{
+                "value":client,
+                "color":"#173177"
+            },
+            "keyword2": {
+                "value":spec,
+                "color":"#173177"
+            },
+            "keyword3": {
+                "value":quantity,
+                "color":"#173177"
+            },
+
+        }
+    }
+    j_message = json.dumps(message)
+    r = requests.post(url=url,data=j_message)
+    if r:
+        return True
+    else:
+        return False

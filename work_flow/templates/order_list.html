@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
 {% if request.session.islogin %}
-<h4>您好 ,{{ request.session.nickname }}</h4>
+<h4>您好 ,{{ request.session.realname }}</h4>
 {% else %}
-<h1>Please login</h1>
+<h1>请登陆</h1>
 {% endif %}
 <div class="table-responsive">
 <table class='table table-bordered'>
