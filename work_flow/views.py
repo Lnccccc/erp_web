@@ -105,7 +105,7 @@ def delete_order(request, uuidd):
     _islogin = islogin(request)
     if _islogin:
         status_cd = orders_list.objects.filter(uuid=uuidd)[0].order_status
-        per = request.user.profile.dept
+        per = request.session.get('dept',null)
         if per == '总经理' and status_cd < 7:
             orders_list.objects.filter(uuid=uuidd).delete()
             messages.success(request, "操作成功")
@@ -126,7 +126,7 @@ def delete_order(request, uuidd):
             messages.error(request, per + str(status_cd) + '操作失败：你没有这个权限')
             return redirect("/flow/")
     else:
-        redirect('account/login/')
+        redirect('account/edit/')
 
 def update_order(request, uuidd):
     openid,real_name ,user,company= get_info(request)
