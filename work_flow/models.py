@@ -15,6 +15,7 @@ class orders_list(models.Model):
     unit = models.CharField(max_length=200) ##单位
     order_status = models.IntegerField()
     person_incharge = models.CharField(max_length=100)
+    company = models.CharField(max_length=256,null=True)
 
 
 class order_stat(models.Model):

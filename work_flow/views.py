@@ -73,6 +73,7 @@ class IndexView(generic.ListView):
 def add_order(request):
     _islogin = islogin(request)
     openid,real_name,user = get_info(request)
+    _company = request.session.get('company','null')
     if request.method == 'POST' and _islogin:
         form = WorkFlowForm(request.POST)
         if form.is_valid() and request.session.get('dept','null') == '总经理':
@@ -84,7 +85,7 @@ def add_order(request):
             _unit = form.cleaned_data['unit']
             _person_incharge = form.cleaned_data['person_incharge']
             ol = orders_list(user_name=real_name, openid=openid, uuid=uuid4(), client=_client, order_time=_order_time,
-                             sub_time=_sub_time,
+                             sub_time=_sub_time,company=_company,
                              order_quantity=_order_quantity, spec=_spec,
                              unit=_unit, order_status=1, person_incharge=_person_incharge)
             ol.save()
