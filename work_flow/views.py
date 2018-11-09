@@ -260,8 +260,9 @@ def send_message(openid,access_token,client,spec,quantity): ##推送模板消息
         }
     }
     j_message = json.dumps(message)
-    r = requests.post(url=url,data=j_message)
-    if r:
+    r = requests.post(url=url,data=j_message).json()
+
+    if r['errmsg']=='ok':
         return True
     else:
         return False
