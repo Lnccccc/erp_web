@@ -197,11 +197,11 @@ def status(request, status_cd):
     tmp_list.append(stat_6)
     tmp_list.append(stat_7)
     membs = Profile.objects.filter(company=company)
-        try:
-            for i in membs:
-                memb_list.append(i.user.profile.real_name)
-        except:
-            memb_list.append('无')
+    try:
+        for i in membs:
+            memb_list.append(i.user.profile.real_name)
+    except:
+        memb_list.append('无')
     if status_cd:
         results = orders_list.objects.raw(
             "select a.*,b.stat_nam from work_flow_orders_list a left join work_flow_order_stat b on a.order_status = b.stat_cd where a.order_status=%d and a.openid='%s'" % (
