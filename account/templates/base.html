@@ -17,15 +17,29 @@
     </div>
     <div>
 	{% if request.session.islogin %}
-        <ul class="nav navbar-nav">
+<!--         <ul class="nav navbar-nav">
             <li class="active"><a href="{% url 'work_flow:index' %}">生产情况</a></li>
             {% if request.session.dept == '总经理' %}
             <li >
             <a href="{% url 'account:edit_2' %}">企业人员管理</a>
             </li>
-			{% endif %}
-        </ul>
-		{% endif %}
+	    {% endif %}
+        </ul> -->
+	    <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    菜单
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li class="active"><a href="{% url 'work_flow:index' %}">生产情况</a></li>
+                    {% if request.session.dept == '总经理' %}
+            <li >
+            <a href="{% url 'account:edit_2' %}">企业人员管理</a>
+            </li>
+	    {% endif %}
+                </ul>
+            </li>
+	{% endif %}
 		<p class="navbar-text navbar-right">
         {% if request.session.islogin %}
         你好 ,<a href="{% url 'account:edit' %}">{{ request.session.nickname }}</a>
