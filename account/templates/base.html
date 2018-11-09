@@ -16,15 +16,15 @@
         <a class="navbar-brand" href="{% url 'work_flow:index' %}">订单管理系统</a>
     </div>
     <div>
+        <ul class="nav navbar-nav">
 	{% if request.session.islogin %}
-<!--         <ul class="nav navbar-nav">
-            <li class="active"><a href="{% url 'work_flow:index' %}">生产情况</a></li>
+<!--             <li class="active"><a href="{% url 'work_flow:index' %}">生产情况</a></li>
             {% if request.session.dept == '总经理' %}
             <li >
             <a href="{% url 'account:edit_2' %}">企业人员管理</a>
             </li>
 	    {% endif %}
-        </ul> -->
+         -->
 	    <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     菜单
@@ -39,6 +39,7 @@
 	    {% endif %}
                 </ul>
             </li>
+	    </ul>
 	{% endif %}
 		<p class="navbar-text navbar-right">
         {% if request.session.islogin %}
