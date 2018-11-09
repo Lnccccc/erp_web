@@ -29,10 +29,10 @@ class ProfileEditForm(forms.ModelForm):
     def __init__(self,*args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['company'].widget.attrs.update({'class':'form-control'})
-        self.fields['real_name'].widget.attrs.update({'class':'form-control'})
+        self.fields['realname'].widget.attrs.update({'class':'form-control'})
     class Meta:
         model=Profile
-        fields=['company','real_name']
+        fields=['company','realname']
 
 
 class SearchForm(forms.Form):
