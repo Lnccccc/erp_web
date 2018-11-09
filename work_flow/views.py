@@ -129,7 +129,7 @@ def delete_order(request, uuidd):
         redirect('account/login/')
 
 def update_order(request, uuidd):
-    openid,real_name ,user= get_info(request)
+    openid,real_name ,user,company= get_info(request)
     status_cd = orders_list.objects.get(uuid=uuidd).order_status
     per = user.profile.dept
     if request.method == 'POST':
