@@ -103,7 +103,7 @@ def add_order(request):
             except:
                 user_openid = ''
             send_ind = send_message(user_openid,ass_tok,_client,_spec,_order_quantity)
-            if send_ind: ##推送模板消息
+            if send_ind == True: ##推送模板消息
                 ol.save()
                 return redirect("/flow/")
             else:
