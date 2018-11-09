@@ -14,7 +14,7 @@ class Profile(models.Model):
     user = models.OneToOneField(WeixinUser,on_delete=models.CASCADE)
     company = models.CharField(max_length=200,null=True,default='空')
     dept = models.CharField(max_length=200,null=True,choices=dept_list,default='空')
-    real_name = models.CharField(max_length=256,null=True,default='空')
+    realname = models.CharField(max_length=256,null=True,default='空')
 
     def __str__(self):
         return 'Profile for user {}'.format(self.user.nickname)
