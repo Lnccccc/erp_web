@@ -17,9 +17,9 @@ def islogin(request):
 def get_info(request):
     openid = request.session.get('openid','null')
     user = WeixinUser.objects.get(openid=openid)
-    real_name = user.profile.real_name
+    real_name = user.profile.realname
     company = user.profile.company
-    return openid,real_name,user,company
+    return openid,realname,user,company
 
 class IndexView(generic.ListView):
     template_name = 'order_list.html'
@@ -199,7 +199,7 @@ def status(request, status_cd):
     membs = Profile.objects.filter(company=company)
     try:
         for i in membs:
-            memb_list.append(i.real_name)
+            memb_list.append(i.realname)
     except:
         memb_list.append('无')
     if status_cd:
