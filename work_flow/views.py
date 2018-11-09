@@ -105,7 +105,7 @@ def delete_order(request, uuidd):
     _islogin = islogin(request)
     if _islogin:
         status_cd = orders_list.objects.filter(uuid=uuidd)[0].order_status
-        per = request.session.get('dept',null)
+        per = request.session.get('dept','null')
         if per == '总经理' and status_cd < 7:
             orders_list.objects.filter(uuid=uuidd).delete()
             messages.success(request, "操作成功")
