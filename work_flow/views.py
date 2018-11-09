@@ -73,7 +73,7 @@ class IndexView(generic.ListView):
 
 def add_order(request):
     _islogin = islogin(request)
-    openid,real_name,user = get_info(request)
+    openid,real_name,user,company = get_info(request)
     _company = request.session.get('company','null')
     if request.method == 'POST' and _islogin:
         form = WorkFlowForm(request.POST)
