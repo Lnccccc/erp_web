@@ -60,7 +60,7 @@ class IndexView(generic.ListView):
         membs = Profile.objects.filter(company=company)
         try:
             for i in membs:
-                memb_list.append(i.user.profile.real_name)
+                memb_list.append(i.real_name)
         except:
             memb_list.append('无')
         kwargs['count'] = tmp_list
@@ -199,7 +199,7 @@ def status(request, status_cd):
     membs = Profile.objects.filter(company=company)
     try:
         for i in membs:
-            memb_list.append(i.user.profile.real_name)
+            memb_list.append(i.real_name)
     except:
         memb_list.append('无')
     if status_cd:
