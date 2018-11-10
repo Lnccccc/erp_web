@@ -1,12 +1,17 @@
 {% extends "base.html" %}
 {% block title %}Edit your account {% endblock %}
 {% block content %}
-<h4>请填写你的信息</h4>
+<h4>请填写您的基本信息</h4>
 <p>请您务必如实填写您的姓名和所属公司</p>
+<div class="alert alert-info">注意：公司名称一旦确认将无法修改！</div>
 <form action="{% url 'account:edit' %}" method="POST" enctype="multipart/form-data" role='form'>
+    {% if request.session.company == '空' %}
     {{ profile_form.as_table }}
+    {% else %}
+    {{ profile_form.realname }}
+    {% endif %}
     {% csrf_token %}
-    <p><input class="btn btn-default" type="submit" value="Svae changes" ></p>
+    <p><input class="btn btn-default" type="submit" value="修改" ></p>
 
 </form>
 {% endblock %}

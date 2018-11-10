@@ -176,7 +176,6 @@ def update_order(request, uuidd):
     else:
         pass
 
-
 def roll_back(request, uuidd):
     status_cd = orders_list.objects.filter(uuid=uuidd)[0].order_status
     if status_cd > 1:
@@ -227,7 +226,6 @@ def status(request, status_cd):
             "select a.*,b.stat_nam from work_flow_orders_list a left join work_flow_order_stat b on a.order_status = b.stat_cd where a.company='%s'" % company)
     return render(request, 'order_list.html', context={"results": results, "count": tmp_list, "form": forms,"memb":memb_list})
 
-
 def permission_denied(request):
     messages.error(request, '操作失败')
     return render(request, 'order_list.html')
@@ -238,7 +236,6 @@ def send_message(openid,access_token,client,spec,quantity): ##推送模板消息
         "touser":openid,
         "template_id":"ES2r90989DqX0QCmoGbrKYUcUOG3VG3rVnI6h-QOh4k",
         "url":"http://47.107.119.21/flow/",
-
         "data":{
             "first": {
                 "value":"有新的订单，请及时处理！",
@@ -256,13 +253,17 @@ def send_message(openid,access_token,client,spec,quantity): ##推送模板消息
                 "value":quantity,
                 "color":"#173177"
             },
+            "remark":{
+                "value":'点击立刻处理',
+
+            }
 
         }
     }
     j_message = json.dumps(message)
     r = requests.post(url=url,data=j_message).json()
 
-    if r['errmsg']=='ok':
+    if r['errmsg'] == 'ok':
         return True
     else:
         return r['errmsg']
