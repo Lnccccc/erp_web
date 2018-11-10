@@ -150,7 +150,10 @@ class WeiXin():
     def get_usr(self,request):
         self.cd = request.GET.get('code')
         self.url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code" % (self.appid,self.secret,self.cd)
+        self.ass_url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s' % (self.appid,self.secret)
         self.raw = re.get(self.url).json()
+        self.raw_access_token = re.get(self.url).json()
+        access_token = self.raw_access_token['access_token']
         ass_tok = self.raw['access_token']
         open_id = self.raw['openid']
         self.usr_url = 'https://api.weixin.qq.com/sns/userinfo?access_token=%s&openid=%s&lang=zh_CN' % (ass_tok,open_id)
@@ -169,6 +172,7 @@ class WeiXin():
                 request.session['company'] = self.wx_user.profile.company
                 request.session['realname'] = self.wx_user.profile.realname
                 request.session['ass_tok'] = ass_tok
+                request.session['access_tok'] = access_token
                 return redirect('/flow/')
             else:  ##若公司一直为空则需要先填好公司和真名
                 request.session['openid'] = open_id

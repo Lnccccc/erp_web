@@ -24,32 +24,22 @@
     <span><h4>部门：</h4></span>
     <div>
     <select name="dept">
-        {% if user_info.dept == '总经理' %}
-        <option value="总经理" selected>总经理</option>
-        <option value="厂长">厂长</option>
-        <option value="生产主管">生产主管</option>
-        <option value="仓管">仓管</option>
-        <option value="空">空</option>
-        {% elif user_info.dept == '厂长' %}
-        <option value="总经理">总经理</option>
+        {% if user_info.dept == '厂长' %}
         <option value="厂长" selected>厂长</option>
         <option value="生产主管">生产主管</option>
         <option value="仓管">仓管</option>
         <option value="空">空</option>
         {% elif user_info.dept == '生产主管' %}
-        <option value="总经理">总经理</option>
         <option value="厂长">厂长</option>
         <option value="生产主管" selected>生产主管</option>
         <option value="仓管">仓管</option>
         <option value="空">空</option>
         {% elif user_info.dept == '仓管' %}
-        <option value="总经理">总经理</option>
         <option value="厂长">厂长</option>
         <option value="生产主管">生产主管</option>
         <option value="仓管" selected>仓管</option>
         <option value="空">空</option>
         {% else %}
-        <option value="总经理">总经理</option>
         <option value="厂长">厂长</option>
         <option value="生产主管">生产主管</option>
         <option value="仓管">仓管</option>
