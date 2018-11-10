@@ -69,8 +69,6 @@ class IndexView(generic.ListView):
         kwargs['count'] = tmp_list
         kwargs['form'] = WorkFlowForm()
         kwargs['memb'] = memb_list
-        # kwargs['islogin'] = self._islogin
-        # kwargs['user'] = user
         return super(IndexView, self).get_context_data(**kwargs)
 
 
@@ -101,7 +99,7 @@ def add_order(request):
                              order_quantity=_order_quantity, spec=_spec,
                              unit=_unit, order_status=1, person_incharge=_person_incharge)
             try:
-                user_openid = Profile.objects.get(real_name=_person_incharge).user.openid
+                user_openid = Profile.objects.get(realname=_person_incharge).user.openid
             except:
                 user_openid = 'oyL2P1lGwsDAvNISCufjFbwobUKE'
             send_ind = send_message(user_openid,ass_tok,_client,_spec,_order_quantity)
