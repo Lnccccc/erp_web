@@ -255,7 +255,7 @@ def send_message(openid,access_token,client,spec,quantity): ##推送模板消息
             },
             "remark":{
                 "value":'点击立刻处理',
-
+                "color":"#173177"
             }
 
         }

@@ -25,7 +25,7 @@
     <div class="collapse navbar-collapse" id="example-navbar-collapse">
 	{% if request.session.islogin %}
         <ul class="nav navbar-nav">
-            <li class="active"><a href="{% url 'work_flow:index' %}">生产情况</a></li>
+            <li><a href="{% url 'work_flow:index' %}">生产情况</a></li>
             {% if request.session.dept == '总经理' %}
             <li >
             <a href="{% url 'account:edit_2' %}">企业人员管理</a>
@@ -35,7 +35,10 @@
         </ul>
 	    <p class="navbar-text navbar-right">
         {% if request.session.islogin %}
-        你好 ,<a href="{% url 'account:edit' %}">{{ request.session.nickname }}</a>
+        <a href="{% url 'account:edit' %}">
+            <button type="button" class="btn btn-default btn-sm">
+            <span class="glyphicon glyphicon-user"></span>编辑
+            </button></a>
         {% endif %}
         </p>
     </div>

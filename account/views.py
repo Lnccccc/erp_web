@@ -75,6 +75,8 @@ def permission_denied(request):
 def edit_2(request):
     search_form = SearchForm()
     staff_list = []
+    for i in Profile.objects.filter(company=request.session.get('company')):
+        staff_list.append(i.realname)
     if request.session.get('dept') == '总经理':
         if request.method == 'POST':
             ## 需要判断输入账户是否存在
@@ -85,10 +87,8 @@ def edit_2(request):
             else:
                 messages.warning(request,'没有这个用户')
                 search_form = SearchForm()
-                return render(request,'account/edit_2.html',context={'search_form':search_form})
+                return render(request,'account/edit_2.html',context={'search_form':search_form,'staff_list':staff_list})
         else:
-            for i in Profile.objects.filter(company=request.session.get('company')):
-                staff_list.append(i.realname)
             return render(request,'account/edit_2.html',context={'search_form':search_form,'staff_list':staff_list})
     else:
         messages.warning(request,"你没有权限")
