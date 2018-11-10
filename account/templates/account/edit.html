@@ -9,6 +9,7 @@
     {{ profile_form.as_table }}
     {% else %}
     {{ profile_form.realname }}
+    <div style="display: none">{{ profile_form.company}}</div>
     {% endif %}
     {% csrf_token %}
     <p><input class="btn btn-default" type="submit" value="修改" ></p>
