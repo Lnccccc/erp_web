@@ -152,7 +152,7 @@ class WeiXin():
         self.url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code" % (self.appid,self.secret,self.cd)
         self.ass_url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s' % (self.appid,self.secret)
         self.raw = re.get(self.url).json()
-        self.raw_access_token = re.get(self.url).json()
+        self.raw_access_token = re.get(self.ass_url).json()
         access_token = self.raw_access_token['access_token']
         ass_tok = self.raw['access_token']
         open_id = self.raw['openid']
