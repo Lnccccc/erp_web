@@ -101,7 +101,7 @@ def add_order(request):
             try:
                 user_openid = Profile.objects.get(realname=_person_incharge).user.openid
             except:
-                user_openid = 'oyL2P1lGwsDAvNISCufjFbwobUKE'
+                user_openid = ''
             send_ind = send_message(user_openid,ass_tok,_client,_spec,_order_quantity)
             if send_ind == True: ##推送模板消息
                 ol.save()
