@@ -234,7 +234,7 @@ def permission_denied(request):
 def order_detail(request,uuidd):
     order = orders_list.objects.get(uuid=uuidd)
     order_form = WorkFlowDetailForm(instance=order)
-    return render(request,'order_detail.html',context=({'order_form':orders_list,}))
+    return render(request,'order_detail.html',context=({'order_form':order_form,}))
 
 def send_message(openid,access_token,client,spec,quantity,uuidd): ##推送模板消息
     url = 'https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=%s' % access_token
