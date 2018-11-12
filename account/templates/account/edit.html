@@ -6,9 +6,22 @@
 <div class="alert alert-info">注意：公司名称一旦确认将无法修改！</div>
 <form action="{% url 'account:edit' %}" method="POST" enctype="multipart/form-data" role='form'>
     {% if request.session.company == '空' %}
-    {{ profile_form.as_table }}
+    <div class="form-group">
+        <label class="col-sm-2 control-label">姓名：</label>
+        <div class="col-sm-10">
+            {{ profile_form.realname }}
+        </div></div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">单位：</label>
+        <div class="col-sm-10">
+            {{ profile_form.company }}
+        </div></div>
     {% else %}
-    {{ profile_form.realname }}
+    <div class="form-group">
+        <label class="col-sm-2 control-label">姓名：</label>
+        <div class="col-sm-10">
+            {{ profile_form.realname }}
+        </div></div>
     <div style="display: none">{{ profile_form.company}}</div>
     {% endif %}
     {% csrf_token %}

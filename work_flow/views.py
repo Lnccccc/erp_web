@@ -4,7 +4,7 @@ from account.models import Profile
 from uuid import uuid4
 from django.db.models import Count
 from django.views import generic
-from .forms import WorkFlowForm
+from .forms import WorkFlowForm,WorkFlowDetailForm
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
 from account.models import WeixinUser
@@ -94,7 +94,8 @@ def add_order(request):
             _spec = form.cleaned_data['spec']
             _unit = form.cleaned_data['unit']
             _person_incharge = form.cleaned_data['person_incharge']
-            ol = orders_list(user_name=real_name, openid=openid, uuid=uuid4(), client=_client, order_time=_order_time,
+            _uuidd = uuid4()
+            ol = orders_list(user_name=real_name, openid=openid, uuid=_uuidd, client=_client, order_time=_order_time,
                              sub_time=_sub_time,company=_company,
                              order_quantity=_order_quantity, spec=_spec,
                              unit=_unit, order_status=1, person_incharge=_person_incharge)
@@ -102,7 +103,7 @@ def add_order(request):
                 user_openid = Profile.objects.get(realname=_person_incharge).user.openid
             except:
                 user_openid = ''
-            send_ind = send_message(user_openid,ass_tok,_client,_spec,_order_quantity)
+            send_ind = send_message(user_openid,ass_tok,_client,_spec,_order_quantity,_uuidd)
             if send_ind == True: ##推送模板消息
                 ol.save()
                 return redirect("/flow/")
@@ -230,12 +231,17 @@ def permission_denied(request):
     messages.error(request, '操作失败')
     return render(request, 'order_list.html')
 
-def send_message(openid,access_token,client,spec,quantity): ##推送模板消息
+def order_detail(request,uuidd):
+    order = orders_list.objects.get(uuid=uuidd)
+    order_form = WorkFlowDetailForm(instance=order)
+    return render(request,'order_detail.html',context=({'order_form':orders_list,}))
+
+def send_message(openid,access_token,client,spec,quantity,uuidd): ##推送模板消息
     url = 'https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=%s' % access_token
     message = {
         "touser":openid,
         "template_id":"ES2r90989DqX0QCmoGbrKYUcUOG3VG3rVnI6h-QOh4k",
-        "url":"http://47.107.119.21/flow/",
+        "url":"http://47.107.119.21/flow/detail/%s" % uuidd,
         "data":{
             "first": {
                 "value":"有新的订单，请及时处理！",

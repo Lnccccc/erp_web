@@ -115,6 +115,9 @@ def update_per(request,usr_name):
     else:
         return render(request,'account/edit_2.html',context={'search_form':search_form})
 
+
+
+
 class WeiXin():
     def __init__(self):
         self.appid='wxf6d9517d8a850ecd'

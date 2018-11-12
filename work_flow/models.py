@@ -16,7 +16,8 @@ class orders_list(models.Model):
     order_status = models.IntegerField()
     person_incharge = models.CharField(max_length=100)
     company = models.CharField(max_length=256,null=True)
-
+    requirement = models.CharField(max_length=256,null=True)
+    remark = models.CharField(max_length=256,null=True)
 
 class order_stat(models.Model):
     stat_cd = models.IntegerField(primary_key=True)

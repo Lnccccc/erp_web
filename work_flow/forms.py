@@ -13,10 +13,15 @@ class WorkFlowForm(forms.ModelForm):
 
     class Meta:
         model=orders_list
-        fields = ('client','order_quantity','spec','unit','person_incharge')
+        fields = ('client','order_quantity','spec','unit','person_incharge','requirement','remark')
 
     order_time = forms.DateField()
     sub_time = forms.DateField(widget=widgets.AdminDateWidget())
     order_time.widget.attrs.update({'value':datetime.now().strftime('%Y-%m-%d'),'class':'form-control'})
     sub_time.widget.attrs.update({'class':'form-control'})
+
+class WorkFlowDetailForm(forms.ModelForm):
+    class Meta:
+        model = orders_list
+        fields = '__all__'
 
