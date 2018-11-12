@@ -34,15 +34,7 @@
 6、企业人员管理，总经理可见本公司全部员工信息
 7、选择下一阶段负责人时只能选择本公司员工 已完成(10.29)
 
-http://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf6d9517d8a850ecd&redirect_uri=https%3A%2F%2F47.107.119.21%2Faccount%2F&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect
+20181112
+已完成：模板消息推送时进入订单详情
+待完成：在订单列表点击某订单可进入订单详情
 
-http://open.weixin.qq.com/connect/qrconnect?appid=wxf6d9517d8a850ecd&redirect_uri=https%3A%2F%2F47.107.119.21%2Fflow%2F&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect
-
-
-
-https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxec4567a41338530d&secret=f81a45edfb0ebb4607c8441fac0876d9
-
-{"access_token":"15_cnJzPrm5QaLMORlm41aLkxP2e9dPMC8QZvxscy7_dOWvuTUJ8j3Le0cLBcC1ouq_CnprcD8fC9VuQ_HnzDDiYiPjQ45JvUX8rB1KxEiqKiKg8Np4OArvMH-CkbZX6nkzkDdtqE4nuuSmbm9yUFQhACABMX","expires_in":7200}
-
-xincheng
-zYd3H3wgOqfR3cFwuvbAfNPZcFIpdCKN9ek1g4s1WVr

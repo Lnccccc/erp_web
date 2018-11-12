@@ -106,7 +106,7 @@ def add_order(request):
                 user_openid = Profile.objects.get(realname=_person_incharge).user.openid
             except:
                 user_openid = ''
-            send_ind = send_message(user_openid,ass_tok,_client,_spec,_order_quantity,_uuidd)
+            send_ind = send_message(user_openid,ass_tok,_client,_spec,_order_quantity,_uuidd,_remark)
             if send_ind == True: ##推送模板消息
                 ol.save()
                 return redirect("/flow/")
@@ -239,7 +239,7 @@ def order_detail(request,uuidd):
     order_form = WorkFlowDetailForm(instance=order)
     return render(request,'order_detail.html',context=({'order_form':order_form,}))
 
-def send_message(openid,access_token,client,spec,quantity,uuidd): ##推送模板消息
+def send_message(openid,access_token,client,spec,quantity,uuidd,remark): ##推送模板消息
     url = 'https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=%s' % access_token
     message = {
         "touser":openid,
@@ -263,7 +263,7 @@ def send_message(openid,access_token,client,spec,quantity,uuidd): ##推送模板
                 "color":"#173177"
             },
             "remark":{
-                "value":'点击立刻处理',
+                "value":remark,
                 "color":"#173177"
             }
 

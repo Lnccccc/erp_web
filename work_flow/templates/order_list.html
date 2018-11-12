@@ -64,10 +64,10 @@
         {% if request.session.islogin %}
         {% for i in results %}
         <tr>
-            <td>{{i.client}}</td>
+            <a href="{% url 'work_flow:detail' i.uuid%}"><td>{{i.client}}</td></a>
             <!--<td>{{i.order_time}}</td>-->
-            <td>{{i.sub_time}}</td>
-            <td>{{i.spec}}</td>
+            <a href="{% url 'work_flow:detail' i.uuid%}"><td>{{i.sub_time}}</td></a>
+            <a href="{% url 'work_flow:detail' i.uuid%}"><td>{{i.spec}}</td></a>
             <td>{{i.order_quantity}}</td>
             <td>{{i.unit}}</td>
             <td>{{i.stat_nam}}</td>
@@ -87,7 +87,6 @@
                 <a href="/flow/delete/{{ i.uuid }}/"><button>删除</button></a>
                 <a href="/flow/rollback/{{ i.uuid }}"><button>回退</button></a>
             </td>
-
         </tr>
         {% endfor %}
         {% endif %}
