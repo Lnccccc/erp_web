@@ -81,9 +81,9 @@
                     {% endfor %}
             </select>
             </td>
-            <!--<td>-->
+            <td>
                 <!--<input type="submit" value="已完成">-->
-            <!--</form>-->
+            </form>
                 <!--<a href="/flow/delete/{{ i.uuid }}/"><button>删除</button></a>-->
                 <!--<a href="/flow/rollback/{{ i.uuid }}"><button>回退</button></a>-->
             <!--</td>-->
@@ -98,12 +98,9 @@
                         <li>
                             <a href="{% url 'work_flow:rollback' i.uuid %}">回退</a>
                         </li>
-                        <li>
-                            <input type="submit" value="已完成">
-                        </li>
                     </ul>
                 </div>
-                </form>
+
             </td>
         </tr>
         {% endfor %}

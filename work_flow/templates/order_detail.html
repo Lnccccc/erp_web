@@ -57,6 +57,21 @@
             {{ order_form.person_incharge }}
         </div>
     </div>
+    <form action="{% url 'work_flow:update' i.uuid %}" method="POST">
+        {% csrf_token %}
+
+            <select name="next_node">
+                {% for j in memb %}
+                <option value="{{ j }}">{{ j }}</option>
+                {% endfor %}
+            </select>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">已完成</button>
+            </div>
+        </div>
+    </form>
+
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
             <a href="{% url 'work_flow:index' %}"><button type="button" class="btn btn-default">返回订单列表</button></a>
