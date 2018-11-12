@@ -72,18 +72,18 @@
             <td>{{i.unit}}</td>
             <td>{{i.stat_nam}}</td>
             <td>{{i.person_incharge}}</td>
-            <form action="{% url 'work_flow:update' i.uuid %}" method="POST">
-                {% csrf_token %}
-            <td>
-                <select name="next_node">
-                    {% for j in memb %}
-                <option value="{{ j }}">{{ j }}</option>
-                    {% endfor %}
-            </select>
-            </td>
-            <td>
+            <!--<form action="{% url 'work_flow:update' i.uuid %}" method="POST">-->
+                <!--{% csrf_token %}-->
+            <!--<td>-->
+                <!--<select name="next_node">-->
+                    <!--{% for j in memb %}-->
+                <!--<option value="{{ j }}">{{ j }}</option>-->
+                    <!--{% endfor %}-->
+            <!--</select>-->
+            <!--</td>-->
+            <!--<td>-->
                 <!--<input type="submit" value="已完成">-->
-            </form>
+            <!--</form>-->
                 <!--<a href="/flow/delete/{{ i.uuid }}/"><button>删除</button></a>-->
                 <!--<a href="/flow/rollback/{{ i.uuid }}"><button>回退</button></a>-->
             <!--</td>-->
