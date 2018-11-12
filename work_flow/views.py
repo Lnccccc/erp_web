@@ -94,11 +94,14 @@ def add_order(request):
             _spec = form.cleaned_data['spec']
             _unit = form.cleaned_data['unit']
             _person_incharge = form.cleaned_data['person_incharge']
+            _requirement = form.cleaned_data['requirement']
+            _remark = form.cleaned_data['remark']
             _uuidd = uuid4()
             ol = orders_list(user_name=real_name, openid=openid, uuid=_uuidd, client=_client, order_time=_order_time,
                              sub_time=_sub_time,company=_company,
                              order_quantity=_order_quantity, spec=_spec,
-                             unit=_unit, order_status=1, person_incharge=_person_incharge)
+                             unit=_unit, order_status=1, person_incharge=_person_incharge,requirement=_requirement,
+                             remark=_remark)
             try:
                 user_openid = Profile.objects.get(realname=_person_incharge).user.openid
             except:
