@@ -245,7 +245,7 @@ def order_detail(request,uuidd):
         memb_list.append('无')
     order = orders_list.objects.get(uuid=uuidd)
     order_form = WorkFlowDetailForm(instance=order)
-    return render(request,'order_detail.html',context=({'order_form':order_form,'memb':memb_list}))
+    return render(request,'order_detail.html',context=({'order_form':order_form,'memb':memb_list,'uuid':uuidd}))
 
 def send_message(openid,access_token,client,spec,quantity,uuidd,remark): ##推送模板消息
     url = 'https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=%s' % access_token
