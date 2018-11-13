@@ -57,10 +57,9 @@
             {{ order_form.person_incharge }}
         </div>
     </div>
-    ###把订单的uuid传进来
+    <p>请选择下一阶段负责人：</p>
     <form action="{% url 'work_flow:update' uuid %}" method="POST">
         {% csrf_token %}
-
             <select name="next_node">
                 {% for j in memb %}
                 <option value="{{ j }}">{{ j }}</option>

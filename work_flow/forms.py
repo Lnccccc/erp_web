@@ -18,7 +18,7 @@ class WorkFlowForm(forms.ModelForm):
         fields = ('client','order_quantity','spec','unit','person_incharge','requirement','remark')
 
     order_time = forms.DateField()
-    sub_time = forms.DateField(widget=widgets.AdminDateWidget())
+    sub_time = forms.DateField()
     order_time.widget.attrs.update({'value':datetime.now().strftime('%Y-%m-%d'),'class':'form-control'})
     sub_time.widget.attrs.update({'class':'form-control'})
 
@@ -38,7 +38,7 @@ class WorkFlowDetailForm(forms.ModelForm):
         fields = ('client','order_quantity','spec','unit','person_incharge','requirement','remark')
 
     order_time = forms.DateField()
-    sub_time = forms.DateField(widget=widgets.AdminDateWidget())
+    sub_time = forms.DateField()
     order_time.widget.attrs.update({'value':datetime.now().strftime('%Y-%m-%d'),'class':'form-control'})
     sub_time.widget.attrs.update({'class':'form-control'})
 
