@@ -30,15 +30,13 @@ class WorkFlowDetailForm(forms.ModelForm):
         self.fields['spec'].widget.attrs.update({'class':'form-control','id':'focusedInput','disabled':'disabled'})
         self.fields['unit'].widget.attrs.update({'class':'form-control','id':'focusedInput','disabled':'disabled'})
         self.fields['person_incharge'].widget.attrs.update({'class':'form-control','id':'focusedInput','disabled':'disabled'})
-        self.fields['requirement'].widget.attrs.update({'class':'form-control','id':'focusedInput','disabled':'disabled'})
-        self.fields['remark'].widget.attrs.update({'class':'form-control','id':'focusedInput','disabled':'disabled'})
-
+        self.fields['requirement'].widget.attrs.update({'class':'form-control','id':'focusedInput'})
+        self.fields['remark'].widget.attrs.update({'class':'form-control','id':'focusedInput'})
+        self.fields['sub_time'].widget.attrs.update({'class':'form-control','id':'focusedInput'})
+        self.fields['order_time'].widget.attrs.update({'class':'form-control','id':'focusedInput','disabled':'disabled'})
     class Meta:
         model=orders_list
-        fields = ('client','order_quantity','spec','unit','person_incharge','requirement','remark')
+        fields = ('client','order_quantity','spec','unit','person_incharge','requirement','remark','order_time','sub_time')
 
-    order_time = forms.DateField()
-    sub_time = forms.DateField()
-    order_time.widget.attrs.update({'value':datetime.now().strftime('%Y-%m-%d'),'class':'form-control'})
-    sub_time.widget.attrs.update({'class':'form-control'})
+
 
