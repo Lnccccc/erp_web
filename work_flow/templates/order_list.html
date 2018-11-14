@@ -60,43 +60,8 @@
             <th>操作</th>
         </tr>
         <br>
-        <!--{% if request.session.islogin %}-->
-        <!--{% for i in results %}-->
-        <!--<tr>-->
-            <!--<td>{{i.client}}</td>-->
-            <!--&lt;!&ndash;<td>{{i.order_time}}</td>&ndash;&gt;-->
-            <!--<td>{{i.sub_time}}</td>-->
-            <!--<td><a href="{% url 'work_flow:detail' i.uuid %}">{{i.spec}}</a></td>-->
-            <!--<td>{{i.order_quantity}}</td>-->
-            <!--<td>{{i.unit}}</td>-->
-            <!--<td>{{i.stat_nam}}</td>-->
-            <!--<td>{{i.person_incharge}}</td>-->
-            <!--<td>-->
-                <!--<div class="btn-group">-->
-                    <!--<button type="button" class="btn btn-success dropdown-toggle btn-xs" data-toggle="dropdown">更多-->
-                        <!--<span class="caret"></span></button>-->
-                    <!--<ul class="dropdown-menu" role="menu">-->
-                        <!--<li>-->
-                            <!--<a href="{% url 'work_flow:delete' i.uuid %}">删除</a>-->
-                        <!--</li>-->
-                        <!--<li>-->
-                            <!--<a href="{% url 'work_flow:rollback' i.uuid %}">回退</a>-->
-                        <!--</li>-->
-                    <!--</ul>-->
-                <!--</div>-->
-
-            <!--</td>-->
-        <!--</tr>-->
-        <!--{% endfor %}-->
-        <!--{% endif %}-->
-    {% if request.session.islogin %}
-    {% for i in results %}
-	<div class="panel-group" id="accordion">
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<h4 class="panel-title">
-					<a data-toggle="collapse" data-parent="#accordion"
-					   href="#collapseOne">
+        {% if request.session.islogin %}
+        {% for i in results %}
         <tr>
             <td>{{i.client}}</td>
             <!--<td>{{i.order_time}}</td>-->
@@ -122,19 +87,9 @@
 
             </td>
         </tr>
-					</a>
-				</h4>
-			</div>
-			<div id="collapseOne" class="panel-collapse collapse in">
-				<div class="panel-body">
-					Nihil anim keffiyeh helvetica, craft beer labore wes anderson
-					cred nesciunt sapiente ea proident. Ad vegan excepteur butcher
-					vice lomo.
-				</div>
-			</div>
-		</div>
         {% endfor %}
         {% endif %}
+
 </table>
 </div>
 {% endblock %}
