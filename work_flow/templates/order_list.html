@@ -72,19 +72,24 @@
             <td>{{i.stat_nam}}</td>
             <td>{{i.person_incharge}}</td>
             <td>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-success dropdown-toggle btn-xs" data-toggle="dropdown">更多
-                        <span class="caret"></span></button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li>
-                            <a href="{% url 'work_flow:delete' i.uuid %}">删除</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'work_flow:rollback' i.uuid %}">回退</a>
-                        </li>
-                    </ul>
-                </div>
-
+                <!--<div class="btn-group">-->
+                    <!--<button type="button" class="btn btn-success dropdown-toggle btn-xs" data-toggle="dropdown">更多-->
+                        <!--<span class="caret"></span></button>-->
+                    <!--<ul class="dropdown-menu" role="menu">-->
+                        <!--<li>-->
+                            <!--<a href="{% url 'work_flow:delete' i.uuid %}">删除</a>-->
+                        <!--</li>-->
+                        <!--<li>-->
+                            <!--<a href="{% url 'work_flow:rollback' i.uuid %}">回退</a>-->
+                        <!--</li>-->
+                    <!--</ul>-->
+                <!--</div>-->
+	        <button type="button" class="btn btn-default" title="Popover title"
+			        data-container="body" data-toggle="popover" data-placement="left"
+			        data-content="左侧的 Popover 中的一些内容">
+		        <a href="{% url 'work_flow:delete' i.uuid %}">删除</a>
+                <a href="{% url 'work_flow:rollback' i.uuid %}">回退</a>
+	        </button>
             </td>
         </tr>
         {% endfor %}
