@@ -181,9 +181,9 @@ def update_order(request, uuidd):
                 messages.warning(request, "该订单已完成")
                 return redirect("/detail/%s" % uuidd)
         else:
-            pass
+            return HttpResponse('表格数据不合法')
     else:
-        pass
+        return HttpResponse('不是POST')
 
 def roll_back(request, uuidd):
     status_cd = orders_list.objects.filter(uuid=uuidd)[0].order_status
