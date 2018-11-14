@@ -153,30 +153,35 @@ def update_order(request, uuidd):
     status_cd = orders_list.objects.get(uuid=uuidd).order_status
     per = user.profile.dept
     if request.method == 'POST':
-        next_node = request.POST.get('next_node')
-        if status_cd < 7:
-            if per == '总经理' and status_cd < 7:
-                orders_list.objects.filter(uuid=uuidd).update(order_status=status_cd + 1, person_incharge=next_node)
-                messages.success(request, "操作成功")
-                return redirect("/flow/")
-            elif per == '厂长' and status_cd == 2 or status_cd == 3:
-                orders_list.objects.filter(uuid=uuidd).update(order_status=status_cd + 1, person_incharge=next_node)
-                messages.success(request, "操作成功")
-                return redirect("/flow/")
-            elif per == '生产主管' and status_cd == 4 or status_cd == 5:
-                orders_list.objects.filter(uuid=uuidd).update(order_status=status_cd + 1, person_incharge=next_node)
-                messages.success(request, "操作成功")
-                return redirect("/flow/")
-            elif per == '仓管' and status_cd == 6 or status_cd == 7:
-                orders_list.objects.filter(uuid=uuidd).update(order_status=status_cd + 1, person_incharge=next_node)
-                messages.success(request, "操作成功")
-                return redirect("/flow/")
+        form = WorkFlowDetailForm(request.POST)
+        if form.is_valid():
+            next_node = form.cleaned_data['next_node']
+            remark = form.cleaned_data['remark']
+            if status_cd < 7:
+                if per == '总经理' and status_cd < 7:
+                    orders_list.objects.filter(uuid=uuidd).update(order_status=status_cd + 1, person_incharge=next_node,remark=remark)
+                    messages.success(request, "操作成功")
+                    return redirect("/detail/%s" % uuidd)
+                elif per == '厂长' and status_cd == 2 or status_cd == 3:
+                    orders_list.objects.filter(uuid=uuidd).update(order_status=status_cd + 1, person_incharge=next_node,remark=remark)
+                    messages.success(request, "操作成功")
+                    return redirect("/detail/%s" % uuidd)
+                elif per == '生产主管' and status_cd == 4 or status_cd == 5:
+                    orders_list.objects.filter(uuid=uuidd).update(order_status=status_cd + 1, person_incharge=next_node,remark=remark)
+                    messages.success(request, "操作成功")
+                    return redirect("/detail/%s" % uuidd)
+                elif per == '仓管' and status_cd == 6 or status_cd == 7:
+                    orders_list.objects.filter(uuid=uuidd).update(order_status=status_cd + 1, person_incharge=next_node,remark=remark)
+                    messages.success(request, "操作成功")
+                    return redirect("/detail/%s" % uuidd)
+                else:
+                    messages.error(request, per + str(status_cd) + '操作失败：你没有相应的权限，请联系总经理')
+                    return redirect("/detail/%s" % uuidd)
             else:
-                messages.error(request, per + str(status_cd) + '操作失败：你没有相应的权限，请联系总经理')
-                return redirect("/flow/")
+                messages.warning(request, "该订单已完成")
+                return redirect("/detail/%s" % uuidd)
         else:
-            messages.warning(request, "该订单已完成")
-            return redirect("/flow/")
+            pass
     else:
         pass
 

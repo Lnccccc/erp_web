@@ -34,9 +34,10 @@ class WorkFlowDetailForm(forms.ModelForm):
         self.fields['remark'].widget.attrs.update({'class':'form-control','id':'focusedInput'})
         self.fields['sub_time'].widget.attrs.update({'class':'form-control','id':'focusedInput'})
         self.fields['order_time'].widget.attrs.update({'class':'form-control','id':'focusedInput','disabled':'disabled'})
+        self.fields['next_node'].widget.attrs.update({'class':'form-control','id':'focusedInput'})
     class Meta:
         model=orders_list
-        fields = ('client','order_quantity','spec','unit','person_incharge','requirement','remark','order_time','sub_time')
+        fields = ('client','order_quantity','spec','unit','person_incharge','requirement','remark','order_time','sub_time','next_node')
 
 
 

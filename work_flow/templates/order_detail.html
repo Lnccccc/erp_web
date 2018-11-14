@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 {% if request.session.islogin %}
-<form action="#" method="post" class="form-horizontal" role="form">
+<form action="{% url 'work_flow:update' uuid %}" method="post" class="form-horizontal" role="form">
     {% csrf_token %}
     <div class="form-group">
         <label class="col-sm-2 control-label">客户：</label>
@@ -58,8 +58,6 @@
         </div>
     </div>
     <p>请选择下一阶段负责人：</p>
-    <form action="{% url 'work_flow:update' uuid %}" method="POST">
-        {% csrf_token %}
             <select name="next_node">
                 {% for j in memb %}
                 <option value="{{ j }}">{{ j }}</option>
@@ -70,7 +68,6 @@
                 <button type="submit" class="btn btn-default">已完成</button>
             </div>
         </div>
-    </form>
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
             <a href="{% url 'work_flow:index' %}"><button type="button" class="btn btn-default">返回订单列表</button></a>
