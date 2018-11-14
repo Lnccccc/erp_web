@@ -155,7 +155,7 @@ def update_order(request, uuidd):
     if request.method == 'POST':
         form = WorkFlowDetailForm(request.POST)
         if form.is_valid():
-            next_node = form.cleaned_data['next_node']
+            next_node = request.POST.get('next_node')
             remark = form.cleaned_data['remark']
             if status_cd < 7:
                 if per == '总经理' and status_cd < 7:
