@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 {% if request.session.islogin %}
-<form action="{% url 'work_flow:update' uuid %}" method="POST" class="form-horizontal" role="form">
+<form action="{% url 'work_flow:update' uuid %}" method="post" class="form-horizontal" role="form">
     {% csrf_token %}
     <div class="form-group">
         <label class="col-sm-2 control-label">客户：</label>

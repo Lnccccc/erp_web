@@ -155,7 +155,7 @@ def update_order(request, uuidd):
     if request.method == 'POST':
         form = WorkFlowDetailForm(request.POST)
         if form.is_valid():
-            next_node = request.POST.get('next_node')
+            next_node = form.cleaned_data['next_node']
             remark = form.cleaned_data['remark']
             if status_cd < 7:
                 if per == '总经理' and status_cd < 7:
@@ -183,7 +183,7 @@ def update_order(request, uuidd):
         else:
             return HttpResponse('表格数据不合法')
     else:
-        return HttpResponse('不是POST')
+        return HttpResponse(request.method) ##这儿有bug：post过来的请求却显示为get？
 
 def roll_back(request, uuidd):
     status_cd = orders_list.objects.filter(uuid=uuidd)[0].order_status
