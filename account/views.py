@@ -191,4 +191,5 @@ class WeiXin():
             request.session['openid'] = open_id
             request.session['ass_tok'] = ass_tok
             request.session['nickname'] = self.nickname
+            request.session['company'] = '空'
             return redirect('/account/edit/') ##初次登陆时没有设置session因此在edit页面无法获取session的openid等内容
