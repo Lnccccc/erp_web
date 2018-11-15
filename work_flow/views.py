@@ -183,7 +183,7 @@ def update_order(request, uuidd):
         else:
             return HttpResponse('表格数据不合法')
     else:
-        return HttpResponse(request.method) ##这儿有bug：post过来的请求却显示为get？
+        return redirect("/detail/%s" % uuidd)
 
 def roll_back(request, uuidd):
     status_cd = orders_list.objects.filter(uuid=uuidd)[0].order_status
