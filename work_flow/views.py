@@ -184,7 +184,9 @@ def update_order(request, uuidd):
         else:
             return HttpResponse(errors)
     else:
-        return redirect("/flow/detail/%s" % uuidd)
+        form = WorkFlowDetailForm(request.POST)
+        errors = form.errors
+        return HttpResponse(errors)
 
 def roll_back(request, uuidd):
     status_cd = orders_list.objects.filter(uuid=uuidd)[0].order_status
