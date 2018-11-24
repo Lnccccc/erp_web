@@ -15,9 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
+from work_flow import views
 def i18n_javascript(request):
     return admin.site.i18n_javascript(request)
 urlpatterns = [
+    path('',views.IndexView.as_view(),name='index'),
     path('admin/jsi18n',i18n_javascript),
     path('admin/', admin.site.urls),
     path('flow/',include('work_flow.urls',namespace='flow')),
