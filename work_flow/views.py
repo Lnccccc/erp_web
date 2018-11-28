@@ -21,9 +21,6 @@ def is_login(request):
         return wrapper
     return decorator
 
-
-
-# Create your views here.
 def islogin(request):
     return request.session.get('islogin', False)
 
@@ -83,7 +80,6 @@ class IndexView(generic.ListView):
         kwargs['memb'] = memb_list
         return super(IndexView, self).get_context_data(**kwargs)
 
-@is_login()
 def add_order(request):
     _islogin = islogin(request)
     openid,real_name,user,company = get_info(request)
