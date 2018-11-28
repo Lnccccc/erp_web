@@ -11,6 +11,18 @@ from account.models import WeixinUser
 import json
 import requests
 
+def is_login(request):
+    def decorator(func):
+        def wrapper(*args,**kwargs):
+            if request.session.get('islogin'):
+                func()
+            else:
+                HttpResponse("你没有权限")
+        return wrapper
+    return decorator
+
+
+
 # Create your views here.
 def islogin(request):
     return request.session.get('islogin', False)
@@ -71,7 +83,7 @@ class IndexView(generic.ListView):
         kwargs['memb'] = memb_list
         return super(IndexView, self).get_context_data(**kwargs)
 
-
+@is_login(request)
 def add_order(request):
     _islogin = islogin(request)
     openid,real_name,user,company = get_info(request)
