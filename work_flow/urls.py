@@ -10,4 +10,5 @@ urlpatterns = [
     path("update/<str:uuidd>/",views.update_order,name='update'),
     path("rollback/<str:uuidd>",views.roll_back,name='rollback'),
     path("detail/<str:uuidd>",views.order_detail,name='detail'),
+    path("MP_verify_YUe1siIcc5wabsNm.txt/",views.verified)
 ]

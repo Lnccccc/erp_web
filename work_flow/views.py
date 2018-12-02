@@ -11,6 +11,10 @@ from account.models import WeixinUser
 import json
 import requests
 
+def verified(request):
+    f=open('MP_verify_YUe1siIcc5wabsNm.txt','rb')
+    return HttpResponse(f)
+
 def is_login(request):
     def decorator(func):
         def wrapper(*args,**kwargs):
