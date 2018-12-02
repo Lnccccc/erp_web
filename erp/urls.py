@@ -25,5 +25,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('flow/',include('work_flow.urls',namespace='flow')),
     path('account/',include('account.urls',namespace='account')),
-    path('MP_verify_YUe1siIcc5wabsNm.txt/',verifed)
+    path('MP_verify_YUe1siIcc5wabsNm.txt',verifed)
 ]
