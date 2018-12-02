@@ -16,3 +16,6 @@ def get_code(request):
     # ass_tok = raw['access_token']
     # open_id = raw['openid']
     # return HttpResponse(ass_tok)
+
+def verifed(request):
+    return  HttpResponse("YUe1siIcc5wabsNm")

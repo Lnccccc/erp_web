@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from work_flow import views
+from .views import verifed
 def i18n_javascript(request):
     return admin.site.i18n_javascript(request)
 urlpatterns = [
@@ -24,4 +25,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('flow/',include('work_flow.urls',namespace='flow')),
     path('account/',include('account.urls',namespace='account')),
+    path('MP_verify_YUe1siIcc5wabsNm.txt/',verifed)
 ]
