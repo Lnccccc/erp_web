@@ -18,4 +18,6 @@ def get_code(request):
     # return HttpResponse(ass_tok)
 
 def verifed(request):
-    return  HttpResponse("YUe1siIcc5wabsNm")
+    f=open("MP_verify_YUe1siIcc5wabsNm.txt",'rb')
+    f.close()
+    return  HttpResponse(f)
