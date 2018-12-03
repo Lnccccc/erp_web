@@ -120,8 +120,8 @@ def update_per(request,usr_name):
 
 class WeiXin():
     def __init__(self):
-        self.appid='wxf6d9517d8a850ecd'
-        self.secret = '177546a750a8c8d12e45f94f39c18a61'
+        self.appid='wxec4567a41338530d'
+        self.secret = 'f81a45edfb0ebb4607c8441fac0876d9'
         self.all_user = []
 
     def get_all_user(self):
@@ -152,12 +152,12 @@ class WeiXin():
 
     def get_usr(self,request):
         self.cd = request.GET.get('code')
-        self.url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code" % (self.appid,self.secret,self.cd)
-        self.ass_url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s' % (self.appid,self.secret)
+        self.url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code" % (self.appid,self.secret,self.cd) #用于调用网页授权登陆接口的api
+        self.ass_url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s' % (self.appid,self.secret) #用于调用微信接口的api
         self.raw = re.get(self.url).json()
         self.raw_access_token = re.get(self.ass_url).json()
-        access_token = self.raw_access_token['access_token']
-        ass_tok = self.raw['access_token']
+        access_token = self.raw_access_token['access_token'] #用于调用微信接口
+        ass_tok = self.raw['access_token'] #用于网页授权登陆和获取用户基本信息
         open_id = self.raw['openid']
         self.usr_url = 'https://api.weixin.qq.com/sns/userinfo?access_token=%s&openid=%s&lang=zh_CN' % (ass_tok,open_id)
         self.info_raw = re.get(self.usr_url).json()
@@ -193,3 +193,4 @@ class WeiXin():
             request.session['nickname'] = self.nickname
             request.session['company'] = '空'
             return redirect('/account/edit/') ##初次登陆时没有设置session因此在edit页面无法获取session的openid等内容
+

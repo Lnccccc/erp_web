@@ -20,3 +20,5 @@ def get_code(request):
 def verifed(request):
     f=open("MP_verify_YUe1siIcc5wabsNm.txt",'rb')
     return  HttpResponse(f)
+
+
