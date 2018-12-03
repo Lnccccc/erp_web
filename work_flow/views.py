@@ -264,6 +264,7 @@ def order_detail(request,uuidd):
 
 def send_message(openid,access_token,client,spec,quantity,uuidd,remark,sub_time): ##推送模板消息
     url = 'https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=%s' % access_token
+    _sub_time = sub_time.strftime("%y-%m-%d")
     message = {
         "touser":openid,
         "template_id":"tOotk5nGMdC-Jm2gXobKqNpt0LLbyUXDBEe96m-f7oQ",
@@ -286,7 +287,7 @@ def send_message(openid,access_token,client,spec,quantity,uuidd,remark,sub_time)
                 "color":"#173177"
             },
             "keyword4":{
-                "value":sub_time,
+                "value":_sub_time,
                 "color": "#173177"
             },
             "keyword5": {
