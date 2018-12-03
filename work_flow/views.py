@@ -118,7 +118,7 @@ def add_order(request):
                 user_openid = Profile.objects.get(realname=_person_incharge).user.openid
             except:
                 user_openid = ''
-            send_ind = send_message(user_openid,ass_tok,_client,_spec,_order_quantity,_uuidd,_remark)
+            send_ind = send_message(user_openid,ass_tok,_client,_spec,_order_quantity,_uuidd,_remark,_sub_time)
             if send_ind == True: ##推送模板消息
                 ol.save()
                 return redirect("/flow/")
@@ -262,19 +262,19 @@ def order_detail(request,uuidd):
     order_form = WorkFlowDetailForm(instance=order)
     return render(request,'order_detail.html',context=({'order_form':order_form,'memb':memb_list,'uuid':uuidd}))
 
-def send_message(openid,access_token,client,spec,quantity,uuidd,remark): ##推送模板消息
+def send_message(openid,access_token,client,spec,quantity,uuidd,remark,sub_time): ##推送模板消息
     url = 'https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=%s' % access_token
     message = {
         "touser":openid,
-        "template_id":"ES2r90989DqX0QCmoGbrKYUcUOG3VG3rVnI6h-QOh4k",
-        "url":"http://47.107.119.21/flow/detail/%s" % uuidd,
+        "template_id":"tOotk5nGMdC-Jm2gXobKqNpt0LLbyUXDBEe96m-f7oQ",
+        "url":"http://www.e-fac.cn/flow/detail/%s" % uuidd,
         "data":{
             "first": {
                 "value":"有新的订单，请及时处理！",
                 "color":"#173177"
             },
             "keyword1":{
-                "value":client,
+                "value":uuidd[:5],
                 "color":"#173177"
             },
             "keyword2": {
@@ -284,6 +284,14 @@ def send_message(openid,access_token,client,spec,quantity,uuidd,remark): ##推�
             "keyword3": {
                 "value":quantity,
                 "color":"#173177"
+            },
+            "keyword4":{
+                "value":sub_time,
+                "color": "#173177"
+            },
+            "keyword5": {
+                "value": client,
+                "color": "#173177"
             },
             "remark":{
                 "value":remark,

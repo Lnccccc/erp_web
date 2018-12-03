@@ -1,9 +1,0 @@
-{
-  "button":[
-    {
-      "type":"click",
-      "name":"订单管理",
-      "key":"V1001_TODAY_MUSIC"
-    },
- ]
-}
