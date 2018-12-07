@@ -7,7 +7,7 @@ from django.views import generic
 from .forms import WorkFlowForm,WorkFlowDetailForm
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
-from account.models import WeixinUser
+from account.models import WeixinUser,Company
 import json
 import requests
 
@@ -32,7 +32,7 @@ def get_info(request):
     openid = request.session.get('openid','null')
     user = WeixinUser.objects.get(openid=openid)
     real_name = user.profile.realname
-    company = user.profile.company
+    company = user.profile.company.name
     return openid,real_name,user,company
 
 class IndexView(generic.ListView):
@@ -43,7 +43,8 @@ class IndexView(generic.ListView):
         openid = self.request.session.get('openid', 'null')
         company = self.request.session.get('company','null')
         results = orders_list.objects.raw(
-            "select a.*,b.stat_nam from work_flow_orders_list a left join work_flow_order_stat b on a.order_status = b.stat_cd where a.company = '%s' " % company)
+            "select a.*,b.stat_nam from work_flow_orders_list a left join work_flow_order_stat b on a.order_status = b.stat_cd "
+            "where a.company_id in (select id from account_company where name = '%s')" % company) ##这里需要到数据库确认compan的外键
         return results
 
     def get_context_data(self, **kwargs):
@@ -72,13 +73,9 @@ class IndexView(generic.ListView):
         tmp_list.append(stat_5)
         tmp_list.append(stat_6)
         tmp_list.append(stat_7)
-        company = self.request.session.get('company')
-        membs = Profile.objects.filter(company=company)
-        try:
-            for i in membs:
-                memb_list.append(i.realname)
-        except:
-            memb_list.append('无')
+        _company = self.request.session.get('company')
+        for i in Company.objects.get(name=_company).membs:
+            memb_list.append(i.name)
         kwargs['count'] = tmp_list
         kwargs['form'] = WorkFlowForm()
         kwargs['memb'] = memb_list
@@ -89,13 +86,9 @@ def add_order(request):
     openid,real_name,user,company = get_info(request)
     _company = request.session.get('company','null')
     memb_list=[]
-    membs = Profile.objects.filter(company=_company)
+    for i in Company.objects.get(name=_company).membs:
+        memb_list.append(i.name)
     ass_tok = request.session.get('access_tok','null')
-    try:
-        for i in membs:
-            memb_list.append(i.realname)
-    except:
-        memb_list.append('无')
     if request.method == 'POST' and _islogin:
         form = WorkFlowForm(request.POST)
         if form.is_valid() and request.session.get('dept','null') == '总经理':

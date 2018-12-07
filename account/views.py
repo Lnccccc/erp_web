@@ -3,11 +3,10 @@ from django.http import HttpResponse
 from django.contrib.auth import authenticate,login
 from .form import ProfileEditForm,SearchForm,WxUserEditForm
 from django.contrib.auth.decorators import login_required
-from .models import Profile
+from .models import Profile,WeixinUser,Company
 from django.contrib import messages
 import hashlib
 import requests
-from .models import WeixinUser
 import json
 re = requests
 
@@ -59,7 +58,7 @@ def edit(request):
         if  profile_form.is_valid():
             profile_form.save()
             request.session['dept'] = profile.dept
-            request.session['company'] = profile.company
+            request.session['company'] = profile.company.name
             return redirect('/flow/')
         else:
             return redirect('account/edit/')
@@ -75,8 +74,8 @@ def permission_denied(request):
 def edit_2(request):
     search_form = SearchForm()
     staff_list = []
-    for i in Profile.objects.filter(company=request.session.get('company')):
-        staff_list.append(i.realname)
+    for i in Company.objects.get(name=request.session.get('company')).membs:
+        staff_list.append(i.lname)
     if request.session.get('dept') == '总经理':
         if request.method == 'POST':
             ## 需要判断输入账户是否存在
@@ -101,12 +100,12 @@ def update_per(request,usr_name):
         if request.method == 'POST':
             dept = request.POST.get('dept')
             user_info = Profile.objects.get(realname=usr_name)
-            if user_info.company != request.session.get('company') and user_info.company !='空': ##无法编辑非本公司员工
+            if user_info.company.name != request.session.get('company') and user_info.name.company !='空': ##无法编辑非本公司员工
                 messages.error(request,'操作失败：这不是你公司的员工')
                 return render(request,'account/edit_2.html',context={'search_form':search_form})
-            elif user_info.company == '空' or user_info.company == request.session.get('company'):
-                for i in Profile.objects.filter(company=request.session.get('company')):
-                    staff_list.append(i.realname)
+            elif user_info.company.name == '空' or user_info.company.name == request.session.get('company'):
+                for i in Company.objects.get(name=request.session.get('company')).membs:
+                    staff_list.append(i.name)
                 Profile.objects.filter(realname=usr_name).update(dept=dept)
                 messages.success(request,'修改成功')
                 return render(request,'account/edit_2.html',context={'user_info':user_info,'staff_list':staff_list})
@@ -168,11 +167,11 @@ class WeiXin():
         if open_id in self.all_user:
             request.session['islogin'] = True
             self.wx_user = WeixinUser.objects.filter(openid=open_id)[0]
-            if self.wx_user.profile.company != '空':
+            if self.wx_user.profile.company.name != '空':
                 request.session['openid'] = open_id
                 request.session['nickname'] = self.nickname
                 request.session['dept'] = self.wx_user.profile.dept
-                request.session['company'] = self.wx_user.profile.company
+                request.session['company'] = self.wx_user.profile.company.name
                 request.session['realname'] = self.wx_user.profile.realname
                 request.session['ass_tok'] = ass_tok
                 request.session['access_tok'] = access_token
