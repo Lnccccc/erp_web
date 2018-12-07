@@ -223,12 +223,8 @@ def status(request, status_cd):
     tmp_list.append(stat_5)
     tmp_list.append(stat_6)
     tmp_list.append(stat_7)
-    membs = Profile.objects.filter(company=company)
-    try:
-        for i in membs:
-            memb_list.append(i.realname)
-    except:
-        memb_list.append('无')
+    for i in Company.objects.get(name=company).membs:
+        memb_list.append(i.name)
     if status_cd:
         results = orders_list.objects.raw(
             "select a.*,b.stat_nam from work_flow_orders_list a left join work_flow_order_stat b on a.order_status = b.stat_cd where a.order_status=%d and a.company='%s'" % (
@@ -245,12 +241,8 @@ def permission_denied(request):
 def order_detail(request,uuidd):
     openid,real_name,user,company = get_info(request)
     memb_list=[]
-    membs = Profile.objects.filter(company=company)
-    try:
-        for i in membs:
-            memb_list.append(i.realname)
-    except:
-        memb_list.append('无')
+    for i in Company.objects.get(name=company).membs:
+        memb_list.append(i.name)
     order = orders_list.objects.get(uuid=uuidd)
     order_form = WorkFlowDetailForm(instance=order)
     return render(request,'order_detail.html',context=({'order_form':order_form,'memb':memb_list,'uuid':uuidd}))
