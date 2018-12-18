@@ -12,8 +12,7 @@ class WeixinUser(models.Model):
 class Company(models.Model):
     name = models.CharField(max_length=200,blank=True,null=True,default="示例企业")
     owner = models.CharField(max_length=200,blank=True,null=True)
-    def __str__(self):
-        return "this is %s's company,name is %s" %(self.owner,self.name)
+    
 
 class Profile(models.Model):
     dept_list = (('总经理','总经理'),('厂长','厂长'),('生产主管','生产主管'),('仓管','仓管'),('空','空'))
