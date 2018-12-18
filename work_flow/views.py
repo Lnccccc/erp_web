@@ -86,8 +86,8 @@ def add_order(request):
     openid,real_name,user,company = get_info(request)
     _company = request.session.get('company','null')
     memb_list=[]
-    for i in Company.objects.get(name=_company).membs:
-        memb_list.append(i.name)
+    for i in Company.objects.get(name=_company).membs.all():
+        memb_list.append(i.realname)
     ass_tok = request.session.get('access_tok','null')
     if request.method == 'POST' and _islogin:
         form = WorkFlowForm(request.POST)
@@ -223,8 +223,8 @@ def status(request, status_cd):
     tmp_list.append(stat_5)
     tmp_list.append(stat_6)
     tmp_list.append(stat_7)
-    for i in Company.objects.get(name=company).membs:
-        memb_list.append(i.name)
+    for i in Company.objects.get(name=company).membs.all():
+        memb_list.append(i.realname)
     if status_cd:
         results = orders_list.objects.raw(
             "select a.*,b.stat_nam from work_flow_orders_list a left join work_flow_order_stat b on a.order_status = b.stat_cd where a.order_status=%d and a.company='%s'" % (
@@ -241,8 +241,8 @@ def permission_denied(request):
 def order_detail(request,uuidd):
     openid,real_name,user,company = get_info(request)
     memb_list=[]
-    for i in Company.objects.get(name=company).membs:
-        memb_list.append(i.name)
+    for i in Company.objects.get(name=company).membs.all():
+        memb_list.append(i.realname)
     order = orders_list.objects.get(uuid=uuidd)
     order_form = WorkFlowDetailForm(instance=order)
     return render(request,'order_detail.html',context=({'order_form':order_form,'memb':memb_list,'uuid':uuidd}))
