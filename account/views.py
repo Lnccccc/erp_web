@@ -72,11 +72,20 @@ def permission_denied(request):
     return render(request,'order_list.html')
 
 def edit_2(request):
-    if request.session.get('dept') == '总经理':
+    if request.method == 'GET':
+        if request.session.get('dept') == '总经理':
+            membs = Company.objects.get(name=request.session.get('company')).membs.all()
+            return render(request, 'account/edit_2.html', {'membs': membs})
+        else:
+            HttpResponse("你没有权限")
+    elif request.method == 'POST':
         membs = Company.objects.get(name=request.session.get('company')).membs.all()
-        return render(request, 'account/edit_2.html', {'membs': membs})
-    else:
-        HttpResponse("你没有权限")
+        for i in membs:
+            realname = i.realname
+            dept = request.POST.get(realname)
+            Profile.objects.filter(realname=request.session.get('realname')).update(dept=dept)
+        membs = Company.objects.get(name=request.session.get('company')).membs.all()
+        return render(request,'account/edit_2.html',{'membs':membs})
 
 def update_per(request):
     if request.method == 'POST':

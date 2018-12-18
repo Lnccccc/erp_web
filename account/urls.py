@@ -18,7 +18,7 @@ urlpatterns = [
 #     path('register/',views.register,name='register'),
     path('edit/',views.edit,name='edit'),
     path('people-edit/',views.edit_2,name='edit_2'),
-    path('people-edit/<str:usr_name>',views.update_per,name='update_per'),
+    path('people-edit/update/',views.update_per,name='update_per'),
     path('weixin/',wx.weixin,name='weixin'),
     path('',wx.get_usr,name='get_usr'),
 ]
