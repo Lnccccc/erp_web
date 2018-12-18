@@ -1,57 +1,16 @@
 {% extends "base.html" %}
 {% block title %}Edit your account {% endblock %}
 {% block content %}
-<h1>选择一个账户赋给予它职位和权限</h1>
+<h1>{{ request.session.company }}</h1>
+<h4>选择一个账户赋给予它职位和权限</h4>
 {% if request.session.dept == '总经理' %}
-<form action="." method="post">
+{% if membs %}
+<form action="." method="POST">
     {% csrf_token %}
-    <div>
-        <select name="staff">
-            {% for i in staff_list %}
-            <option value="{{ i }}">{{ i }}</option>
-            {% endfor %}
-        </select>
-    </div>
-<input type="submit" name="" id="" value="查询">
-</form>
-{% if user_info %}
-<form action="{% url 'account:update_per' user_info.realname %}" method="POST">
-    {% csrf_token %}
-    <div>
-    <span><h4>用户名：</h4></span>
-    <span>{{ user_info.realname }}</span>
-    </div>
-    <span><h4>部门：</h4></span>
-    <div>
-    <select name="dept">
-        {% if user_info.dept == '厂长' %}
-        <option value="厂长" selected>厂长</option>
-        <option value="生产主管">生产主管</option>
-        <option value="仓管">仓管</option>
-        <option value="空">空</option>
-        {% elif user_info.dept == '生产主管' %}
-        <option value="厂长">厂长</option>
-        <option value="生产主管" selected>生产主管</option>
-        <option value="仓管">仓管</option>
-        <option value="空">空</option>
-        {% elif user_info.dept == '仓管' %}
-        <option value="厂长">厂长</option>
-        <option value="生产主管">生产主管</option>
-        <option value="仓管" selected>仓管</option>
-        <option value="空">空</option>
-        {% else %}
-        <option value="厂长">厂长</option>
-        <option value="生产主管">生产主管</option>
-        <option value="仓管">仓管</option>
-        <option value="空" selected>空</option>
-        {% endif %}
-    </select>
-    </div>
-
-    <span><h4>公司：</h4></span>
-    {% if user_info.company == request.session.company %}
-    <input type="text" class='form-control' id="disabledInput" placeholder="{{ user_info.company }}" name="com" disabled>
-    {% endif %}
+    {% for i in membs %}
+        <span>i.realname</span>
+        <span>i.dept</span>
+    {% endfor %}
     <input type="submit" name="" id="sub" value="确认修改">
 </form>
 {% endif %}
