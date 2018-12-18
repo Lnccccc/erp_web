@@ -10,7 +10,7 @@ from django.contrib import messages
 from account.models import WeixinUser,Company
 import json
 import requests
-
+from datetime import datetime
 def verified(request):
     f=open('MP_verify_YUe1siIcc5wabsNm.txt','rb')
     return HttpResponse(f)
@@ -250,7 +250,7 @@ def order_detail(request,uuidd):
 def send_message(openid,access_token,client,spec,quantity,uuidd,remark,sub_time,order_time): ##推送模板消息
     url = 'https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=%s' % access_token
     _sub_time = sub_time.strftime("%y-%m-%d")
-    _order_time = order_time.strftime("%y-%m-%d-%s")
+    _order_time = datetime.now().strftime("%y-%m-%d %H:%M:%S")
     message = {
         "touser":openid,
         "template_id":"tOotk5nGMdC-Jm2gXobKqNpt0LLbyUXDBEe96m-f7oQ",
