@@ -80,8 +80,11 @@ def edit_2(request):
 
 def update_per(request):
     if request.method == 'POST':
-        dept = request.POST.get('dept')
-
+        membs = Company.objects.get(name=request.session.get('company')).membs.all()
+        for i in membs:
+            realname = i.realname
+            dept = request.POST.get(realname)
+            Profile.objects.filter(realname=request.session.get('realname')).update(dept=dept)
         membs = Company.objects.get(name=request.session.get('company')).membs.all()
         return render(request,'account/edit_2.html',{'membs':membs})
 
