@@ -7,10 +7,18 @@
 {% if membs %}
 <form action="." method="POST">
     {% csrf_token %}
-    {% for i in membs %}
-        <span>{{ i.realname }}</span>
-        <span>{{ i.dept }}</span>
-    {% endfor %}
+    <table class='table table-bordered'>
+    <tr>
+    <th>姓名</th>
+    <th>职位</th>
+    </tr>
+        {% for i in membs %}
+    <tr>
+        <td>{{ i.realname }}</td>
+        <td>{{ i.dept }}</td>
+    </tr>
+        {% endfor %}
+</table>
     <input type="submit" name="" id="sub" value="确认修改">
 </form>
 {% endif %}
