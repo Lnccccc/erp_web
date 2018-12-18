@@ -167,7 +167,7 @@ class WeiXin():
         if open_id in self.all_user:
             request.session['islogin'] = True
             self.wx_user = WeixinUser.objects.filter(openid=open_id)[0]
-            if self.wx_user.profile.company.name != '示例企业':
+            if True:
                 request.session['openid'] = open_id
                 request.session['nickname'] = self.nickname
                 request.session['dept'] = self.wx_user.profile.dept
@@ -176,12 +176,12 @@ class WeiXin():
                 request.session['ass_tok'] = ass_tok
                 request.session['access_tok'] = access_token
                 return redirect('/flow/')
-            else:  ##若公司一直为空则需要先填好公司和真名
-                request.session['openid'] = open_id
-                request.session['nickname'] = self.nickname
-                request.session['ass_tok'] = ass_tok
-                request.session['dept'] = self.wx_user.profile.dept
-                return redirect('/account/edit/')
+            # else:  ##若公司一直为空则需要先填好公司和真名
+            #     request.session['openid'] = open_id
+            #     request.session['nickname'] = self.nickname
+            #     request.session['ass_tok'] = ass_tok
+            #     request.session['dept'] = self.wx_user.profile.dept
+            #     return redirect('/account/edit/')
         else:
             wxu = WeixinUser(openid=open_id,nickname=self.nickname,sex=self.sex,city=self.city)
             wxu.save()
