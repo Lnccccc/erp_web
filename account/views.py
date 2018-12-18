@@ -72,26 +72,11 @@ def permission_denied(request):
     return render(request,'order_list.html')
 
 def edit_2(request):
-    search_form = SearchForm()
-    staff_list = []
-    for i in Company.objects.get(name=request.session.get('company')).membs.all():
-        staff_list.append(i.realname)
     if request.session.get('dept') == '总经理':
-        if request.method == 'POST':
-            ## 需要判断输入账户是否存在
-            search_name = request.POST.get('staff')
-            if Profile.objects.get(realname=search_name):
-                user_info = Profile.objects.get(realname=search_name)
-                return render(request,'account/edit_2.html',context={'user_info':user_info,'search_form':search_form})
-            else:
-                messages.warning(request,'没有这个用户')
-                search_form = SearchForm()
-                return render(request,'account/edit_2.html',context={'search_form':search_form,'staff_list':staff_list})
-        else:
-            return render(request,'account/edit_2.html',context={'search_form':search_form,'staff_list':staff_list})
+        membs = Company.objects.get(name=request.session.get('company')).membs.all()
+        render(request, 'account/edit_2.html', {'membs': membs})
     else:
-        messages.warning(request,"你没有权限")
-        return redirect("/flow/")
+        HttpResponse("你没有权限")
 
 def update_per(request,usr_name):
     membs = Company.objects.get(name=request.session.get('company')).membs.all()

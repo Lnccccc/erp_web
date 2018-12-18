@@ -8,8 +8,8 @@
 <form action="." method="POST">
     {% csrf_token %}
     {% for i in membs %}
-        <span>i.realname</span>
-        <span>i.dept</span>
+        <span>{{ i.realname }}</span>
+        <span>{{ i.dept }}</span>
     {% endfor %}
     <input type="submit" name="" id="sub" value="确认修改">
 </form>
