@@ -78,9 +78,12 @@ def edit_2(request):
     else:
         HttpResponse("你没有权限")
 
-def update_per(request,usr_name):
-    membs = Company.objects.get(name=request.session.get('company')).membs.all()
-    return render(request,'account/edit_2.html',{'membs':membs})
+def update_per(request):
+    if request.method == 'POST':
+        dept = request.POST.get('dept')
+
+        membs = Company.objects.get(name=request.session.get('company')).membs.all()
+        return render(request,'account/edit_2.html',{'membs':membs})
 
 
 

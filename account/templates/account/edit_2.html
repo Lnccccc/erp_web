@@ -15,7 +15,7 @@
         {% for i in membs %}
     <tr>
         <td>{{ i.realname }}</td>
-        <td>{{ i.dept }}</td>
+        <td><input type="text" name="{{ i.realname }}" value="{{ i.dept }}"></td>
     </tr>
         {% endfor %}
 </table>
