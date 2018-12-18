@@ -111,7 +111,7 @@ def add_order(request):
                 user_openid = Profile.objects.get(realname=_person_incharge).user.openid
             except:
                 user_openid = ''
-            send_ind = send_message(user_openid,ass_tok,_client,_spec,_order_quantity,_uuidd,_remark,_sub_time)
+            send_ind = send_message(user_openid,ass_tok,_client,_spec,_order_quantity,_uuidd,_remark,_sub_time,_order_time)
             if send_ind == True: ##推送模板消息
                 ol.save()
                 return redirect("/flow/")
@@ -247,9 +247,10 @@ def order_detail(request,uuidd):
     order_form = WorkFlowDetailForm(instance=order)
     return render(request,'order_detail.html',context=({'order_form':order_form,'memb':memb_list,'uuid':uuidd}))
 
-def send_message(openid,access_token,client,spec,quantity,uuidd,remark,sub_time): ##推送模板消息
+def send_message(openid,access_token,client,spec,quantity,uuidd,remark,sub_time,order_time): ##推送模板消息
     url = 'https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=%s' % access_token
     _sub_time = sub_time.strftime("%y-%m-%d")
+    _order_time = order_time.strftime("%y-%m-%d-%h-%s")
     message = {
         "touser":openid,
         "template_id":"tOotk5nGMdC-Jm2gXobKqNpt0LLbyUXDBEe96m-f7oQ",
@@ -260,7 +261,7 @@ def send_message(openid,access_token,client,spec,quantity,uuidd,remark,sub_time)
                 "color":"#173177"
             },
             "keyword1":{
-                "value":uuidd[:5],
+                "value":_order_time,
                 "color":"#173177"
             },
             "keyword2": {
