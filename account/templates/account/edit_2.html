@@ -5,7 +5,7 @@
 <h4>选择一个账户赋给予它职位和权限</h4>
 {% if request.session.dept == '总经理' %}
 {% if membs %}
-<form action="." method="POST">
+<form action="{% url 'account:edit_2' %}" method="POST">
     {% csrf_token %}
     <table class='table table-bordered'>
     <tr>
