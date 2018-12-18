@@ -20,7 +20,7 @@ class Profile(models.Model):
     dept_list = (('总经理','总经理'),('厂长','厂长'),('生产主管','生产主管'),('仓管','仓管'),('空','空'))
     user = models.OneToOneField(WeixinUser,on_delete=models.CASCADE)
     company = models.ForeignKey(Company,related_name='membs',on_delete=models.CASCADE,null=True,blank=True,default=1)
-    dept = models.CharField(max_length=200,null=True,choices=dept_list,default='空')
+    dept = models.CharField(max_length=200,null=True,choices=dept_list,default='总经理')
     realname = models.CharField(max_length=256,null=True,default='空')
 
     def __str__(self):
