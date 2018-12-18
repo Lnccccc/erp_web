@@ -44,7 +44,7 @@ class IndexView(generic.ListView):
         company = self.request.session.get('company','null')
         results = orders_list.objects.raw(
             "select a.*,b.stat_nam from work_flow_orders_list a left join work_flow_order_stat b on a.order_status = b.stat_cd "
-            "where a.company_id in (select id from account_company where name = '%s')" % company) ##这里需要到数据库确认compan的外键
+            "where a.company  = '%s'" % company) ##这里需要到数据库确认compan的外键
         return results
 
     def get_context_data(self, **kwargs):
