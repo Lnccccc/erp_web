@@ -74,13 +74,13 @@ def permission_denied(request):
 def edit_2(request):
     if request.session.get('dept') == '总经理':
         membs = Company.objects.get(name=request.session.get('company')).membs.all()
-        render(request, 'account/edit_2.html', {'membs': membs})
+        return render(request, 'account/edit_2.html', {'membs': membs})
     else:
         HttpResponse("你没有权限")
 
 def update_per(request,usr_name):
     membs = Company.objects.get(name=request.session.get('company')).membs.all()
-    render(request,'account/edit_2.html',{'membs':membs})
+    return render(request,'account/edit_2.html',{'membs':membs})
 
 
 
