@@ -250,7 +250,7 @@ def order_detail(request,uuidd):
 def send_message(openid,access_token,client,spec,quantity,uuidd,remark,sub_time,order_time): ##推送模板消息
     url = 'https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=%s' % access_token
     _sub_time = sub_time.strftime("%y-%m-%d")
-    _order_time = order_time.strftime("%y-%m-%d-%h-%s")
+    _order_time = order_time.strftime("%y-%m-%d-%s")
     message = {
         "touser":openid,
         "template_id":"tOotk5nGMdC-Jm2gXobKqNpt0LLbyUXDBEe96m-f7oQ",
