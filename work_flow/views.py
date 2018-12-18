@@ -74,8 +74,8 @@ class IndexView(generic.ListView):
         tmp_list.append(stat_6)
         tmp_list.append(stat_7)
         _company = self.request.session.get('company')
-        for i in Company.objects.get(name=_company).membs:
-            memb_list.append(i.name)
+        for i in Company.objects.get(name=_company).membs.all():
+            memb_list.append(i.realname)
         kwargs['count'] = tmp_list
         kwargs['form'] = WorkFlowForm()
         kwargs['memb'] = memb_list

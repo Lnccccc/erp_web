@@ -167,7 +167,7 @@ class WeiXin():
         if open_id in self.all_user:
             request.session['islogin'] = True
             self.wx_user = WeixinUser.objects.filter(openid=open_id)[0]
-            if self.wx_user.profile.company.name != '空':
+            if self.wx_user.profile.company.name != '示例企业':
                 request.session['openid'] = open_id
                 request.session['nickname'] = self.nickname
                 request.session['dept'] = self.wx_user.profile.dept
@@ -190,6 +190,6 @@ class WeiXin():
             request.session['openid'] = open_id
             request.session['ass_tok'] = ass_tok
             request.session['nickname'] = self.nickname
-            request.session['company'] = '空'
+            request.session['company'] = '示例企业'
             return redirect('/account/edit/') ##初次登陆时没有设置session因此在edit页面无法获取session的openid等内容
 
