@@ -74,8 +74,8 @@ def permission_denied(request):
 def edit_2(request):
     search_form = SearchForm()
     staff_list = []
-    for i in Company.objects.get(name=request.session.get('company')).membs:
-        staff_list.append(i.lname)
+    for i in Company.objects.get(name=request.session.get('company')).membs.all():
+        staff_list.append(i.realname)
     if request.session.get('dept') == '总经理':
         if request.method == 'POST':
             ## 需要判断输入账户是否存在
@@ -104,8 +104,8 @@ def update_per(request,usr_name):
                 messages.error(request,'操作失败：这不是你公司的员工')
                 return render(request,'account/edit_2.html',context={'search_form':search_form})
             elif user_info.company.name == '空' or user_info.company.name == request.session.get('company'):
-                for i in Company.objects.get(name=request.session.get('company')).membs:
-                    staff_list.append(i.name)
+                for i in Company.objects.get(name=request.session.get('company')).membs.all():
+                    staff_list.append(i.realname)
                 Profile.objects.filter(realname=usr_name).update(dept=dept)
                 messages.success(request,'修改成功')
                 return render(request,'account/edit_2.html',context={'user_info':user_info,'staff_list':staff_list})
