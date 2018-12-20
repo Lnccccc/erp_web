@@ -26,6 +26,7 @@
 	{% if request.session.islogin %}
         <ul class="nav navbar-nav">
             <li><a href="{% url 'work_flow:index' %}">生产情况</a></li>
+            <li><a href="{% url 'account:add_company' %}">新增企业</a></li>
             {% if request.session.dept == '总经理' %}
             <li >
             <a href="{% url 'account:edit_2' %}">企业人员管理</a>

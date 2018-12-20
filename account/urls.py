@@ -20,4 +20,5 @@ urlpatterns = [
     path('people-edit/',views.edit_2,name='edit_2'),
     path('weixin/',wx.weixin,name='weixin'),
     path('',wx.get_usr,name='get_usr'),
+    path('add-company/',views.addCompany,name='add_company'),
 ]

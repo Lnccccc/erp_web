@@ -84,9 +84,15 @@ def edit_2(request):
             realname = i.realname
             dept = request.POST.get(realname)
             Profile.objects.filter(realname=realname).update(dept=dept)
+            if realname == request.session.get('realname'):
+                request.session['company'] = dept;
+            else:
+                pass
         membs = Company.objects.get(name=request.session.get('company')).membs.all()
         return render(request,'account/edit_2.html',{'membs':membs})
 
+def addCompany(request):
+    return HttpResponse("None")
 
 class WeiXin():
     def __init__(self):
