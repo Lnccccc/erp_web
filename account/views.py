@@ -62,8 +62,6 @@ def edit(request): #姓名编辑页面
             request.session['company'] = profile.company.name
             return redirect('/flow/')
         else:
-            messages.info(request,'姓名不能为空，请重新填写')
-            time.sleep(1)
             render(request, 'account/edit.html', context={'profile_form': profile_form})
     else:
         profile_form = ProfileEditForm(instance=profile)
@@ -145,23 +143,25 @@ class WeiXin():
         self.sex = self.info_raw['sex']
         self.all_user = self.get_all_user()
         if open_id in self.all_user:
-            request.session['islogin'] = True
-            self.wx_user = WeixinUser.objects.filter(openid=open_id)[0]
-            request.session['openid'] = open_id
-            request.session['nickname'] = self.nickname
-            request.session['dept'] = self.wx_user.profile.dept
-            request.session['company'] = self.wx_user.profile.company.name
-            request.session['realname'] = self.wx_user.profile.realname
-            request.session['ass_tok'] = ass_tok
-            request.session['access_tok'] = access_token
-            return redirect('/flow/')
-
-            # else:  ##若公司一直为空则需要先填好公司和真名
-            #     request.session['openid'] = open_id
-            #     request.session['nickname'] = self.nickname
-            #     request.session['ass_tok'] = ass_tok
-            #     request.session['dept'] = self.wx_user.profile.dept
-            #     return redirect('/account/edit/')
+            if request.session['realname'] != '空':
+                request.session['islogin'] = True
+                self.wx_user = WeixinUser.objects.filter(openid=open_id)[0]
+                request.session['openid'] = open_id
+                request.session['nickname'] = self.nickname
+                request.session['dept'] = self.wx_user.profile.dept
+                request.session['company'] = self.wx_user.profile.company.name
+                request.session['realname'] = self.wx_user.profile.realname
+                request.session['ass_tok'] = ass_tok
+                request.session['access_tok'] = access_token
+                return redirect('/flow/')
+            else:
+                 request.session['openid'] = open_id
+                 request.session['nickname'] = self.nickname
+                 request.session['ass_tok'] = ass_tok
+                 request.session['company'] = self.wx_user.profile.company.name
+                 request.session['realname'] = self.wx_user.profile.realname
+                 request.session['dept'] = self.wx_user.profile.dept
+                 return redirect('/account/edit/')
         else:
             wxu = WeixinUser(openid=open_id,nickname=self.nickname,sex=self.sex,city=self.city)
             wxu.save()
