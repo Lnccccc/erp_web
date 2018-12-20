@@ -101,9 +101,9 @@
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-                   <button class="btn btn-primary btn-sm">
+                   <a href="{% url 'work_flow:rollback' i.uuid %}"><button class="btn btn-primary btn-sm">
 	回退
-</button>
+</button><a/>
             </td>
         </tr>
         {% endfor %}
