@@ -102,35 +102,7 @@
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-                    <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-	回退
-</button>
-<!-- 模态框（Modal） -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
-						aria-hidden="true">×
-				</button>
-				<h4 class="modal-title" id="myModalLabel">
-					提示：
-				</h4>
-			</div>
-			<div class="modal-body">
-				确定回退这条订单状态？
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default"
-						data-dismiss="modal">关闭
-				</button>
-				<a href="{% url 'work_flow:rollback' i.uuid %}"><button type="button" class="btn btn-primary">
-					确定
-				</button></a>
-			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+                   <a href="{% url 'work_flow:rollback' i.uuid %}"><button class="btn btn-primary btn-lg">回退</button><a/>
                 </div>
             </td>
         </tr>
