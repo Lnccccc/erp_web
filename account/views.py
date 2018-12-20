@@ -7,6 +7,7 @@ from .models import Profile,WeixinUser,Company
 from django.contrib import messages
 import hashlib
 import requests
+import time
 import json
 re = requests
 
@@ -47,7 +48,7 @@ def is_login(self,request):
 #         user_form = UserRegistrationForm()
 #     return render(request,'account/register.html',context={'user_form':user_form})
 
-def edit(request):
+def edit(request): #姓名编辑页面
     try:
         wxu = WeixinUser.objects.get(openid=request.session.get('openid','null'))
         profile = wxu.profile
@@ -55,12 +56,14 @@ def edit(request):
         pass
     if request.method == 'POST':
         profile_form = ProfileEditForm(instance=profile,data=request.POST)
-        if  profile_form.is_valid():
+        if  profile_form.is_valid() and request.session['realname'] != '空':
             profile_form.save()
             request.session['dept'] = profile.dept
             request.session['company'] = profile.company.name
             return redirect('/flow/')
         else:
+            messages.info(request,'姓名不能为空，请重新填写')
+            time.sleep(1)
             return redirect('account/edit/')
     else:
         profile_form = ProfileEditForm(instance=profile)
@@ -71,7 +74,7 @@ def permission_denied(request):
     messages.error(request,'操作失败')
     return render(request,'order_list.html')
 
-def edit_2(request):
+def edit_2(request): #企业人员权限编辑页面
     if request.method == 'GET':
         if request.session.get('dept') == '总经理':
             membs = Company.objects.get(name=request.session.get('company')).membs.all()
@@ -144,15 +147,15 @@ class WeiXin():
         if open_id in self.all_user:
             request.session['islogin'] = True
             self.wx_user = WeixinUser.objects.filter(openid=open_id)[0]
-            if True:
-                request.session['openid'] = open_id
-                request.session['nickname'] = self.nickname
-                request.session['dept'] = self.wx_user.profile.dept
-                request.session['company'] = self.wx_user.profile.company.name
-                request.session['realname'] = self.wx_user.profile.realname
-                request.session['ass_tok'] = ass_tok
-                request.session['access_tok'] = access_token
-                return redirect('/flow/')
+            request.session['openid'] = open_id
+            request.session['nickname'] = self.nickname
+            request.session['dept'] = self.wx_user.profile.dept
+            request.session['company'] = self.wx_user.profile.company.name
+            request.session['realname'] = self.wx_user.profile.realname
+            request.session['ass_tok'] = ass_tok
+            request.session['access_tok'] = access_token
+            return redirect('/flow/')
+
             # else:  ##若公司一直为空则需要先填好公司和真名
             #     request.session['openid'] = open_id
             #     request.session['nickname'] = self.nickname
