@@ -56,7 +56,7 @@ def edit(request): #姓名编辑页面
         pass
     if request.method == 'POST':
         profile_form = ProfileEditForm(instance=profile,data=request.POST)
-        if  profile_form.is_valid() and request.session['realname'] != '空':
+        if  profile_form.is_valid() and profile_form.cleaned_data['realname'] != '空':
             profile_form.save()
             request.session['dept'] = profile.dept
             request.session['company'] = profile.company.name
