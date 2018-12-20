@@ -64,7 +64,7 @@ def edit(request): #姓名编辑页面
         else:
             messages.info(request,'姓名不能为空，请重新填写')
             time.sleep(1)
-            return redirect('/edit/')
+            render(request, 'account/edit.html', context={'profile_form': profile_form})
     else:
         profile_form = ProfileEditForm(instance=profile)
         return render(request,'account/edit.html',context={'profile_form':profile_form})
