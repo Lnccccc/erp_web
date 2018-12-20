@@ -62,7 +62,7 @@ def edit(request): #姓名编辑页面
             request.session['company'] = profile.company.name
             return redirect('/flow/')
         else:
-            render(request, 'account/edit.html', context={'profile_form': profile_form})
+            return render(request, 'account/edit.html', context={'profile_form': profile_form})
     else:
         profile_form = ProfileEditForm(instance=profile)
         return render(request,'account/edit.html',context={'profile_form':profile_form})
