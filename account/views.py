@@ -158,9 +158,6 @@ class WeiXin():
                  request.session['openid'] = open_id
                  request.session['nickname'] = self.nickname
                  request.session['ass_tok'] = ass_tok
-                 request.session['company'] = self.wx_user.profile.company.name
-                 request.session['realname'] = self.wx_user.profile.realname
-                 request.session['dept'] = self.wx_user.profile.dept
                  return redirect('/account/edit/')
         else:
             wxu = WeixinUser(openid=open_id,nickname=self.nickname,sex=self.sex,city=self.city)
