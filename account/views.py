@@ -60,6 +60,7 @@ def edit(request): #姓名编辑页面
             profile_form.save()
             request.session['dept'] = profile.dept
             request.session['company'] = profile.company.name
+            request.session['realname'] = profile.realname
             return redirect('/flow/')
         else:
             return render(request, 'account/edit.html', context={'profile_form': profile_form})
