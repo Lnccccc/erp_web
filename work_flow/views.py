@@ -162,7 +162,7 @@ def update_order(request, uuidd):
     if request.method == 'POST':
         next_node = request.POST.get('next_node')
         remark = request.POST.get('remark')
-        next_node_id = Profile.objects.get(real_name='next_node').user.openid
+        next_node_id = Profile.objects.get(realname=next_node).user.openid
         if status_cd < 7:
             if per == '总经理' and status_cd < 7:
                 orders_list.objects.filter(uuid=uuidd).update(order_status=status_cd + 1, person_incharge=next_node,remark=remark)
