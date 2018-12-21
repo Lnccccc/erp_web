@@ -8,7 +8,8 @@ class WeixinUser(models.Model):
     nickname = models.CharField(max_length=256,null=True)
     sex = models.CharField(max_length=256,null=True)
     city = models.CharField(max_length=256,null=True)
-
+    def __str__(self):
+        return self.nickname
 class Company(models.Model):
     name = models.CharField(max_length=200,blank=True,null=True,default="示例企业")
     owner = models.CharField(max_length=200,blank=True,null=True)
@@ -24,7 +25,7 @@ class Profile(models.Model):
     realname = models.CharField(max_length=256,null=True,default='空')
 
     def __str__(self):
-        return 'Profile for user {}'.format(self.user.nickname)
+        return self.realname
 
 
 
