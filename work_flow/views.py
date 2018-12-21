@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect,HttpResponse
 from .models import orders_list, order_stat
 from account.models import Profile
-from uuid import uuid4
 from django.db.models import Count
 from django.views import generic
 from .forms import WorkFlowForm,WorkFlowDetailForm
@@ -11,6 +10,7 @@ from account.models import WeixinUser,Company
 import json
 import requests
 from datetime import datetime
+
 def verified(request):
     f=open('MP_verify_YUe1siIcc5wabsNm.txt','rb')
     return HttpResponse(f)
@@ -101,7 +101,7 @@ def add_order(request):
             _person_incharge = form.cleaned_data['person_incharge']
             _requirement = form.cleaned_data['requirement']
             _remark = form.cleaned_data['remark']
-            _uuidd = uuid4()
+            _uuidd = str(datetime.timestamp())
             ol = orders_list(user_name=real_name, openid=openid, uuid=_uuidd, client=_client, order_time=_order_time,
                              sub_time=_sub_time,company=_company,
                              order_quantity=_order_quantity, spec=_spec,
@@ -261,7 +261,7 @@ def send_message(openid,access_token,client,spec,quantity,uuidd,remark,sub_time,
                 "color":"#173177"
             },
             "keyword1":{
-                "value":_order_time,
+                "value":uuidd,
                 "color":"#173177"
             },
             "keyword2": {
