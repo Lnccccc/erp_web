@@ -101,7 +101,7 @@ def add_order(request):
             _person_incharge = form.cleaned_data['person_incharge']
             _requirement = form.cleaned_data['requirement']
             _remark = form.cleaned_data['remark']
-            _uuidd = str(datetime.timestamp())
+            _uuidd = datetime.now().strftime("%Y%m%d%H%S")
             ol = orders_list(user_name=real_name, openid=openid, uuid=_uuidd, client=_client, order_time=_order_time,
                              sub_time=_sub_time,company=_company,
                              order_quantity=_order_quantity, spec=_spec,
