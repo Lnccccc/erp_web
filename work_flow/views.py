@@ -111,7 +111,7 @@ def add_order(request):
                 user_openid = Profile.objects.get(realname=_person_incharge).user.openid
             except:
                 user_openid = ''
-            send_ind = send_message(user_openid,ass_tok,_client,_spec,_order_quantity,_uuidd,_remark,_sub_time,_order_time)
+            send_ind = new_add_message(user_openid,ass_tok,_client,_spec,_order_quantity,_uuidd,_remark,_sub_time,_order_time)
             if send_ind == True: ##推送模板消息
                 ol.save()
                 return redirect("/flow/")
@@ -154,20 +154,25 @@ def delete_order(request, uuidd):
         redirect('account/edit/')
 
 def update_order(request, uuidd):
+    ass_tok = request.session.get('access_tok', 'null')
     openid,real_name ,user,company= get_info(request)
-    status_cd = orders_list.objects.get(uuid=uuidd).order_status
+    ordr = orders_list.objects.get(uuid=uuidd)
+    status_cd = ordr.order_status
     per = user.profile.dept
     if request.method == 'POST':
         next_node = request.POST.get('next_node')
         remark = request.POST.get('remark')
+        next_node_id = Profile.objects.get(real_name='next_node').user.openid
         if status_cd < 7:
             if per == '总经理' and status_cd < 7:
                 orders_list.objects.filter(uuid=uuidd).update(order_status=status_cd + 1, person_incharge=next_node,remark=remark)
                 messages.success(request, "操作成功")
+                change_sts_message(next_node_id,ass_tok,ordr.client,ordr.spec,ordr.order_quantity,uuidd,remark,ordr.sub_time)
                 return redirect("/flow/detail/%s" % uuidd)
             elif per == '厂长' and status_cd == 2 or status_cd == 3:
                 orders_list.objects.filter(uuid=uuidd).update(order_status=status_cd + 1, person_incharge=next_node,remark=remark)
                 messages.success(request, "操作成功")
+                change_sts_message(next_node_id,ass_tok,ordr.client,ordr.spec,ordr.order_quantity,uuidd,remark,ordr.sub_time)
                 return redirect("/flow/detail/%s" % uuidd)
             elif per == '生产主管' and status_cd == 4 or status_cd == 5:
                 orders_list.objects.filter(uuid=uuidd).update(order_status=status_cd + 1, person_incharge=next_node,remark=remark)
@@ -176,6 +181,7 @@ def update_order(request, uuidd):
             elif per == '仓管' and status_cd == 6 or status_cd == 7:
                 orders_list.objects.filter(uuid=uuidd).update(order_status=status_cd + 1, person_incharge=next_node,remark=remark)
                 messages.success(request, "操作成功")
+                change_sts_message(next_node_id,ass_tok,ordr.client,ordr.spec,ordr.order_quantity,uuidd,remark,ordr.sub_time)
                 return redirect("/flow/detail/%s" % uuidd)
             else:
                 messages.error(request, per + str(status_cd) + '操作失败：你没有相应的权限，请联系总经理')
@@ -247,7 +253,7 @@ def order_detail(request,uuidd):
     order_form = WorkFlowDetailForm(instance=order)
     return render(request,'order_detail.html',context=({'order_form':order_form,'memb':memb_list,'uuid':uuidd}))
 
-def send_message(openid,access_token,client,spec,quantity,uuidd,remark,sub_time,order_time): ##推送模板消息
+def new_add_message(openid,access_token,client,spec,quantity,uuidd,remark,sub_time,order_time): ##推送模板消息
     url = 'https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=%s' % access_token
     _sub_time = sub_time.strftime("%y-%m-%d")
     _order_time = datetime.now().strftime("%y-%m-%d %H:%M:%S")
@@ -290,6 +296,42 @@ def send_message(openid,access_token,client,spec,quantity,uuidd,remark,sub_time,
     j_message = json.dumps(message)
     r = requests.post(url=url,data=j_message).json()
 
+    if r['errmsg'] == 'ok':
+        return True
+    else:
+        return r['errmsg']
+
+
+def change_sts_message(openid,access_token,client,spec,quantity,uuidd,remark,sub_time,order_time):
+    url = 'https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=%s' % access_token
+    _sub_time = sub_time.strftime("%y-%m-%d")
+    ordr_info = '客户：%s\n规格：%s\n数量:%s\n交货时间：%s\n' % (client,spec,quantity,_sub_time)
+    message = {
+        "touser": openid,
+        "template_id": "cSoH0M_9Q35umZ99pl8r1pZ_Rkq2j4x2_VG_hacnugo",
+        "url": "http://www.e-fac.cn/flow/detail/%s" % uuidd,
+        "data": {
+            "first": {
+                "value": "订单已流转到你这，请及时处理",
+                "color": "#173177"
+            },
+            "keyword1": {
+                "value": uuidd,
+                "color": "#173177"
+            },
+            "keyword2": {
+                "value": ordr_info,
+                "color": "#173177"
+            },
+            "remark": {
+                "value": remark,
+                "color": "#173177"
+            }
+
+        }
+    }
+    j_message = json.dumps(message)
+    r = requests.post(url=url, data=j_message).json()
     if r['errmsg'] == 'ok':
         return True
     else:
