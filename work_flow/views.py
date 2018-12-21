@@ -167,21 +167,22 @@ def update_order(request, uuidd):
             if per == '总经理' and status_cd < 7:
                 orders_list.objects.filter(uuid=uuidd).update(order_status=status_cd + 1, person_incharge=next_node,remark=remark)
                 messages.success(request, "操作成功")
-                change_sts_message(next_node_id,ass_tok,ordr.client,ordr.spec,ordr.order_quantity,uuidd,remark,ordr.sub_time)
+                change_sts_message(next_node_id,ass_tok,ordr.client,ordr.spec,ordr.order_quantity,uuidd,remark,ordr.sub_time,ordr.order_time)
                 return redirect("/flow/detail/%s" % uuidd)
             elif per == '厂长' and status_cd == 2 or status_cd == 3:
                 orders_list.objects.filter(uuid=uuidd).update(order_status=status_cd + 1, person_incharge=next_node,remark=remark)
                 messages.success(request, "操作成功")
-                change_sts_message(next_node_id,ass_tok,ordr.client,ordr.spec,ordr.order_quantity,uuidd,remark,ordr.sub_time)
+                change_sts_message(next_node_id,ass_tok,ordr.client,ordr.spec,ordr.order_quantity,uuidd,remark,ordr.sub_time,ordr.order_time)
                 return redirect("/flow/detail/%s" % uuidd)
             elif per == '生产主管' and status_cd == 4 or status_cd == 5:
                 orders_list.objects.filter(uuid=uuidd).update(order_status=status_cd + 1, person_incharge=next_node,remark=remark)
                 messages.success(request, "操作成功")
+                change_sts_message(next_node_id,ass_tok,ordr.client,ordr.spec,ordr.order_quantity,uuidd,remark,ordr.sub_time,ordr.order_time)
                 return redirect("/flow/detail/%s" % uuidd)
             elif per == '仓管' and status_cd == 6 or status_cd == 7:
                 orders_list.objects.filter(uuid=uuidd).update(order_status=status_cd + 1, person_incharge=next_node,remark=remark)
                 messages.success(request, "操作成功")
-                change_sts_message(next_node_id,ass_tok,ordr.client,ordr.spec,ordr.order_quantity,uuidd,remark,ordr.sub_time)
+                change_sts_message(next_node_id,ass_tok,ordr.client,ordr.spec,ordr.order_quantity,uuidd,remark,ordr.sub_time,ordr.order_time)
                 return redirect("/flow/detail/%s" % uuidd)
             else:
                 messages.error(request, per + str(status_cd) + '操作失败：你没有相应的权限，请联系总经理')
@@ -305,7 +306,8 @@ def new_add_message(openid,access_token,client,spec,quantity,uuidd,remark,sub_ti
 def change_sts_message(openid,access_token,client,spec,quantity,uuidd,remark,sub_time,order_time):
     url = 'https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=%s' % access_token
     _sub_time = sub_time.strftime("%y-%m-%d")
-    ordr_info = '客户：%s\n规格：%s\n数量:%s\n交货时间：%s\n' % (client,spec,quantity,_sub_time)
+    _order_time = order_time.strftime("%y-%m-%d")
+    ordr_info = '客户：%s\n规格：%s\n数量:%s\n下单时间:%s\n交货时间：%s\n' % (client,spec,quantity,_order_time,_sub_time)
     message = {
         "touser": openid,
         "template_id": "cSoH0M_9Q35umZ99pl8r1pZ_Rkq2j4x2_VG_hacnugo",
