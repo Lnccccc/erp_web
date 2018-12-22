@@ -10,6 +10,17 @@ from account.models import WeixinUser,Company
 import json
 import requests
 from datetime import datetime
+import time
+
+def refresh_token(request):
+    appid='wxec4567a41338530d'
+    secret = 'f81a45edfb0ebb4607c8441fac0876d9'
+    access_url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s' % (appid,secret) #用于调用微信接口的api
+    raw_access_token = requests.get(access_url).json()
+    access_token = raw_access_token['access_token']
+    request.session['access_tok'] = access_token
+
+
 
 def verified(request):
     f=open('MP_verify_YUe1siIcc5wabsNm.txt','rb')
@@ -337,4 +348,5 @@ def change_sts_message(openid,access_token,client,spec,quantity,uuidd,remark,sub
     if r['errmsg'] == 'ok':
         return True
     else:
+
         return r['errmsg']

@@ -20,8 +20,7 @@ class WorkFlowForm(forms.ModelForm):
     order_time = forms.DateField()
     sub_time = forms.DateField()
     order_time.widget.attrs.update({'value':datetime.now().strftime('%Y-%m-%d'),'class':'form-control'})
-    sub_time.widget.attrs.update({'class':'form-control'})
-    sub_time.widget.attrs.update(widgets=widgets.AdminDateWidget())
+    sub_time.widget.attrs.update({'value':datetime.now().strftime('%Y-%m-%d'),'class':'form-control'})
 
 class WorkFlowDetailForm(forms.ModelForm):
     def __init__(self,*args,**kwargs):
