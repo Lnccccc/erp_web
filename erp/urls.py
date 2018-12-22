@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import path,include
 from work_flow import views
 from .views import verifed
+from django.conf import settings
+from django.views.static import serve
 def i18n_javascript(request):
     return admin.site.i18n_javascript(request)
 urlpatterns = [
