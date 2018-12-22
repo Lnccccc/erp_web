@@ -164,12 +164,12 @@ def update_order(request, uuidd):
         remark = request.POST.get('remark')
         next_node_id = Profile.objects.get(realname=next_node).user.openid
         if status_cd < 7:
-            if per == '总经理' and status_cd < 7:
+            if per == '总经理' and status_cd <= 7:
                 orders_list.objects.filter(uuid=uuidd).update(order_status=status_cd + 1, person_incharge=next_node,remark=remark)
                 messages.success(request, "操作成功")
                 change_sts_message(next_node_id,ass_tok,ordr.client,ordr.spec,ordr.order_quantity,uuidd,remark,ordr.sub_time,ordr.order_time)
                 return redirect("/flow/detail/%s" % uuidd)
-            elif per == '厂长' and status_cd == 2 or status_cd == 3:
+            elif per == '厂长' and status_cd <=7:
                 orders_list.objects.filter(uuid=uuidd).update(order_status=status_cd + 1, person_incharge=next_node,remark=remark)
                 messages.success(request, "操作成功")
                 change_sts_message(next_node_id,ass_tok,ordr.client,ordr.spec,ordr.order_quantity,uuidd,remark,ordr.sub_time,ordr.order_time)
