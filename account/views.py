@@ -10,7 +10,6 @@ import requests
 import time
 import json
 re = requests
-re.encoding='utf-8'
 def is_login(self,request):
     return request.session.get('islogin',False)
 
@@ -138,7 +137,9 @@ class WeiXin():
         ass_tok = self.raw['access_token'] #用于网页授权登陆和获取用户基本信息
         open_id = self.raw['openid']
         self.usr_url = 'https://api.weixin.qq.com/sns/userinfo?access_token=%s&openid=%s&lang=zh_CN' % (ass_tok,open_id)
-        self.info_raw = re.get(self.usr_url).json()
+        self.info_raw_t = re.get(self.usr_url)
+        self.info_raw_t.encoding = 'utf-8'
+        self.info_raw = self.info_raw_t.json()
         self.nickname = self.info_raw['nickname']
         self.city = self.info_raw['city']
         self.sex = self.info_raw['sex']
