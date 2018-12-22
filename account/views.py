@@ -140,7 +140,7 @@ class WeiXin():
         self.info_raw_t = re.get(self.usr_url)
         self.info_raw_t.encoding = 'utf-8'
         self.info_raw = self.info_raw_t.json()
-        self.nickname = self.info_raw['nickname']
+        self.nickname = '-'
         self.city = self.info_raw['city']
         self.sex = self.info_raw['sex']
         self.all_user = self.get_all_user()
