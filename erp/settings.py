@@ -26,7 +26,7 @@ LOGOUT_URL = reverse_lazy('account:logout')
 SECRET_KEY = '$6d))s&0i8+#z7l(^=)n+(#gny7)i8-=&12nfr8uo_a(l%9)fv'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS=["47.107.119.21","localhost","www.e-fac.cn"]
 
 
@@ -126,6 +126,6 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR,'/var/css')
+STATIC_ROOT = '/var/css'
 STATICFILES_DIRS = ['/var/css/',]
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

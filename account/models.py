@@ -28,4 +28,6 @@ class Profile(models.Model):
         return self.realname
 
 
-
+class Access_Token(models.Model):
+    token = models.CharField(max_length=512,blank=True)
+    expires = models.IntegerField(blank=True)
