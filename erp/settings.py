@@ -127,5 +127,4 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 STATIC_ROOT = '/var/css'
-STATICFILES_DIRS = ['/var/css/',]
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
