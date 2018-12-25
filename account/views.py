@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth import authenticate,login
 from .form import ProfileEditForm,SearchForm,WxUserEditForm
 from django.contrib.auth.decorators import login_required
-from .models import Profile,WeixinUser,Company
+from .models import Profile,WeixinUser,Company,Access_Token
 from django.contrib import messages
 import hashlib
 import requests
@@ -12,6 +12,8 @@ import json
 re = requests
 def is_login(self,request):
     return request.session.get('islogin',False)
+
+
 
 #
 # def dashboard(request):
@@ -130,10 +132,11 @@ class WeiXin():
     def get_usr(self,request):
         self.cd = request.GET.get('code')
         self.url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code" % (self.appid,self.secret,self.cd) #用于调用网页授权登陆接口的api
-        self.ass_url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s' % (self.appid,self.secret) #用于调用微信接口的api
+        #self.ass_url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s' % (self.appid,self.secret) #用于调用微信接口的api
         self.raw = re.get(self.url).json()
-        self.raw_access_token = re.get(self.ass_url).json()
-        access_token = self.raw_access_token['access_token'] #用于调用微信接口
+        #self.raw_access_token = re.get(self.ass_url).json()
+        #access_token = self.raw_access_token['access_token'] #用于调用微信接口
+        access_token = Access_Token.objects.get(id=1).token
         ass_tok = self.raw['access_token'] #用于网页授权登陆和获取用户基本信息
         open_id = self.raw['openid']
         self.usr_url = 'https://api.weixin.qq.com/sns/userinfo?access_token=%s&openid=%s&lang=zh_CN' % (ass_tok,open_id)
