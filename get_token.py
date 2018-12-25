@@ -14,6 +14,7 @@ def get_token():
         raw.encoding = 'utf-8'
         token = raw.json()['access_token']
         expires = raw.json()['expires_in']
+        print('请求成功，token为%s' % token)
         cur = db.cursor()
         sql = "INSERT INTO account_access_token VALUES(%d,%s,%d)" %(i,token,expires)
         try:
