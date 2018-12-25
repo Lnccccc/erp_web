@@ -18,6 +18,7 @@ def get_token():
         db.commit()
         print("获取token成功，token为%s" % token)
     except:
+	print('error raise')
         db.rollback()
     db.close()
 
