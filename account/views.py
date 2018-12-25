@@ -148,9 +148,9 @@ class WeiXin():
         self.sex = self.info_raw['sex']
         self.all_user = self.get_all_user()
         if open_id in self.all_user:
-            if request.session['realname'] != '空':
+            self.wx_user = WeixinUser.objects.filter(openid=open_id)[0]
+            if self.wx_user.profile.realname != '空':
                 request.session['islogin'] = True
-                self.wx_user = WeixinUser.objects.filter(openid=open_id)[0]
                 request.session['openid'] = open_id
                 request.session['nickname'] = self.nickname
                 request.session['dept'] = self.wx_user.profile.dept

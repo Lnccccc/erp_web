@@ -26,7 +26,7 @@ LOGOUT_URL = reverse_lazy('account:logout')
 SECRET_KEY = '$6d))s&0i8+#z7l(^=)n+(#gny7)i8-=&12nfr8uo_a(l%9)fv'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS=["47.107.119.21","localhost","www.e-fac.cn"]
 
 
