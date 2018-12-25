@@ -16,16 +16,18 @@ def get_token():
         expires = raw.json()['expires_in']
         print('请求成功，token为%s' % token)
         cur = db.cursor()
-        sql = "INSERT INTO account_access_token VALUES(%d,%s,%d)" %(i,token,expires)
+        sql1 = "delete from account_access_token"
+        sql2 = "INSERT into account_access_token (id,token,expires) VALUES (%d,'%s',%d)" %(i,token,expires)
         try:
-            cur.execute(sql)
+            cur.execute(sql1)
+            cur.execute(sql2)
             db.commit()
-            print("获取token成功，token为%s" % token)
+            print("插入token成功，token为%s" % token)
         except:
             print('error raise')
             db.rollback()
         db.close()
-        i += 1
+
 
 
 if __name__ == '__main__':
