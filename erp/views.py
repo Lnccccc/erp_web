@@ -22,4 +22,4 @@ def verifed(request):
     return  HttpResponse(f)
 
 def homepage(request):
-    return render(request,'/templates/index.html')
+    return render(request,'index.html')
