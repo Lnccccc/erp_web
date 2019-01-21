@@ -16,12 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from work_flow import views
-from .views import verifed
+from .views import verifed,homepage
 from django.conf import settings
 from django.views.static import serve
 def i18n_javascript(request):
     return admin.site.i18n_javascript(request)
 urlpatterns = [
+    path('index/',homepage),
     path('',views.IndexView.as_view(),name='index'),
     path('admin/jsi18n',i18n_javascript),
     path('admin/', admin.site.urls),

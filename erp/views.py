@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
-
+from django.shortcuts import render
 
 def get_code(request):
     cd = request.GET.get('code')
@@ -21,4 +21,5 @@ def verifed(request):
     f=open("MP_verify_YUe1siIcc5wabsNm.txt",'rb')
     return  HttpResponse(f)
 
-
+def homepage(request):
+    return render(request,'/templates/index.html')
