@@ -16,8 +16,8 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 from django.urls import reverse_lazy
 LOGIN_REDIRECT_URL = reverse_lazy('work_flow:index')
-LOGIN_URL = reverse_lazy('account:login')
-LOGOUT_URL = reverse_lazy('account:logout')
+#LOGIN_URL = reverse_lazy('account:login')
+#LOGOUT_URL = reverse_lazy('account:logout')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
@@ -124,6 +124,6 @@ USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
-
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR,'static')
+STATICFILES_DIRS= [os.path.join(BASE_DIR,'static'),'/var/static/',]
+STATIC_ROOT = "/var/static/"
