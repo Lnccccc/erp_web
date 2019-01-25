@@ -22,11 +22,12 @@ from django.views.static import serve
 def i18n_javascript(request):
     return admin.site.i18n_javascript(request)
 urlpatterns = [
+    path('admin/jsi18n',i18n_javascript),
     path('index/',homepage),
     path('',views.IndexView.as_view(),name='index'),
     path('admin/jsi18n',i18n_javascript),
-    path('admin/', admin.site.urls),
+    path('admin/', include(admin.site.urls)),
     path('flow/',include('work_flow.urls',namespace='flow')),
     path('account/',include('account.urls',namespace='account')),
-    path('MP_verify_YUe1siIcc5wabsNm.txt',verifed)
+    path('MP_verify_YUe1siIcc5wabsNm.txt',verifed),
 ]
