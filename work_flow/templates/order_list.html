@@ -72,9 +72,8 @@
             <td>{{i.stat_nam}}</td>
             <td>{{i.person_incharge}}</td>
             <td>
-                    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">
-	删除
-</button>
+                <a href="{% url 'work_flow:delete' i.uuid %}"><button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">删除</button></a>
+
 <!-- 模态框（Modal） -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
@@ -94,16 +93,18 @@
 				<button type="button" class="btn btn-default"
 						data-dismiss="modal">关闭
 				</button>
-				<a href="{% url 'work_flow:delete' i.uuid %}"><button type="button" class="btn btn-primary">
+				<button type="button" class="btn btn-primary">
 					确认
-				</button></a>
+				</button>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-                   <a href="{% url 'work_flow:rollback' i.uuid %}"><button class="btn btn-primary btn-sm">
+                   <a href="{% url 'work_flow:rollback' i.uuid %}">
+                       <button class="btn btn-primary btn-sm">
 	回退
-</button><a/>
+</button>
+                       <a/>
             </td>
         </tr>
         {% endfor %}
