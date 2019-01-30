@@ -22,7 +22,7 @@ from django.views.static import serve
 def i18n_javascript(request):
     return admin.site.i18n_javascript(request)
 urlpatterns = [
-    path('admin/jsi18n',i18n_javascript),
+    path('static/admin/jsi18n',i18n_javascript),
     path('index/',homepage),
     path('',views.IndexView.as_view(),name='index'),
     path('admin/jsi18n',i18n_javascript),
