@@ -72,7 +72,7 @@
             <td>{{i.stat_nam}}</td>
             <td>{{i.person_incharge}}</td>
             <td>
-                <a href="{% url 'work_flow:delete' i.uuid %}"><button type="button" class="btn btn-warning" onclick="javascript:return del();">
+                <a href="{% url 'work_flow:delete' i.uuid %}"><button type="button" class="btn btn-danger" onclick="javascript:return del();">
                     删除
                 </button></a>
                    <a href="{% url 'work_flow:rollback' i.uuid %}">
