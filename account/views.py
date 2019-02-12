@@ -88,7 +88,7 @@ def edit_2(request): #企业人员权限编辑页面
             dept = request.POST.get(realname)
             Profile.objects.filter(realname=realname).update(dept=dept)
             if realname == request.session.get('realname'):
-                request.session['company'] = dept;
+                request.session['dept'] = dept;
             else:
                 pass
         membs = Company.objects.get(name=request.session.get('company')).membs.all()
