@@ -34,7 +34,13 @@
             <li >
             <a href="{% url 'account:edit_2' %}">企业人员管理</a>
             </li>
-	    {% endif %}
+            {% endif %}
+            {% if request.session.realname == '李能聪' %}
+            <li>
+                <a href="http://www.e-fac.cn/admin/">超级管理员</a>
+            </li>
+            {% endif %}
+
 	{% endif %}
         </ul>
 	    <p class="navbar-text navbar-right">
