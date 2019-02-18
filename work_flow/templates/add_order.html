@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 {% if request.session.dept == '总经理' %}
+<div class="alert alert-info">提醒：如要批量输入订单信息,请在规格、数量和单位行以英文分号';'分割订单信息</div>
 <form action="{% url 'work_flow:add_order' %}" method="post" class="form-horizontal" role="form">
     {% csrf_token %}
     <div class="form-group">

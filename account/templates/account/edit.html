@@ -3,7 +3,6 @@
 {% block content %}
 <h4>请填写您的基本信息</h4>
 <p>请您务必如实填写您的姓名和所属公司</p>
-<div class="alert alert-info">注意：公司名称一旦确认将无法修改！</div>
 <form action="{% url 'account:edit' %}" method="POST" enctype="multipart/form-data" role='form'>
     {% if request.session.company == '空' %}
     <div class="form-group">
