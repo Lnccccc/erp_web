@@ -100,6 +100,7 @@ def add_order(request):
     openid,real_name,user,company = get_info(request)
     _company,memb_list = get_company_and_memb_list(request)
     ass_tok = request.session.get('access_tok','null')
+
     if request.method == 'POST' and _islogin:
         form = WorkFlowForm(request.POST)
         if form.is_valid() and request.session.get('dept','null') == '总经理':
@@ -117,32 +118,51 @@ def add_order(request):
             quantity_split = _order_quantity.split(';')
             unit_split = _unit.split(';')
             if len(spec_split)== len(quantity_split)== len(unit_split)==1: #判断是否批量输入 否
-                ol = orders_list(user_name=real_name, openid=openid, uuid=_uuidd, client=_client, order_time=_order_time,
+                ol = orders_list(user_name=real_name, openid=openid, uuid=_uuidd+1, client=_client, order_time=_order_time,
                                  sub_time=_sub_time,company=_company,
                                  order_quantity=_order_quantity, spec=_spec,
                                  unit=_unit, order_status=1, person_incharge=_person_incharge,requirement=_requirement,
                                  remark=_remark)
-            elif len(spec_split) == len(quantity_split) == len(unit_split): #批量输入
+                try:
+                    user_openid = Profile.objects.get(realname=_person_incharge).user.openid
+                except:
+                    user_openid = ''
+                send_ind = new_add_message(user_openid,ass_tok,_client,_spec,_order_quantity,_uuidd,_remark,_sub_time,_order_time)
+                if send_ind == True: ##推送模板消息
+                    ol.save()
+                    return redirect("/flow/")
+                else:
+                    return HttpResponse(send_ind)
+
+            elif len(spec_split) == len(quantity_split) == len(unit_split) > 1: #批量输入
                 for i in range(len(spec_split)):
-                    ol = orders_list(user_name=real_name, openid=openid, uuid=_uuidd, client=_client, order_time=_order_time,
+                    ol = orders_list(user_name='批量测试', openid=openid, uuid=str(int(_uuidd)+i), client=_client, order_time=_order_time,
                                      sub_time=_sub_time,company=_company,
                                      order_quantity=quantity_split[i], spec=spec_split[i],
                                      unit=unit_split[i], order_status=1, person_incharge=_person_incharge,requirement=_requirement,
                                      remark=_remark)
+                    ol.save()
+                try:
+                    user_openid = Profile.objects.get(realname=_person_incharge).user.openid
+                except:
+                    user_openid = ''
+                send_ind = new_add_message(user_openid,ass_tok,_client,_spec,_order_quantity,_uuidd,_remark,_sub_time,_order_time)
+                if send_ind == True:
+                    return redirect("/flow/")
             else:
                 messages.warning(request, '批量输入订单信息有误，请重新输入')
                 order_form = WorkFlowForm()
                 return render(request,'add_order.html',context={'order_form':order_form,'memb':memb_list})
-            try:
-                user_openid = Profile.objects.get(realname=_person_incharge).user.openid
-            except:
-                user_openid = ''
-            send_ind = new_add_message(user_openid,ass_tok,_client,_spec,_order_quantity,_uuidd,_remark,_sub_time,_order_time)
-            if send_ind == True: ##推送模板消息
-                ol.save()
-                return redirect("/flow/")
-            else:
-                return HttpResponse(send_ind)
+            # try:
+            #     user_openid = Profile.objects.get(realname=_person_incharge).user.openid
+            # except:
+            #     user_openid = ''
+            # send_ind = new_add_message(user_openid,ass_tok,_client,_spec,_order_quantity,_uuidd,_remark,_sub_time,_order_time)
+            # if send_ind == True: ##推送模板消息
+            #     ol.save()
+            #     return redirect("/flow/")
+            # else:
+            #     return HttpResponse(send_ind)
         else:
             messages.warning(request, str(request.user.profile.dept) + "操作失败：添加失败,请联系总经理")
             return redirect("/flow/")
