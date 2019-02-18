@@ -4,13 +4,11 @@ from account.models import Profile
 from django.db.models import Count
 from django.views import generic
 from .forms import WorkFlowForm,WorkFlowDetailForm
-from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
 from account.models import WeixinUser,Company
 import json
 import requests
 from datetime import datetime
-import time
 
 def refresh_token(request):
     appid='wxec4567a41338530d'
