@@ -10,7 +10,7 @@ class orders_list(models.Model):
     client = models.CharField(max_length=200,null=True)
     order_time = models.DateField()
     sub_time = models.DateField()
-    order_quantity = models.IntegerField(null=True) #数量
+    order_quantity = models.CharField(max_length=200,null=True) #数量
     spec = models.CharField(max_length=200,null=True) #规格
     unit = models.CharField(max_length=200) ##单位
     order_status = models.IntegerField()

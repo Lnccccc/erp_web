@@ -18,7 +18,12 @@ def refresh_token(request):
     access_token = raw_access_token['access_token']
     request.session['access_tok'] = access_token
 
-
+def get_company_and_memb_list(request):
+    _company = request.session.get('company','null')
+    memb_list=[]
+    for i in Company.objects.get(name=_company).membs.all():
+        memb_list.append(i.realname)
+    return _company,memb_list
 
 def verified(request):
     f=open('MP_verify_YUe1siIcc5wabsNm.txt','rb')
@@ -93,10 +98,7 @@ class IndexView(generic.ListView):
 def add_order(request):
     _islogin = islogin(request)
     openid,real_name,user,company = get_info(request)
-    _company = request.session.get('company','null')
-    memb_list=[]
-    for i in Company.objects.get(name=_company).membs.all():
-        memb_list.append(i.realname)
+    _company,memb_list = get_company_and_memb_list(request)
     ass_tok = request.session.get('access_tok','null')
     if request.method == 'POST' and _islogin:
         form = WorkFlowForm(request.POST)
@@ -111,11 +113,26 @@ def add_order(request):
             _requirement = form.cleaned_data['requirement']
             _remark = form.cleaned_data['remark']
             _uuidd = datetime.now().strftime("%Y%m%d%H%S")
-            ol = orders_list(user_name=real_name, openid=openid, uuid=_uuidd, client=_client, order_time=_order_time,
-                             sub_time=_sub_time,company=_company,
-                             order_quantity=_order_quantity, spec=_spec,
-                             unit=_unit, order_status=1, person_incharge=_person_incharge,requirement=_requirement,
-                             remark=_remark)
+            spec_split = _spec.split(';')
+            quantity_split = _order_quantity.split(';')
+            unit_split = _unit.split(';')
+            if len(spec_split)== len(quantity_split)== len(unit_split)==1: #判断是否批量输入 否
+                ol = orders_list(user_name=real_name, openid=openid, uuid=_uuidd, client=_client, order_time=_order_time,
+                                 sub_time=_sub_time,company=_company,
+                                 order_quantity=_order_quantity, spec=_spec,
+                                 unit=_unit, order_status=1, person_incharge=_person_incharge,requirement=_requirement,
+                                 remark=_remark)
+            elif len(spec_split) == len(quantity_split) == len(unit_split): #批量输入
+                for i in range(len(spec_split)):
+                    ol = orders_list(user_name=real_name, openid=openid, uuid=_uuidd, client=_client, order_time=_order_time,
+                                     sub_time=_sub_time,company=_company,
+                                     order_quantity=quantity_split[i], spec=spec_split[i],
+                                     unit=unit_split[i], order_status=1, person_incharge=_person_incharge,requirement=_requirement,
+                                     remark=_remark)
+            else:
+                messages.warning(request, '批量输入订单信息有误，请重新输入')
+                order_form = WorkFlowForm()
+                return render(request,'add_order.html',context={'order_form':order_form,'memb':memb_list})
             try:
                 user_openid = Profile.objects.get(realname=_person_incharge).user.openid
             except:
@@ -127,7 +144,6 @@ def add_order(request):
             else:
                 return HttpResponse(send_ind)
         else:
-            erros = form.errors
             messages.warning(request, str(request.user.profile.dept) + "操作失败：添加失败,请联系总经理")
             return redirect("/flow/")
     else:
@@ -256,9 +272,7 @@ def permission_denied(request):
 
 def order_detail(request,uuidd):
     openid,real_name,user,company = get_info(request)
-    memb_list=[]
-    for i in Company.objects.get(name=company).membs.all():
-        memb_list.append(i.realname)
+    _,memb_list = get_company_and_memb_list(request)
     order = orders_list.objects.get(uuid=uuidd)
     order_form = WorkFlowDetailForm(instance=order)
     return render(request,'order_detail.html',context=({'order_form':order_form,'memb':memb_list,'uuid':uuidd}))
