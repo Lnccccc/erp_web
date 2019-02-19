@@ -118,7 +118,7 @@ def add_order(request):
             quantity_split = _order_quantity.split(';')
             unit_split = _unit.split(';')
             if len(spec_split)== len(quantity_split)== len(unit_split)==1: #判断是否批量输入 否
-                ol = orders_list(user_name=real_name, openid=openid, uuid=str(int(_uuidd)+i), client=_client, order_time=_order_time,
+                ol = orders_list(user_name=real_name, openid=openid, uuid=_uuidd, client=_client, order_time=_order_time,
                                  sub_time=_sub_time,company=_company,
                                  order_quantity=_order_quantity, spec=_spec,
                                  unit=_unit, order_status=1, person_incharge=_person_incharge,requirement=_requirement,
