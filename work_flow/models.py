@@ -16,8 +16,8 @@ class orders_list(models.Model):
     order_status = models.IntegerField()
     person_incharge = models.CharField(max_length=100)
     company = models.CharField(max_length=256,null=True)
-    requirement = models.CharField(max_length=256,null=True) #用纸要求
-    remark = models.CharField(max_length=256,null=True) #备注
+    requirement = models.CharField(max_length=256,blank=True,null=True) #用纸要求
+    remark = models.CharField(max_length=256,blank=True,null=True) #备注
     next_node = models.CharField(max_length=256,null=True,default='暂无')
 
 class order_stat(models.Model):
