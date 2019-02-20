@@ -29,15 +29,6 @@ def verified(request):
     f=open('MP_verify_YUe1siIcc5wabsNm.txt','rb')
     return HttpResponse(f)
 
-def is_login(request):
-    def decorator(func):
-        def wrapper(*args,**kwargs):
-            if request.session.get('islogin'):
-                func(*args,**kwargs)
-            else:
-                HttpResponse("你没有权限")
-        return wrapper
-    return decorator
 
 def islogin(request):
     return request.session.get('islogin', False)
@@ -291,7 +282,6 @@ def permission_denied(request):
     return render(request, 'order_list.html')
 
 def order_detail(request,uuidd):
-    openid,real_name,user,company = get_info(request)
     _,memb_list = get_company_and_memb_list(request)
     order = orders_list.objects.get(uuid=uuidd)
     order_form = WorkFlowDetailForm(instance=order)

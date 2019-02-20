@@ -10,8 +10,8 @@ class WorkFlowForm(forms.ModelForm):
         self.fields['spec'].widget.attrs.update({'class':'form-control','id':'focusedInput'})
         self.fields['unit'].widget.attrs.update({'class':'form-control','id':'focusedInput'})
         self.fields['person_incharge'].widget.attrs.update({'class':'form-control','id':'focusedInput'})
-        self.fields['requirement'].widget.attrs.update({'class':'form-control','id':'focusedInput'})
-        self.fields['remark'].widget.attrs.update({'class':'form-control','id':'focusedInput'})
+        self.fields['requirement'].widget.attrs.update({'class':'form-control','id':'focusedInput','palceholder':'暂无'})
+        self.fields['remark'].widget.attrs.update({'class':'form-control','id':'focusedInput','placeholder':'暂无'})
 
     class Meta:
         model=orders_list
