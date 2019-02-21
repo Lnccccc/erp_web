@@ -204,25 +204,25 @@ def update_order(request, uuidd):
                 orders_list.objects.filter(uuid=uuidd).update(order_status=status_cd + 1, person_incharge=next_node,remark=remark)
                 messages.success(request, "操作成功")
                 change_sts_message(next_node_id,ass_tok,ordr.client,ordr.spec,ordr.order_quantity,uuidd,remark,ordr.sub_time,ordr.order_time)
-                return redirect("/flow/detail/%s" % uuidd)
+                return redirect("/flow/")
             elif per == '厂长' and status_cd <=7:
                 orders_list.objects.filter(uuid=uuidd).update(order_status=status_cd + 1, person_incharge=next_node,remark=remark)
                 messages.success(request, "操作成功")
                 change_sts_message(next_node_id,ass_tok,ordr.client,ordr.spec,ordr.order_quantity,uuidd,remark,ordr.sub_time,ordr.order_time)
-                return redirect("/flow/detail/%s" % uuidd)
+                return redirect("/flow/")
             elif per == '生产主管' and status_cd == 4 or status_cd == 5:
                 orders_list.objects.filter(uuid=uuidd).update(order_status=status_cd + 1, person_incharge=next_node,remark=remark)
                 messages.success(request, "操作成功")
                 change_sts_message(next_node_id,ass_tok,ordr.client,ordr.spec,ordr.order_quantity,uuidd,remark,ordr.sub_time,ordr.order_time)
-                return redirect("/flow/detail/%s" % uuidd)
+                return redirect("/flow/")
             elif per == '仓管' and status_cd == 6 or status_cd == 7:
                 orders_list.objects.filter(uuid=uuidd).update(order_status=status_cd + 1, person_incharge=next_node,remark=remark)
                 messages.success(request, "操作成功")
                 change_sts_message(next_node_id,ass_tok,ordr.client,ordr.spec,ordr.order_quantity,uuidd,remark,ordr.sub_time,ordr.order_time)
-                return redirect("/flow/detail/%s" % uuidd)
+                return redirect("/flow/")
             else:
                 messages.error(request, per + str(status_cd) + '操作失败：你没有相应的权限，请联系总经理')
-                return redirect("/flow/detail/%s" % uuidd)
+                return redirect("/flow/")
         else:
             messages.warning(request, "该订单已完成")
             return redirect("/flow/")
