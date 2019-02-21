@@ -225,7 +225,7 @@ def update_order(request, uuidd):
                 return redirect("/flow/detail/%s" % uuidd)
         else:
             messages.warning(request, "该订单已完成")
-            return redirect("/flow/detail/%s" % uuidd)
+            return redirect("/flow/")
     else:
         form = WorkFlowDetailForm(request.POST)
         errors = form.errors
