@@ -100,19 +100,19 @@ def add_order(request):
             _sub_time = form.cleaned_data['sub_time']
             _order_quantity = form.cleaned_data['order_quantity']
             _spec = form.cleaned_data['spec']
-            _unit = form.cleaned_data['unit']
+            #_unit = form.cleaned_data['unit']
             _person_incharge = form.cleaned_data['person_incharge']
             _requirement = form.cleaned_data['requirement']
             _remark = form.cleaned_data['remark']
             _uuidd = datetime.now().strftime("%Y%m%d%H%S")
             spec_split = _spec.split(';')
             quantity_split = _order_quantity.split(';')
-            unit_split = _unit.split(';')
-            if len(spec_split)== len(quantity_split)== len(unit_split)==1: #判断是否批量输入 否
+            #unit_split = _unit.split(';')
+            if len(spec_split)== len(quantity_split)== 1: #判断是否批量输入 否
                 ol = orders_list(user_name=real_name, openid=openid, uuid=_uuidd, client=_client, order_time=_order_time,
                                  sub_time=_sub_time,company=_company,
                                  order_quantity=_order_quantity, spec=_spec,
-                                 unit=_unit, order_status=1, person_incharge=_person_incharge,requirement=_requirement,
+                                 unit='支', order_status=1, person_incharge=_person_incharge,requirement=_requirement,
                                  remark=_remark)
                 try:
                     user_openid = Profile.objects.get(realname=_person_incharge).user.openid
@@ -125,12 +125,12 @@ def add_order(request):
                 else:
                     return HttpResponse(send_ind)
 
-            elif len(spec_split) == len(quantity_split) == len(unit_split) > 1: #批量输入
+            elif len(spec_split) == len(quantity_split)  > 1: #批量输入
                 for i in range(len(spec_split)):
                     ol = orders_list(user_name='批量测试', openid=openid, uuid=str(int(_uuidd)+i), client=_client, order_time=_order_time,
                                      sub_time=_sub_time,company=_company,
                                      order_quantity=quantity_split[i], spec=spec_split[i],
-                                     unit=unit_split[i], order_status=1, person_incharge=_person_incharge,requirement=_requirement,
+                                     unit='支', order_status=1, person_incharge=_person_incharge,requirement=_requirement,
                                      remark=_remark)
                     ol.save()
                 try:
@@ -155,7 +155,7 @@ def add_order(request):
             # else:
             #     return HttpResponse(send_ind)
         else:
-            messages.warning(request, str(request.user.profile.dept) + "操作失败：添加失败,请联系总经理")
+            messages.warning(request, "操作失败：添加失败,请联系总经理")
             return redirect("/flow/")
     else:
         order_form = WorkFlowForm()
@@ -221,7 +221,7 @@ def update_order(request, uuidd):
                 change_sts_message(next_node_id,ass_tok,ordr.client,ordr.spec,ordr.order_quantity,uuidd,remark,ordr.sub_time,ordr.order_time)
                 return redirect("/flow/")
             else:
-                messages.error(request, per + str(status_cd) + '操作失败：你没有相应的权限，请联系总经理')
+                messages.error(request, '操作失败：你没有相应的权限，请联系总经理')
                 return redirect("/flow/")
         else:
             messages.warning(request, "该订单已完成")

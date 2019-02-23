@@ -8,14 +8,14 @@ class WorkFlowForm(forms.ModelForm):
         self.fields['client'].widget.attrs.update({'class':'form-control','id':'focusedInput'})
         self.fields['order_quantity'].widget.attrs.update({'class':'form-control','id':'focusedInput'})
         self.fields['spec'].widget.attrs.update({'class':'form-control','id':'focusedInput'})
-        self.fields['unit'].widget.attrs.update({'class':'form-control','id':'focusedInput'})
+        #self.fields['unit'].widget.attrs.update({'class':'form-control','id':'focusedInput','value':'支'})
         self.fields['person_incharge'].widget.attrs.update({'class':'form-control','id':'focusedInput'})
         self.fields['requirement'].widget.attrs.update({'class':'form-control','id':'focusedInput','placeholder':'暂无'})
         self.fields['remark'].widget.attrs.update({'class':'form-control','id':'focusedInput','placeholder':'暂无'})
 
     class Meta:
         model=orders_list
-        fields = ('client','order_quantity','spec','unit','person_incharge','requirement','remark')
+        fields = ('client','order_quantity','spec','person_incharge','requirement','remark')
 
     order_time = forms.DateField()
     sub_time = forms.DateField(widget=forms.SelectDateWidget(), label=u'时间')
