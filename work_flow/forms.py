@@ -7,7 +7,7 @@ class WorkFlowForm(forms.ModelForm):
         super().__init__(*args,**kwargs)
         self.fields['client'].widget.attrs.update({'class':'form-control','id':'focusedInput'})
         self.fields['order_quantity'].widget.attrs.update({'class':'form-control','id':'focusedInput'})
-        self.fields['spec'].widget.attrs.update({'class':'form-control','id':'focusedInput'})
+        self.fields['spec'].widget.attrs.update({'class':'form-control','id':'#autocomp'})
         self.fields['unit'].widget.attrs.update({'class':'form-control','id':'focusedInput'})
         self.fields['person_incharge'].widget.attrs.update({'class':'form-control','id':'focusedInput'})
         self.fields['requirement'].widget.attrs.update({'class':'form-control','id':'focusedInput'})
