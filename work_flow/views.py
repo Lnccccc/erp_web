@@ -127,7 +127,7 @@ def add_order(request):
 
             elif len(spec_split) == len(quantity_split)  > 1: #批量输入
                 for i in range(len(spec_split)):
-                    ol = orders_list(user_name='批量测试', openid=openid, uuid=str(int(_uuidd)+i), client=_client, order_time=_order_time,
+                    ol = orders_list(user_name=real_name, openid=openid, uuid=str(int(_uuidd)+i), client=_client, order_time=_order_time,
                                      sub_time=_sub_time,company=_company,
                                      order_quantity=quantity_split[i], spec=spec_split[i],
                                      unit='支', order_status=1, person_incharge=_person_incharge,requirement=_requirement,
