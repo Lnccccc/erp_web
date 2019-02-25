@@ -1,14 +1,17 @@
 from django.shortcuts import render, redirect,HttpResponse
-from .models import orders_list, order_stat
-from account.models import Profile
+from ..account.models import Profile
+from .models import orders_list
 from django.db.models import Count
 from django.views import generic
 from .forms import WorkFlowForm,WorkFlowDetailForm
 from django.contrib import messages
-from account.models import WeixinUser,Company
+from ..account.models import WeixinUser,Company
 import json
 import requests
 from datetime import datetime
+from .helpers import ajax_required,get_company_and_memb_list,islogin
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
 
 def refresh_token(request):
     appid='wxec4567a41338530d'
@@ -18,12 +21,7 @@ def refresh_token(request):
     access_token = raw_access_token['access_token']
     request.session['access_tok'] = access_token
 
-def get_company_and_memb_list(request):
-    _company = request.session.get('company','null')
-    memb_list=[]
-    for i in Company.objects.get(name=_company).membs.all():
-        memb_list.append(i.realname)
-    return _company,memb_list
+
 
 def verified(request):
     f=open('MP_verify_YUe1siIcc5wabsNm.txt','rb')
@@ -31,16 +29,15 @@ def verified(request):
 
 def is_login(request):
     def decorator(func):
-        def wrapper(*args,**kwargs):
+        def wrapper(request,*args,**kwargs):
             if request.session.get('islogin'):
-                func(*args,**kwargs)
+                func(request,*args,**kwargs)
             else:
                 HttpResponse("你没有权限")
         return wrapper
     return decorator
 
-def islogin(request):
-    return request.session.get('islogin', False)
+
 
 def get_info(request):
     openid = request.session.get('openid','null')
@@ -362,3 +359,17 @@ def change_sts_message(openid,access_token,client,spec,quantity,uuidd,remark,sub
     else:
 
         return r['errmsg']
+
+@ajax_required
+@require_POST
+def autoComplete(request):
+    if not islogin(request):
+        return HttpResponse('你没有登陆')
+    user_company,_ = get_company_and_memb_list(request)
+    spec_list=[]
+    client = request.POST['client']
+    specs = orders_list.objects.filter(company=user_company,client=client)
+    for i in specs:
+        spec_list.append(i.spec)
+
+    return JsonResponse({"spec":spec_list})
