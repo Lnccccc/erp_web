@@ -7,9 +7,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>订单管理系统</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
     <link rel="stylesheet" type="text/css" href="{% static 'admin/css/base.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'admin/css/forms.css' %}">
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <script src="{% static 'admin/js/calendar.js' %}"></script>
+    <script src="{% static 'admin/js/admin/DateTimeShortcuts.js' %}"></script>
+
+    <script type="text/javascript" src="{% static 'admin/jsi18n' %}"></script>
+    <script type="text/javascript" src="{%  static 'admin/js/core.js'%}"></script>
+
+    <script>
+        $(document).ready(function () {
+            $.ajax({url:'/flow/autocomplete/',
+            type:'GET',dataType:'json',success:function (data) {
+                    var specs_list = data.specs;
+                    $("#autocomp").autocomplete({
+                        source:specs_list
+                    });
+                }});
+
+        });
+        function del() {
+            var msg = "您确定要删除吗？\n\n请确认！";
+            if (confirm(msg)==true){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+    </script>
 </head>
 
 <body>
@@ -69,31 +103,6 @@
     {% block content %}
     {% endblock %}
 </div>
-<script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
-<!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
-<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
-<script src="{% static 'admin/js/calendar.js' %}"></script>
-<script src="{% static 'admin/js/admin/DateTimeShortcuts.js' %}"></script>
 
-<script type="text/javascript" src="{% static 'admin/jsi18n' %}"></script>
-<script type="text/javascript" src="{%  static 'admin/js/core.js'%}"></script>
-<script>
-$(function () {
-	$("[data-toggle='popover']").popover();
-    $("#autocomp").autocomplete({
-        source:['123','89','256','abc','apple']
-    });
-});
-function del() {
-    var msg = "您真的确定要删除吗？\n\n请确认！";
-    if (confirm(msg)==true){
-        return true;
-    }else{
-        return false;
-    }
-}
-
-</script>
 </body>
 </html>

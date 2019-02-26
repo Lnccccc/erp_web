@@ -371,14 +371,14 @@ def change_sts_message(openid,access_token,client,spec,quantity,uuidd,remark,sub
         return r['errmsg']
 
 
-@ajax_required
+#@ajax_required
 @require_GET
 def autoComplete(request):
     if not islogin(request):
-        return HttpResponse('你没有登陆')
+        return JsonResponse({"specs":["wrong","apple"]})
     user_company,_ = get_company_and_memb_list(request)
     spec_list=[]
     specs = orders_list.objects.filter(company=user_company)
     for i in specs:
         spec_list.append(i.spec)
-    return JsonResponse({"spec":spec_list})
+    return JsonResponse({"specs":spec_list})
