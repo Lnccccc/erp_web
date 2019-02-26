@@ -1,4 +1,4 @@
-from ..account.models import Company
+from account.models import Company
 
 from django.http import HttpResponseBadRequest
 def ajax_required(f):

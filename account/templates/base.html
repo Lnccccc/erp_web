@@ -81,6 +81,9 @@
 <script>
 $(function () {
 	$("[data-toggle='popover']").popover();
+    $("#autocomp").autocomplete({
+        source:['123','89','256','abc','apple']
+    });
 });
 function del() {
     var msg = "您真的确定要删除吗？\n\n请确认！";
@@ -90,9 +93,6 @@ function del() {
         return false;
     }
 }
-$("#autocomp").autocomplete({
-    souce:['123','89','256']
-});
 
 </script>
 </body>
