@@ -6,6 +6,9 @@ from django.views import generic
 from .forms import WorkFlowForm,WorkFlowDetailForm
 from django.contrib import messages
 from account.models import WeixinUser,Company
+from django.http import JsonResponse
+from django.views.decorators.http import require_GET
+from .helpers import ajax_required,get_company_and_memb_list
 import json
 import requests
 from datetime import datetime
@@ -18,12 +21,6 @@ def refresh_token(request):
     access_token = raw_access_token['access_token']
     request.session['access_tok'] = access_token
 
-def get_company_and_memb_list(request):
-    _company = request.session.get('company','null')
-    memb_list=[]
-    for i in Company.objects.get(name=_company).membs.all():
-        memb_list.append(i.realname)
-    return _company,memb_list
 
 def verified(request):
     f=open('MP_verify_YUe1siIcc5wabsNm.txt','rb')
@@ -372,3 +369,16 @@ def change_sts_message(openid,access_token,client,spec,quantity,uuidd,remark,sub
     else:
 
         return r['errmsg']
+
+
+@ajax_required
+@require_GET
+def autoComplete(request):
+    if not islogin(request):
+        return HttpResponse('你没有登陆')
+    user_company,_ = get_company_and_memb_list(request)
+    spec_list=[]
+    specs = orders_list.objects.filter(company=user_company)
+    for i in specs:
+        spec_list.append(i.spec)
+    return JsonResponse({"spec":spec_list})
