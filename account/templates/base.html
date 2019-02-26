@@ -84,10 +84,14 @@ function del() {
         return false;
     }
 }
-$(function () {
-    //ajax请求
-})
-
+$(document).read(function () {
+    $.get("/autocomp/",function (data) {
+        var specs = data['spec']
+    });
+});
+$("#autocomp").autocomplete({
+    source:specs
+});
 </script>
 </body>
 </html>

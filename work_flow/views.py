@@ -11,7 +11,7 @@ import requests
 from datetime import datetime
 from .helpers import ajax_required,get_company_and_memb_list,islogin
 from django.http import JsonResponse
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_GET
 
 def refresh_token(request):
     appid='wxec4567a41338530d'
@@ -361,15 +361,13 @@ def change_sts_message(openid,access_token,client,spec,quantity,uuidd,remark,sub
         return r['errmsg']
 
 @ajax_required
-@require_POST
+@require_GET
 def autoComplete(request):
     if not islogin(request):
         return HttpResponse('你没有登陆')
     user_company,_ = get_company_and_memb_list(request)
     spec_list=[]
-    client = request.POST['client']
-    specs = orders_list.objects.filter(company=user_company,client=client)
+    specs = orders_list.objects.filter(company=user_company)
     for i in specs:
         spec_list.append(i.spec)
-
     return JsonResponse({"spec":spec_list})
