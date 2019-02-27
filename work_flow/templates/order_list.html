@@ -1,5 +1,112 @@
-{% extends "base.html" %}
-{% block content %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>订单管理系统</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/base.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/forms.css' %}">
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <script src="{% static 'admin/js/calendar.js' %}"></script>
+    <script src="{% static 'admin/js/admin/DateTimeShortcuts.js' %}"></script>
+
+    <script type="text/javascript" src="{% static 'admin/jsi18n' %}"></script>
+    <script type="text/javascript" src="{%  static 'admin/js/core.js'%}"></script>
+
+    <script>
+        $(document).ready(function () {
+            $.ajax({url:'/flow/autocomplete/',
+                type:'GET',dataType:'json',success:function (data) {
+                    var specs_list = data.specs;
+                    $("#autocomp").autocomplete({
+                        source:specs_list
+                    });
+                }});
+            $.ajax({url:'/flow/remind/',
+                type:'GET',dataType:'json',success:function (data) {
+                    var stat = data.status;
+                    if (stat >= 5) {
+                        alert("注意：还有 "+stat+" 条订单正等待安排，请及时处理以免影响正常生产")
+                    }
+                }});
+
+        });
+        function del() {
+            var msg = "您确定要删除吗？\n\n请确认！";
+            if (confirm(msg)==true){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+    </script>
+</head>
+
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#example-navbar-collapse">
+                <span class="sr-only">切换导航</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{% url 'work_flow:index' %}">订单管理系统</a>
+        </div>
+        <div class="collapse navbar-collapse" id="example-navbar-collapse">
+            {% if request.session.islogin %}
+            <ul class="nav navbar-nav">
+                <li><a href="{% url 'work_flow:index' %}">生产情况</a></li>
+                <li><a href="{% url 'account:add_company' %}">新增企业</a></li>
+                {% if request.session.dept == '总经理' %}
+                <li >
+                    <a href="{% url 'account:edit_2' %}">企业人员管理</a>
+                </li>
+                {% endif %}
+                {% if request.session.realname == '李能聪' %}
+                <li>
+                    <a href="http://www.e-fac.cn/admin/">超级·管理员</a>
+                </li>
+                {% endif %}
+
+                {% endif %}
+            </ul>
+            <p class="navbar-text navbar-right">
+                {% if request.session.islogin %}
+                <a href="{% url 'account:edit' %}">
+                    <button type="button" class="btn btn-default btn-sm">
+                        <span class="glyphicon glyphicon-user"></span>编辑
+                    </button></a>
+                {% endif %}
+            </p>
+        </div>
+    </div>
+</nav>
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li class="{{ message.tags }}">
+        {{ message|safe }}
+        <a href="#" class="close"></a>
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+<div class="container">
 {% if request.session.islogin %}
 <h4>您好 ,{{ request.session.realname }}</h4>
 {% else %}
@@ -186,4 +293,8 @@
 
 </table>
 </div>
-{% endblock %}
+
+    </div>
+
+</body>
+</html>
