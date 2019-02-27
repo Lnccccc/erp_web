@@ -12,4 +12,5 @@ urlpatterns = [
     path("detail/<str:uuidd>",views.order_detail,name='detail'),
     path("MP_verify_YUe1siIcc5wabsNm.txt/",views.verified),
     path("autocomplete/",views.autoComplete),
+    path("remind/",views.remind)
 ]

@@ -32,6 +32,13 @@
                         source:specs_list
                     });
                 }});
+            $.ajax({url:'/flow/remind/',
+            type:'GET',dataType:'json',success:function (data) {
+                    var stat = data.status;
+                    if (stat >= 5) {
+                        alert("注意：还有"+stat+"订单等待安排，请及时处理以免影响正常生产")
+                    };
+                }})
 
         });
         function del() {

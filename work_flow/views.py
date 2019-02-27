@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect,HttpResponse
+from django.shortcuts import render, redirect,HttpResponse,Http404
 from .models import orders_list, order_stat
 from account.models import Profile
 from django.db.models import Count
@@ -382,3 +382,13 @@ def autoComplete(request):
     for i in specs:
         spec_list.append(i.spec)
     return JsonResponse({"specs":spec_list})
+
+@ajax_required
+@require_GET
+def remind(request):
+    if not islogin(request):
+        return JsonResponse({"status":"请先登录"})
+    company,_ = get_company_and_memb_list(request)
+    stat_2 = orders_list.objects.filter(order_status='2', company=company).aggregate(
+        count_1=Count('order_status')).get('count_1')
+    return JsonResponse({"status":stat_2})
