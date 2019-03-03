@@ -41,6 +41,14 @@
                 }});
 
         });
+        var row_data={}; //放入订单详情数据
+        function detailFormatter(index,row) {
+            var html=[];
+            $.each(row,function (key,value) {
+                html.push('<p><b>'+key+':</b>'+value+'</p>')
+            });
+            return html.join('')
+        }
         function del() {
             var msg = "您确定要删除吗？\n\n请确认！";
             if (confirm(msg)==true){
@@ -113,7 +121,7 @@
 <h1>请登陆</h1>
 {% endif %}
 <div class="table-responsive">
-<table class='table table-bordered'>
+<table class='table table-bordered' id="table" data-toggle="table" data-detail-view="true" data-detail-formatter="detailFormatter">
     <tr>
     <th>等待下单</th>
     <th class="active">等待安排</th>

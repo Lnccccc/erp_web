@@ -1,6 +1,7 @@
 from account.models import Company
-
 from django.http import HttpResponseBadRequest
+
+
 def ajax_required(f):
     def wrap(request,*args,**kwargs):
         if not request.is_ajax():
@@ -20,6 +21,14 @@ def get_company_and_memb_list(request):
 def islogin(request):
     return request.session.get('islogin', False)
 
+def login_require(f):
+    def wrap(request,*args,**kwargs):
+        if not request.session.get('islogin',False):
+            return HttpResponseBadRequest()
+        return f(request,*args,**kwargs)
+    wrap.__doc__ = f.__doc__
+    wrap.__name__ = f.__name__
+    return wrap
 
 
 

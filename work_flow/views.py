@@ -8,7 +8,7 @@ from django.contrib import messages
 from account.models import WeixinUser,Company
 from django.http import JsonResponse
 from django.views.decorators.http import require_GET
-from .helpers import ajax_required,get_company_and_memb_list
+from .helpers import ajax_required,get_company_and_memb_list,login_require
 import json
 import requests
 from datetime import datetime
@@ -83,13 +83,14 @@ class IndexView(generic.ListView):
         kwargs['memb'] = memb_list
         return super(IndexView, self).get_context_data(**kwargs)
 
+@login_require
 def add_order(request):
-    _islogin = islogin(request)
+
     openid,real_name,user,company = get_info(request)
     _company,memb_list = get_company_and_memb_list(request)
     ass_tok = request.session.get('access_tok','null')
 
-    if request.method == 'POST' and _islogin:
+    if request.method == 'POST' :
         form = WorkFlowForm(request.POST)
         if form.is_valid() and request.session.get('dept','null') == '总经理':
             _client = form.cleaned_data['client']
@@ -158,33 +159,30 @@ def add_order(request):
         order_form = WorkFlowForm()
         return render(request,'add_order.html',context={'order_form':order_form,'memb':memb_list})
 
-
+@login_require
 def delete_order(request, uuidd):
-    _islogin = islogin(request)
-    if _islogin:
-        status_cd = orders_list.objects.filter(uuid=uuidd)[0].order_status
-        per = request.session.get('dept','null')
-        if per == '总经理' and status_cd < 7:
-            orders_list.objects.filter(uuid=uuidd).delete()
-            messages.success(request, "操作成功")
-            return redirect("/flow/")
-        elif per == '厂长' and status_cd == 2 or status_cd == 3:
-            orders_list.objects.filter(uuid=uuidd).delete()
-            messages.success(request, "操作成功")
-            return redirect("/flow/")
-        elif per == '生产主管' and status_cd == 4 or status_cd == 5:
-            orders_list.objects.filter(uuid=uuidd).delete()
-            messages.success(request, "操作成功")
-            return redirect("/flow/")
-        elif per == '仓管' and status_cd == 6 or status_cd == 7:
-            orders_list.objects.filter(uuid=uuidd).delete()
-            messages.success(request, "操作成功")
-            return redirect("/flow/")
-        else:
-            messages.error(request, per + str(status_cd) + '操作失败：你没有这个权限')
-            return redirect("/flow/")
+    status_cd = orders_list.objects.filter(uuid=uuidd)[0].order_status
+    per = request.session.get('dept','null')
+    if per == '总经理' and status_cd < 7:
+        orders_list.objects.filter(uuid=uuidd).delete()
+        messages.success(request, "操作成功")
+        return redirect("/flow/")
+    elif per == '厂长' and status_cd == 2 or status_cd == 3:
+        orders_list.objects.filter(uuid=uuidd).delete()
+        messages.success(request, "操作成功")
+        return redirect("/flow/")
+    elif per == '生产主管' and status_cd == 4 or status_cd == 5:
+        orders_list.objects.filter(uuid=uuidd).delete()
+        messages.success(request, "操作成功")
+        return redirect("/flow/")
+    elif per == '仓管' and status_cd == 6 or status_cd == 7:
+        orders_list.objects.filter(uuid=uuidd).delete()
+        messages.success(request, "操作成功")
+        return redirect("/flow/")
     else:
-        redirect('account/edit/')
+        messages.error(request, per + str(status_cd) + '操作失败：你没有这个权限')
+        return redirect("/flow/")
+
 
 def update_order(request, uuidd):
     ass_tok = request.session.get('access_tok', 'null')
