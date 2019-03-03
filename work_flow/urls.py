@@ -11,6 +11,10 @@ urlpatterns = [
     path("rollback/<str:uuidd>",views.roll_back,name='rollback'),
     path("detail/<str:uuidd>",views.order_detail,name='detail'),
     path("MP_verify_YUe1siIcc5wabsNm.txt/",views.verified),
+<<<<<<< HEAD
     path("autocomplete/",views.autoComplete),
     path("remind/",views.remind)
+=======
+    path("autocomp/",views.autoComplete)
+>>>>>>> 2cfa3d28543dfa4adafedf91da337205bb376758
 ]

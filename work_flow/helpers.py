@@ -1,7 +1,13 @@
+<<<<<<< HEAD
 from account.models import Company
 from django.http import HttpResponseBadRequest
 
 
+=======
+from ..account.models import Company
+
+from django.http import HttpResponseBadRequest
+>>>>>>> 2cfa3d28543dfa4adafedf91da337205bb376758
 def ajax_required(f):
     def wrap(request,*args,**kwargs):
         if not request.is_ajax():
@@ -19,6 +25,7 @@ def get_company_and_memb_list(request):
     return _company,memb_list
 
 def islogin(request):
+<<<<<<< HEAD
     return request.session.get('islogin', False)
 
 def login_require(f):
@@ -33,3 +40,6 @@ def login_require(f):
 
 
 
+=======
+    return request.session.get('islogin', False)
+>>>>>>> 2cfa3d28543dfa4adafedf91da337205bb376758

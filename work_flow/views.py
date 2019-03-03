@@ -1,17 +1,30 @@
+<<<<<<< HEAD
 from django.shortcuts import render, redirect,HttpResponse,Http404
 from .models import orders_list, order_stat
 from account.models import Profile
+=======
+from django.shortcuts import render, redirect,HttpResponse
+from ..account.models import Profile
+from .models import orders_list
+>>>>>>> 2cfa3d28543dfa4adafedf91da337205bb376758
 from django.db.models import Count
 from django.views import generic
 from .forms import WorkFlowForm,WorkFlowDetailForm
 from django.contrib import messages
+<<<<<<< HEAD
 from account.models import WeixinUser,Company
 from django.http import JsonResponse
 from django.views.decorators.http import require_GET
 from .helpers import ajax_required,get_company_and_memb_list,login_require
+=======
+from ..account.models import WeixinUser,Company
+>>>>>>> 2cfa3d28543dfa4adafedf91da337205bb376758
 import json
 import requests
 from datetime import datetime
+from .helpers import ajax_required,get_company_and_memb_list,islogin
+from django.http import JsonResponse
+from django.views.decorators.http import require_GET
 
 def refresh_token(request):
     appid='wxec4567a41338530d'
@@ -21,14 +34,29 @@ def refresh_token(request):
     access_token = raw_access_token['access_token']
     request.session['access_tok'] = access_token
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2cfa3d28543dfa4adafedf91da337205bb376758
 
 def verified(request):
     f=open('MP_verify_YUe1siIcc5wabsNm.txt','rb')
     return HttpResponse(f)
 
+<<<<<<< HEAD
+=======
+def is_login(request):
+    def decorator(func):
+        def wrapper(request,*args,**kwargs):
+            if request.session.get('islogin'):
+                func(request,*args,**kwargs)
+            else:
+                HttpResponse("你没有权限")
+        return wrapper
+    return decorator
+>>>>>>> 2cfa3d28543dfa4adafedf91da337205bb376758
 
-def islogin(request):
-    return request.session.get('islogin', False)
+
 
 def get_info(request):
     openid = request.session.get('openid','null')
@@ -368,17 +396,25 @@ def change_sts_message(openid,access_token,client,spec,quantity,uuidd,remark,sub
 
         return r['errmsg']
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2cfa3d28543dfa4adafedf91da337205bb376758
 @ajax_required
 @require_GET
 def autoComplete(request):
     if not islogin(request):
+<<<<<<< HEAD
         return JsonResponse({"specs":["wrong","apple"]})
+=======
+        return HttpResponse('你没有登陆')
+>>>>>>> 2cfa3d28543dfa4adafedf91da337205bb376758
     user_company,_ = get_company_and_memb_list(request)
     spec_list=[]
     specs = orders_list.objects.filter(company=user_company)
     for i in specs:
         spec_list.append(i.spec)
+<<<<<<< HEAD
     return JsonResponse({"specs":spec_list})
 
 @ajax_required
@@ -390,3 +426,6 @@ def remind(request):
     stat_2 = orders_list.objects.filter(order_status='2', company=company).aggregate(
         count_1=Count('order_status')).get('count_1')
     return JsonResponse({"status":stat_2})
+=======
+    return JsonResponse({"spec":spec_list})
+>>>>>>> 2cfa3d28543dfa4adafedf91da337205bb376758

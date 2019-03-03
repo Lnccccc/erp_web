@@ -8,7 +8,11 @@ class WorkFlowForm(forms.ModelForm):
         self.fields['client'].widget.attrs.update({'class':'form-control','id':'focusedInput'})
         self.fields['order_quantity'].widget.attrs.update({'class':'form-control','id':'focusedInput'})
         self.fields['spec'].widget.attrs.update({'class':'form-control','id':'autocomp'})
+<<<<<<< HEAD
         #self.fields['unit'].widget.attrs.update({'class':'form-control','id':'focusedInput','value':'支'})
+=======
+        self.fields['unit'].widget.attrs.update({'class':'form-control','id':'focusedInput'})
+>>>>>>> 2cfa3d28543dfa4adafedf91da337205bb376758
         self.fields['person_incharge'].widget.attrs.update({'class':'form-control','id':'focusedInput'})
         self.fields['requirement'].widget.attrs.update({'class':'form-control','id':'focusedInput','placeholder':'暂无'})
         self.fields['remark'].widget.attrs.update({'class':'form-control','id':'focusedInput','placeholder':'暂无'})
