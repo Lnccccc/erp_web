@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from django.contrib.auth import authenticate,login
-from .form import ProfileEditForm,SearchForm,WxUserEditForm
+from .form import ProfileEditForm,SearchForm,WxUserEditForm,CompanyProfile
 from django.contrib.auth.decorators import login_required
 from .models import Profile,WeixinUser,Company,Access_Token
 from django.contrib import messages
@@ -95,7 +95,12 @@ def edit_2(request): #企业人员权限编辑页面
         return render(request,'account/edit_2.html',{'membs':membs})
 
 def addCompany(request):
-    return HttpResponse("None")
+    if request.method == 'POST':
+        pass
+    else:
+        company_file_form = CompanyProfile()
+        return render(request,'account/addCompany.html',context={'company_form':company_file_form})
+
 
 class WeiXin():
     def __init__(self):

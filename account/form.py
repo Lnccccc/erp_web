@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Profile,WeixinUser
+from .models import Profile,WeixinUser,Company
 
 # class LoginForm(forms.Form):
 #     username= forms.CharField()
@@ -37,3 +37,9 @@ class ProfileEditForm(forms.ModelForm):
 
 class SearchForm(forms.Form):
     search_name=forms.CharField()
+
+
+class CompanyProfile(forms.ModelForm):
+    class Meta:
+        fields = Company
+        fields = '__all__'

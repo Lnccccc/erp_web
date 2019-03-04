@@ -10,9 +10,17 @@ class WeixinUser(models.Model):
     city = models.CharField(max_length=256,null=True)
     def __str__(self):
         return self.nickname
+
 class Company(models.Model):
     name = models.CharField(max_length=200,blank=True,null=True,default="示例企业")
     owner = models.CharField(max_length=200,blank=True,null=True)
+    db = models.CharField(max_length=100,blank=True,null=True)
+    driver = models.CharField(max_length=100,blank=True,null=True)
+    user = models.CharField(max_length=100,blank=True,null=True)
+    passwd = models.CharField(max_length=100,blank=True,null=True)
+    host = models.IPAddressField()
+    port = models.IntegerField(max_length=50,blank=True,null=True)
+    schema = models.CharField(max_length=100,blank=True,null=True)
     def __str__(self):
         return self.name
     
