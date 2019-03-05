@@ -28,8 +28,12 @@
             $.ajax({url:'/flow/autocomplete/',
             type:'GET',dataType:'json',success:function (data) {
                     var specs_list = data.specs;
+                    var client_list = data.clients;
                     $("#autocomp").autocomplete({
                         source:specs_list
+                    });
+                    $("#autocomp2").autocomplete({
+                        source:client_list
                     });
                 }});
 

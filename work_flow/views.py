@@ -378,10 +378,12 @@ def autoComplete(request):
         return JsonResponse({"specs":["wrong","apple"]})
     user_company,_ = get_company_and_memb_list(request)
     spec_list=[]
+    client_list = []
     specs = orders_list.objects.filter(company=user_company)
     for i in specs:
         spec_list.append(i.spec)
-    return JsonResponse({"specs":spec_list})
+        client_list.append(i.client)
+    return JsonResponse({"specs":spec_list,"clients":client_list})
 
 @ajax_required
 @require_GET
