@@ -5,7 +5,7 @@ from datetime import datetime
 class WorkFlowForm(forms.ModelForm):
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
-        self.fields['client'].widget.attrs.update({'class':'form-control','id':'focusedInput'})
+        self.fields['client'].widget.attrs.update({'class':'form-control','id':'autocomp2'})
         self.fields['order_quantity'].widget.attrs.update({'class':'form-control','id':'focusedInput'})
         self.fields['spec'].widget.attrs.update({'class':'form-control','id':'autocomp'})
         #self.fields['unit'].widget.attrs.update({'class':'form-control','id':'focusedInput','value':'支'})
