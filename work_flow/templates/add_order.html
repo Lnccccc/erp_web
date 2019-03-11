@@ -43,14 +43,14 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">数量：</label>
             <div class="col-sm-10">
-                {{ order_form.quantity }}
+                {{ order_form.order_quantity }}
             </div></div>
         <div class="form-group">
             <label class="col-sm-2 control-label">工艺要求：</label>
             <div class="col-sm-10">
                 {{ order_form.requirement }}
             </div></div>
-        <button id="insert" class="btn-success">点击插入订单列表</button>
+        <button type="button" id="insert">点击插入订单列表</button>
         <table class="table" id="table" data-toggle="table"  data-toolbar="#toolbar">
             <thead>
             <tr>
@@ -71,7 +71,7 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label">负责人：</label>
                 <div class="col-sm-10">
-                    <select name="person_incharge">
+                    <select name="person_incharge" id="person_incharge">
                         {% for j in memb %}
                         <option value="{{ j }}">{{ j }}</option>
                         {% endfor %}
@@ -87,7 +87,7 @@
         </div>
     </div>
 </form>
-<button type="submit" class="btn btn-success" id="sub">提交</button>
+<button class="btn btn-success" type="button" id="sub">提交</button>
 {% else %}
 <h1>您没有权限下单，请联系总经理</h1>
 {% endif %}

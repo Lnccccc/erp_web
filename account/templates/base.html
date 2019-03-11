@@ -31,8 +31,9 @@
 
     <script>
         $(document).ready(function () {
-            $sub = $('#sub');
-            $insert = $('#insert');
+            var $sub = $('#sub');
+            var $insert = $('#insert');
+            var $table = $('#table');
             $.ajax({url:'/flow/autocomplete/',
             type:'GET',dataType:'json',success:function (data) {
                     var specs_list = data.specs;
@@ -52,33 +53,41 @@
                 $table.bootstrapTable('insertRow',{
                     index:1,
                     row:{
-                        spec : spec,
-                        quantity : quantity,
+                        spec:spec,
+                        quantity:quantity,
                         requirement:requirement
                     }
                 })
-            })
             });
 
             $sub.click(function () {
                 var client = $("#client").val();
                 var person_incharge = $("#person_incharge").val();
                 var remark = $('#remark').val();
+                var order_time = $('#order_time').val();
+                var sub_year = $('#id_sub_time_year').val();
+                var sub_month = $('#id_sub_time_month').val();
+                var sub_day = $('#id_sub_time_day').val();
                 var orders = JSON.stringify($table.bootstrapTable('getData'));
                 $.ajaxSetup({
                     data: {csrfmiddlewaretoken: '{{ csrf_token }}'}
                 });
-                $.ajax({url:'add_order/addOrders/'
-                    ,data:{client:client,person_incharge:person_incharge,remark:remark,orders:orders}
+                $.ajax({url:'addOrders/'
+                    ,data:{client:client,person_incharge:person_incharge,remark:remark,
+                        order_time:order_time,sub_year:sub_year,sub_month:sub_month,sub_day:sub_day,
+                        orders:orders}
                     ,type:'post'
                     ,dataType:'json'
                     ,success:function (data) {
-                        alert(data.client+'新建成功')
+                        alert('新建'+data.status+'\n'+'请手动返回订单列表')
                     }
-            })
+                })
 
 
-        });
+            });
+            });
+
+
 
         function del() {
             var msg = "您确定要删除吗？\n\n请确认！";

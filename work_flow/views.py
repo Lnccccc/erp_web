@@ -12,7 +12,8 @@ from .helpers import ajax_required,get_company_and_memb_list
 import json
 import requests
 from datetime import datetime
-
+import random
+import time
 def refresh_token(request):
     appid='wxec4567a41338530d'
     secret = 'f81a45edfb0ebb4607c8441fac0876d9'
@@ -399,6 +400,27 @@ def remind(request):
 @ajax_required
 @require_POST
 def addOrders(request):
+    ass_tok = request.session.get('access_tok','null')
+    openid,real_name,user,_company = get_info(request)
     data = request.POST
-    client = data['client']
-    return JsonResponse({'client':client})
+    _client = data['client']
+    _order_time = data['order_time']
+    sub_year = int(data['sub_year'])
+    sub_month = int(data['sub_month'])
+    sub_day = int(data['sub_day'])
+    sub_time = time.struct_time((sub_year,sub_month,sub_day,0,0,0,0,0,0))
+    _sub_time = time.strftime('%Y-%m-%d',sub_time)
+    _uuidd = datetime.now().strftime("%Y%m%d%H%S")
+    _person_incharge = data['person_incharge']
+    orders = json.loads(data['orders'])
+    _remark = data['remark']
+    for i in orders:
+        randomID = random.randint(1,10)
+        ol = orders_list(user_name=real_name, openid=openid, uuid=str(int(_uuidd)+randomID), client=_client, order_time=_order_time,
+                         sub_time=_sub_time,company=_company,
+                         order_quantity=i['quantity'], spec=i['spec'],
+                         unit='支', order_status=1, person_incharge=_person_incharge,requirement=i['requirement'],
+                         remark=_remark)
+        ol.save()
+    messages.success(request, "操作成功")
+    return JsonResponse({'status':'成功'})
