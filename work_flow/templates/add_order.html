@@ -35,26 +35,21 @@
         <div class="panel-heading">
             <h3 class="panel-title">订单信息</h3>
         </div>
-        <div class="alert alert-info">提醒：如要批量输入订单信息,请在规格、数量和单位行以英文分号';'分割订单信息</div>
-        <div class="panel-body">
-            <div class="form-group">
-                <label class="col-sm-2 control-label">规格：</label>
-                <div class="col-sm-10">
-                    {{ order_form.spec}}
-                </div></div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label">数量：</label>
-                <div class="col-sm-10">
-                    {{ order_form.order_quantity }}
-                </div></div>
-
-            <div class="form-group">
-                <label class="col-sm-2 control-label">用纸要求：</label>
-                <div class="col-sm-10">
-                    {{ order_form.requirement }}
-                </div></div>
-        </div>
+        {{ order_form.spec }}
+        {{ order_form.quantity }}
+        {{ order_form.requirement }}
+        <table class="table" id="table" data-toggle="table"  data-toolbar="#toolbar">
+            <thead>
+            <tr>
+                <th data-field="spec">规格</th>
+                <th data-field="quantity"></th>
+                <th data-field="requirement"></th>
+            </tr>
+            </thead>
+        </table>
     </div>
+
+
     <div class="panel panel-info">
         <div class="panel-heading">
             <h3 class="panel-title">责任人信息</h3>
@@ -73,18 +68,13 @@
         </div>
     </div>
 
-
-    <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-success">提交</button>
-        </div>
-    </div>
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
             <a href="{% url 'work_flow:index' %}"><button type="button" class="btn btn-default">返回订单列表</button></a>
         </div>
     </div>
 </form>
+<button type="submit" class="btn btn-success" id="sub">提交</button>
 {% else %}
 <h1>您没有权限下单，请联系总经理</h1>
 {% endif %}

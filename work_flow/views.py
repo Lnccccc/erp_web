@@ -7,7 +7,7 @@ from .forms import WorkFlowForm,WorkFlowDetailForm
 from django.contrib import messages
 from account.models import WeixinUser,Company
 from django.http import JsonResponse
-from django.views.decorators.http import require_GET
+from django.views.decorators.http import require_GET,require_POST
 from .helpers import ajax_required,get_company_and_memb_list
 import json
 import requests
@@ -394,3 +394,11 @@ def remind(request):
     stat_2 = orders_list.objects.filter(order_status='2', company=company).aggregate(
         count_1=Count('order_status')).get('count_1')
     return JsonResponse({"status":stat_2})
+
+
+@ajax_required
+@require_POST
+def addOrders(request):
+    data = request.POST
+    client = data['client']
+    return JsonResponse({'client':client})

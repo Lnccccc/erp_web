@@ -5,13 +5,13 @@ from datetime import datetime
 class WorkFlowForm(forms.ModelForm):
     def __init__(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
-        self.fields['client'].widget.attrs.update({'class':'form-control','id':'autocomp2'})
-        self.fields['order_quantity'].widget.attrs.update({'class':'form-control','id':'focusedInput'})
-        self.fields['spec'].widget.attrs.update({'class':'form-control','id':'autocomp'})
+        self.fields['client'].widget.attrs.update({'class':'form-control','id':'client'})
+        self.fields['order_quantity'].widget.attrs.update({'class':'form-control','id':'quantity'})
+        self.fields['spec'].widget.attrs.update({'class':'form-control','id':'spec'})
         #self.fields['unit'].widget.attrs.update({'class':'form-control','id':'focusedInput','value':'支'})
-        self.fields['person_incharge'].widget.attrs.update({'class':'form-control','id':'focusedInput'})
-        self.fields['requirement'].widget.attrs.update({'class':'form-control','id':'focusedInput','placeholder':'暂无'})
-        self.fields['remark'].widget.attrs.update({'class':'form-control','id':'focusedInput','placeholder':'暂无'})
+        self.fields['person_incharge'].widget.attrs.update({'class':'form-control','id':'person_incharge'})
+        self.fields['requirement'].widget.attrs.update({'class':'form-control','id':'requirement','placeholder':'暂无'})
+        self.fields['remark'].widget.attrs.update({'class':'form-control','id':'remark','placeholder':'暂无'})
 
     class Meta:
         model=orders_list
@@ -19,7 +19,8 @@ class WorkFlowForm(forms.ModelForm):
 
     order_time = forms.DateField()
     sub_time = forms.DateField(widget=forms.SelectDateWidget(), label=u'时间')
-    order_time.widget.attrs.update({'value':datetime.now().strftime('%Y-%m-%d'),'class':'form-control'})
+    order_time.widget.attrs.update({'value':datetime.now().strftime('%Y-%m-%d'),'class':'form-control','id':'order_time'})
+    sub_time.widget.attrs.update({'id':'sub_time'})
     #sub_time.widget.attrs.update({'value':datetime.now().strftime('%Y-%m-%d'),'class':'form-control'})
 
 class WorkFlowDetailForm(forms.ModelForm):

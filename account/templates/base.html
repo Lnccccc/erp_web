@@ -25,19 +25,39 @@
 
     <script>
         $(document).ready(function () {
+            $sub = $('#sub');
             $.ajax({url:'/flow/autocomplete/',
             type:'GET',dataType:'json',success:function (data) {
                     var specs_list = data.specs;
                     var client_list = data.clients;
-                    $("#autocomp").autocomplete({
+                    $("#spec").autocomplete({
                         source:specs_list
                     });
-                    $("#autocomp2").autocomplete({
+                    $("#client").autocomplete({
                         source:client_list
                     });
                 }});
 
+            $sub.click(function () {
+                var client = $("#client").val();
+                var person_incharge = $("#person_incharge").val();
+                var remark = $('#remark').val();
+                var orders = JSON.stringify($table.bootstrapTable('getData'));
+                $.ajaxSetup({
+                    data: {csrfmiddlewaretoken: '{{ csrf_token }}'}
+                });
+                $.ajax({url:'add_order/addOrders/'
+                    ,data:{client:client,person_incharge:person_incharge,remark:remark,orders:orders}
+                    ,type:'post'
+                    ,dataType:'json'
+                    ,success:function (data) {
+                        alert(data.client+'新建成功')
+                    }
+            })
+
+
         });
+
         function del() {
             var msg = "您确定要删除吗？\n\n请确认！";
             if (confirm(msg)==true){
