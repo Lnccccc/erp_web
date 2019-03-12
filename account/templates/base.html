@@ -69,19 +69,26 @@
                 var sub_month = $('#id_sub_time_month').val();
                 var sub_day = $('#id_sub_time_day').val();
                 var orders = JSON.stringify($table.bootstrapTable('getData'));
-                $.ajaxSetup({
-                    data: {csrfmiddlewaretoken: '{{ csrf_token }}'}
-                });
-                $.ajax({url:'addOrders/'
-                    ,data:{client:client,person_incharge:person_incharge,remark:remark,
-                        order_time:order_time,sub_year:sub_year,sub_month:sub_month,sub_day:sub_day,
-                        orders:orders}
-                    ,type:'post'
-                    ,dataType:'json'
-                    ,success:function (data) {
-                        alert('新建'+data.status+'\n'+'请手动返回订单列表')
-                    }
-                })
+                if (client == ''){
+                    alert(orders)
+                }else if(orders == '[]' ){
+                    alert('请插入订单信息')
+                }else{
+                    $.ajaxSetup({
+                        data: {csrfmiddlewaretoken: '{{ csrf_token }}'}
+                    });
+                    $.ajax({url:'addOrders/'
+                        ,data:{client:client,person_incharge:person_incharge,remark:remark,
+                            order_time:order_time,sub_year:sub_year,sub_month:sub_month,sub_day:sub_day,
+                            orders:orders}
+                        ,type:'post'
+                        ,dataType:'json'
+                        ,success:function (data) {
+                            alert('新建'+data.status+'\n'+'请手动返回订单列表')
+                        }
+                    })
+                }
+
 
 
             });

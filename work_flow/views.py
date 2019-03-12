@@ -287,7 +287,7 @@ def order_detail(request,uuidd):
 
 def new_add_message(openid,access_token,client,spec,quantity,uuidd,remark,sub_time,order_time): ##推送模板消息
     url = 'https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=%s' % access_token
-    _sub_time = sub_time.strftime("%y-%m-%d")
+    _sub_time = sub_time
     _order_time = datetime.now().strftime("%y-%m-%d %H:%M:%S")
     message = {
         "touser":openid,
@@ -414,13 +414,43 @@ def addOrders(request):
     _person_incharge = data['person_incharge']
     orders = json.loads(data['orders'])
     _remark = data['remark']
-    for i in orders:
-        randomID = random.randint(1,10)
-        ol = orders_list(user_name=real_name, openid=openid, uuid=str(int(_uuidd)+randomID), client=_client, order_time=_order_time,
-                         sub_time=_sub_time,company=_company,
-                         order_quantity=i['quantity'], spec=i['spec'],
-                         unit='支', order_status=1, person_incharge=_person_incharge,requirement=i['requirement'],
-                         remark=_remark)
-        ol.save()
-    messages.success(request, "操作成功")
-    return JsonResponse({'status':'成功'})
+    if len(orders) == 1:
+        for i in orders:
+            randomID = random.randint(1,100)
+            ol = orders_list(user_name=real_name, openid=openid, uuid=str(int(_uuidd)+randomID), client=_client, order_time=_order_time,
+                             sub_time=_sub_time,company=_company,
+                             order_quantity=i['quantity'], spec=i['spec'],
+                             unit='支', order_status=1, person_incharge=_person_incharge,requirement=i['requirement'],
+                             remark=_remark)
+
+            messages.success(request, "操作成功")
+            try:
+                user_openid = Profile.objects.get(realname=_person_incharge).user.openid
+            except:
+                user_openid = ''
+            send_ind = new_add_message(user_openid,ass_tok,_client,i['spec'],i['quantity'],_uuidd,_remark,_sub_time,_order_time)
+            if send_ind == True:
+                ol.save()
+                return JsonResponse({'status':'成功'})
+            else:
+                return JsonResponse({'status':'失败'})
+
+    else:
+        for i in orders:
+            randomID = random.randint(1,100)
+            ol = orders_list(user_name=real_name, openid=openid, uuid=str(int(_uuidd)+randomID), client=_client, order_time=_order_time,
+                             sub_time=_sub_time,company=_company,
+                             order_quantity=i['quantity'], spec=i['spec'],
+                             unit='支', order_status=1, person_incharge=_person_incharge,requirement=i['requirement'],
+                             remark=_remark)
+            ol.save()
+        messages.success(request, "操作成功")
+        try:
+            user_openid = Profile.objects.get(realname=_person_incharge).user.openid
+        except:
+            user_openid = ''
+        send_ind = new_add_message(user_openid,ass_tok,_client,'批量订单','请前往首页查看','批量订单',_remark,_sub_time,_order_time)
+        if send_ind == True:
+            return JsonResponse({'status':'成功'})
+        else:
+            return JsonResponse({'status':'失败'})
