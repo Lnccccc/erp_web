@@ -70,7 +70,7 @@
                 var sub_day = $('#id_sub_time_day').val();
                 var orders = JSON.stringify($table.bootstrapTable('getData'));
                 if (client == ''){
-                    alert(orders)
+                    alert('请插入客户信息')
                 }else if(orders == '[]' ){
                     alert('请插入订单信息')
                 }else{
