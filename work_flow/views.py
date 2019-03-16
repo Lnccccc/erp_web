@@ -414,6 +414,7 @@ def addOrders(request):
     _person_incharge = data['person_incharge']
     orders = json.loads(data['orders'])
     _remark = data['remark']
+    tmp_uuid = ''
     if len(orders) == 1:
         for i in orders:
             randomID = random.randint(1,100)
@@ -443,13 +444,14 @@ def addOrders(request):
                              order_quantity=i['quantity'], spec=i['spec'],
                              unit='支', order_status=1, person_incharge=_person_incharge,requirement=i['requirement'],
                              remark=_remark)
+            tmp_uuid=str(int(_uuidd)+randomID)
             ol.save()
         messages.success(request, "操作成功")
         try:
             user_openid = Profile.objects.get(realname=_person_incharge).user.openid
         except:
             user_openid = ''
-        send_ind = new_add_message(user_openid,ass_tok,_client,'批量订单','请前往首页查看','批量订单',_remark,_sub_time,_order_time)
+        send_ind = new_add_message(user_openid,ass_tok,_client,'批量订单','请前往首页查看',tmp_uuid,_remark,_sub_time,_order_time)
         if send_ind == True:
             return JsonResponse({'status':'成功'})
         else:
