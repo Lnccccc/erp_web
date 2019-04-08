@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>订单管理系统</title>
+    <title>E-FAC 订单管理系统</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap-theme.min.css" rel="stylesheet">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.13.1/bootstrap-table.min.css">
@@ -36,19 +36,23 @@
             var $table = $('#table');
             $.ajax({url:'/flow/autocomplete/',
             type:'GET',dataType:'json',success:function (data) {
-                    var specs_list = data.specs;
+                    //var specs_list = data.specs;
                     var client_list = data.clients;
-                    $("#spec").autocomplete({
-                        source:specs_list
-                    });
+                    // $("#spec").autocomplete({
+                    //     source:specs_list
+                    // });
                     $("#client").autocomplete({
                         source:client_list
                     });
                 }});
 
             $insert.click(function () {
-                var spec = $('#spec').val();
+                if ($('#spec_diameter').val() == '' || $('#spec_thickness').val()=='' || $('#spec_length').val()=='' || $('#quantity').val() ==''){
+                    alert('请插入订单信息')
+                }else{
+                var spec = '⌀'+$('#spec_diameter').val()+'*'+$('#spec_thickness').val()+'*'+$('#spec_length').val();
                 var quantity = $('#quantity').val();
+
                 var requirement = $('#requirement').val();
                 $table.bootstrapTable('insertRow',{
                     index:1,
@@ -58,6 +62,7 @@
                         requirement:requirement
                     }
                 })
+                }
             });
 
             $sub.click(function () {
@@ -119,7 +124,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="{% url 'work_flow:index' %}">订单管理系统</a>
+        <a class="navbar-brand" href="{% url 'work_flow:index' %}">E-FAC 订单管理系统</a>
     </div>
     <div class="collapse navbar-collapse" id="example-navbar-collapse">
 	{% if request.session.islogin %}
